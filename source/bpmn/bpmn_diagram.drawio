@@ -1,0 +1,91 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
+  <diagram name="Страница — 1" id="JWamufPtwGh0iBYEm9KG">
+    <mxGraphModel dx="1678" dy="1029" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-16" value="Портал" style="swimlane;html=1;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=1;startSize=30;horizontalStack=0;whiteSpace=wrap;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="200" y="20" width="1200" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-17" value="Заявитель" style="swimlane;html=1;startSize=30;horizontal=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-16">
+          <mxGeometry y="30" width="1200" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-28" value="Получить шаблон Excel-файла" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-17">
+          <mxGeometry x="120" y="60" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-29" value="Получить список актуальных курсов" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-17">
+          <mxGeometry x="320" y="60" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-31" value="Скорректировать заявку" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-17">
+          <mxGeometry x="880" y="60" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-33" value="&lt;span style=&quot;font-size: 11px;&quot;&gt;Создать заявку&lt;/span&gt;" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task2;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=abstract;isLoopSub=1;strokeColor=light-dark(#6C8EBF,#EDEDED);fillColor=#DAE8FC;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-17">
+          <mxGeometry x="610" y="60" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-43" value="×" style="rhombus;whiteSpace=wrap;html=1;verticalAlign=middle;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=18;fontStyle=1;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-17">
+          <mxGeometry x="520" y="70" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-44" value="×" style="rhombus;whiteSpace=wrap;html=1;verticalAlign=middle;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=18;fontStyle=1;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-17">
+          <mxGeometry x="800" y="70" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-18" value="Согласующий" style="swimlane;html=1;startSize=30;horizontal=0;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-16">
+          <mxGeometry y="210" width="1200" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-34" value="Просмотреть список заявок" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-18">
+          <mxGeometry x="105" y="70" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-35" value="Просмотреть заявку" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-18">
+          <mxGeometry x="275" y="70" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-36" value="Одобрить заявку" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-18">
+          <mxGeometry x="445" y="70" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-37" value="Отклонить заявку" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-18">
+          <mxGeometry x="615" y="70" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-38" value="Отправить на корректировку" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-18">
+          <mxGeometry x="785" y="70" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-39" value="Направить заявку в СДО" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-18">
+          <mxGeometry x="955" y="70" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-19" value="Система (Портал)" style="swimlane;html=1;startSize=30;horizontal=0;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=12;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-16">
+          <mxGeometry y="390" width="1200" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-40" value="Изменить статус заявки" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-19">
+          <mxGeometry x="315" y="80" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-41" value="Сформировать портальное уведомление" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-19">
+          <mxGeometry x="505" y="80" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-42" value="Отправить заявку в СДО (API)" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-19">
+          <mxGeometry x="715" y="80" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-20" value="СДО" style="swimlane;html=1;startSize=30;horizontal=1;fillColor=#f8cecc;strokeColor=#b85450;fontColor=#000000;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="200" y="610" width="1200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-23" value="Предоставить список актуальных курсов" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-20">
+          <mxGeometry x="80" y="60" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-24" value="Принять заявку на обучение" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-20">
+          <mxGeometry x="380" y="60" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-21" value="Почтовая служба" style="swimlane;html=1;startSize=30;horizontal=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#000000;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="200" y="780" width="1200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-25" value="Отправить email-уведомление" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-21">
+          <mxGeometry x="80" y="70" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-22" value="SSO / Система аутентификации" style="swimlane;html=1;startSize=30;horizontal=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#000000;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="200" y="950" width="1200" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-26" value="Провести аутентификацию пользователя" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-22">
+          <mxGeometry x="80" y="60" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8sa7uAkm1cMH8I5CEHyN-27" value="Предоставить данные авторизации" style="rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="8sa7uAkm1cMH8I5CEHyN-22">
+          <mxGeometry x="380" y="60" width="200" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
