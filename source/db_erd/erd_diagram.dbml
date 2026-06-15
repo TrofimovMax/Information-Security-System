@@ -1,0 +1,138 @@
+Table users {
+  id bigserial [pk]
+  login varchar(255) [unique]
+  refresh_token varchar(255)
+  active boolean
+  employee_id bigint [unique, ref: > employees.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table role_users {
+  id bigserial [pk]
+  role_id bigint [ref: > roles.id]
+  user_id bigint [ref: > users.id]
+  created_at timestamp
+}
+
+Table roles {
+  id bigserial [pk]
+  code varchar(255)
+  name varchar(255)
+  active boolean
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table role_permissions {
+  id bigserial [pk]
+  role_id bigint [ref: > roles.id]
+  permisson_id bigint [ref: > permissons.id]
+  created_at timestamp
+}
+
+Table permissons {
+  id bigserial [pk]
+  name varchar(255)
+  slug varchar(255)
+  active boolean
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table notifications {
+  id bigserial [pk]
+  user_id bigint [ref: > users.id]
+  content varchar(255)
+  event_type varchar(20)
+  ticket_id bigint [ref: > tickets.id]
+  created_at timestamp
+}
+
+Table employees {
+  id bigserial [pk]
+  firstname varchar(255)
+  middle_name varchar(255)
+  last_name varchar(255)
+  full_name tsvector
+  email varchar(255) [unique]
+  phone varchar(15)
+  position_id bigint [ref: > positions.id]
+  departament_id bigint [ref: > departaments.id]
+  organization_id bigint [ref: > organizations.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table positions {
+  id bigserial [pk]
+  name varchar(255)
+  description varchar(255)
+  departament_id bigint [ref: > departaments.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table employee_tickets {
+  id bigserial [pk]
+  employee_id bigint [ref: > employees.id]
+  ticket_id bigint [ref: > tickets.id]
+  created_at timestamp
+}
+
+Table comments {
+  id bigserial [pk]
+  content varchar(255)
+  created_by bigint [ref: > users.id]
+  ticket_id bigint [ref: > tickets.id]
+  created_at timestamp
+}
+
+Table departaments {
+  id bigserial [pk]
+  name varchar(255)
+  description varchar(255)
+  organization_id bigint [ref: > organizations.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table tickets {
+  id bigserial [pk]
+  number_ticket varchar(20) [unique]
+  start_date date
+  end_date date
+  approver_id bigint [ref: > users.id]
+  created_by bigint [ref: > employees.id]
+  course_id bigint [ref: > courses.id]
+  state_ticket_id bigint [ref: > state_tickets.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table courses {
+  id bigserial [pk]
+  external_couse_id varchar(255) [unique]
+  name varchar(255)
+  created_at timestamp
+}
+
+Table organizations {
+  id bigserial [pk]
+  name varchar(255)
+  slug varchar(255) [unique]
+  description varchar(255)
+  inn varchar(255) [unique]
+  kpp varchar(255)
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table state_tickets {
+  id bigserial [pk]
+  code varchar(255)
+  name varchar(255)
+  priority int
+  created_at timestamp
+  updated_at timestamp
+}
