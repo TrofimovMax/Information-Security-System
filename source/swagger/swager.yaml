@@ -489,10 +489,9 @@ paths:
                   description: ID статуса заявки
                   example: 1
 
-                approver_id:
+                created_by_id:
                   type: integer
-                  nullable: true
-                  description: ID пользователя-согласующего
+                  description: ID пользователя-заявителя
                   example: 2
 
                 employee_ids:
@@ -511,7 +510,7 @@ paths:
               start_date: "2026-06-15"
               end_date: "2026-06-20"
               state_ticket_id: 1
-              approver_id: 2
+              created_by_id: 2
               employee_ids:
                 - 10
                 - 11

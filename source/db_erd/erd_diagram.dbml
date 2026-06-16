@@ -73,6 +73,7 @@ Table notifications {
   user_id bigint [not null, ref: > users.id]
   content varchar(255) [not null]
   event_type varchar(20) [not null]
+  is_read boolean [not null, default: false]
   ticket_id bigint [null]
   created_at timestamp [not null]
 }
