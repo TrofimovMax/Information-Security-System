@@ -1,138 +1,168 @@
 Table users {
-  id bigserial [pk]
-  login varchar(255) [unique]
-  refresh_token varchar(255)
-  active boolean
-  employee_id bigint [unique, ref: > employees.id]
-  created_at timestamp
-  updated_at timestamp
+  id bigserial [pk, not null]
+  login varchar(255) [not null, unique]
+  active boolean [not null]
+  employee_id bigint [not null, unique]
+
+  // Провайдер внешней аутентификации: SSO, AD, LDAP, Keycloak и т.п.
+  auth_provider varchar(50) [not null]
+
+  // Уникальный идентификатор пользователя во внешней системе аутентификации
+  external_subject varchar(255) [not null]
+
+  // Идентификатор внешней системы, выдавшей данные аутентификации
+  external_issuer varchar(255) [not null]
+
+  // Дата и время последнего успешного входа пользователя
+  last_login_at timestamp [not null]
+
+  // IP-адрес, с которого был выполнен последний успешный вход
+  last_login_ip varchar(45) [not null]
+
+  // Хэш refresh-токена для обновления пользовательской сессии
+  refresh_token_hash varchar(255) [not null]
+
+  // Дата и время истечения срока действия refresh-токена
+  refresh_token_expires_at timestamp [not null]
+
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+
+  Indexes {
+    (external_issuer, external_subject) [unique]
+  }
 }
 
+Ref: users.employee_id - employees.id
+
+
 Table role_users {
-  id bigserial [pk]
-  role_id bigint [ref: > roles.id]
-  user_id bigint [ref: > users.id]
-  created_at timestamp
+  id bigserial [pk, not null]
+  role_id bigint [not null, ref: > roles.id]
+  user_id bigint [not null, ref: > users.id]
+  created_at timestamp [not null]
 }
 
 Table roles {
-  id bigserial [pk]
-  code varchar(255)
-  name varchar(255)
-  active boolean
-  created_at timestamp
-  updated_at timestamp
+  id bigserial [pk, not null]
+  code varchar(255) [not null]
+  name varchar(255) [not null]
+  active boolean [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
 }
 
 Table role_permissions {
-  id bigserial [pk]
-  role_id bigint [ref: > roles.id]
-  permisson_id bigint [ref: > permissons.id]
-  created_at timestamp
+  id bigserial [pk, not null]
+  role_id bigint [not null, ref: > roles.id]
+  permisson_id bigint [not null, ref: > permissons.id]
+  created_at timestamp [not null]
 }
 
 Table permissons {
-  id bigserial [pk]
-  name varchar(255)
-  slug varchar(255)
-  active boolean
-  created_at timestamp
-  updated_at timestamp
+  id bigserial [pk, not null]
+  name varchar(255) [not null]
+  slug varchar(255) [not null]
+  active boolean [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
 }
 
 Table notifications {
-  id bigserial [pk]
-  user_id bigint [ref: > users.id]
-  content varchar(255)
-  event_type varchar(20)
-  ticket_id bigint [ref: > tickets.id]
-  created_at timestamp
+  id bigserial [pk, not null]
+  user_id bigint [not null, ref: > users.id]
+  content varchar(255) [not null]
+  event_type varchar(20) [not null]
+  ticket_id bigint [null]
+  created_at timestamp [not null]
 }
 
+Ref: notifications.ticket_id > tickets.id
+
 Table employees {
-  id bigserial [pk]
-  firstname varchar(255)
-  middle_name varchar(255)
-  last_name varchar(255)
-  full_name tsvector
-  email varchar(255) [unique]
-  phone varchar(15)
-  position_id bigint [ref: > positions.id]
-  departament_id bigint [ref: > departaments.id]
-  organization_id bigint [ref: > organizations.id]
-  created_at timestamp
-  updated_at timestamp
+  id bigserial [pk, not null]
+  firstname varchar(255) [not null]
+  middle_name varchar(255) [not null]
+  last_name varchar(255) [not null]
+  full_name tsvector [not null]
+  email varchar(255) [not null, unique]
+  phone varchar(15) [not null]
+  position_id bigint [not null, ref: > positions.id]
+  departament_id bigint [not null, ref: > departaments.id]
+  organization_id bigint [not null, ref: > organizations.id]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
 }
 
 Table positions {
-  id bigserial [pk]
-  name varchar(255)
-  description varchar(255)
-  departament_id bigint [ref: > departaments.id]
-  created_at timestamp
-  updated_at timestamp
+  id bigserial [pk, not null]
+  name varchar(255) [not null]
+  description varchar(255) [null]
+  departament_id bigint [not null, ref: > departaments.id]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
 }
 
 Table employee_tickets {
-  id bigserial [pk]
-  employee_id bigint [ref: > employees.id]
-  ticket_id bigint [ref: > tickets.id]
-  created_at timestamp
+  id bigserial [pk, not null]
+  employee_id bigint [not null, ref: > employees.id]
+  ticket_id bigint [not null, ref: > tickets.id]
+  created_at timestamp [not null]
 }
 
 Table comments {
-  id bigserial [pk]
-  content varchar(255)
-  created_by bigint [ref: > users.id]
-  ticket_id bigint [ref: > tickets.id]
-  created_at timestamp
+  id bigserial [pk, not null]
+  content varchar(255) [not null]
+  created_by bigint [not null, ref: > users.id]
+  ticket_id bigint [not null, ref: > tickets.id]
+  created_at timestamp [not null]
 }
 
 Table departaments {
-  id bigserial [pk]
-  name varchar(255)
-  description varchar(255)
-  organization_id bigint [ref: > organizations.id]
-  created_at timestamp
-  updated_at timestamp
+  id bigserial [pk, not null]
+  name varchar(255) [not null]
+  description varchar(255) [null]
+  organization_id bigint [not null, ref: > organizations.id]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
 }
 
 Table tickets {
-  id bigserial [pk]
-  number_ticket varchar(20) [unique]
-  start_date date
-  end_date date
-  approver_id bigint [ref: > users.id]
-  created_by bigint [ref: > employees.id]
-  course_id bigint [ref: > courses.id]
-  state_ticket_id bigint [ref: > state_tickets.id]
-  created_at timestamp
-  updated_at timestamp
+  id bigserial [pk, not null]
+  number_ticket varchar(20) [not null, unique]
+  start_date date [null]
+  end_date date [null]
+  approver_id bigint [null, ref: > users.id]
+  created_by bigint [not null, ref: > employees.id]
+  course_id bigint [null, ref: > courses.id]
+  state_ticket_id bigint [not null, ref: > state_tickets.id]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
 }
 
 Table courses {
-  id bigserial [pk]
-  external_couse_id varchar(255) [unique]
-  name varchar(255)
-  created_at timestamp
+  id bigserial [pk, not null]
+  external_couse_id varchar(255) [not null, unique]
+  name varchar(255) [not null]
+  created_at timestamp [not null]
 }
 
 Table organizations {
-  id bigserial [pk]
-  name varchar(255)
-  slug varchar(255) [unique]
-  description varchar(255)
-  inn varchar(255) [unique]
-  kpp varchar(255)
-  created_at timestamp
-  updated_at timestamp
+  id bigserial [pk, not null]
+  name varchar(255) [not null]
+  slug varchar(255) [not null, unique]
+  description varchar(255) [null]
+  inn varchar(255) [not null, unique]
+  kpp varchar(255) [null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
 }
 
 Table state_tickets {
-  id bigserial [pk]
-  code varchar(255)
-  name varchar(255)
-  priority int
-  created_at timestamp
-  updated_at timestamp
+  id bigserial [pk, not null]
+  code varchar(255) [not null]
+  name varchar(255) [not null]
+  priority int [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
 }
