@@ -223,6 +223,42 @@ paths:
           $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
+  /api/v1/applications/downloads:
+    post:
+      summary: Скачивание выбранных заявок
+      description: |
+        Формирует файл для скачивания выбранных заявок.
+
+        Если передана одна заявка, API возвращает PDF-файл.
+        Если передано несколько заявок, API возвращает ZIP-архив с PDF-файлами заявок.
+      tags:
+        - Applications
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DownloadApplicationsRequest'
+            example:
+              application_ids:
+                - 1
+                - 2
+                - 3
+      responses:
+        '200':
+          $ref: '#/components/responses/DownloadApplications200Response'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
 components:
   securitySchemes:
     BearerAuth:
@@ -333,6 +369,31 @@ components:
             $ref: '#/components/schemas/DeleteApplicationDraftResponse'
           example:
             message: Черновик заявки успешно удален
+    DownloadApplications200Response:
+      description: Файл с выбранными заявками успешно сформирован
+      headers:
+        Content-Disposition:
+          description: Имя файла для скачивания
+          schema:
+            type: string
+            example: attachment; filename="applications.zip"
+      content:
+        application/pdf:
+          schema:
+            type: string
+            format: binary
+          examples:
+            singleApplicationPdf:
+              summary: PDF-файл одной заявки
+              value: PDF-файл заявки
+        application/zip:
+          schema:
+            type: string
+            format: binary
+          examples:
+            multipleApplicationsZip:
+              summary: ZIP-архив с PDF-файлами нескольких заявок
+              value: ZIP-архив с PDF-файлами заявок
     BadRequestErrorResponse:
       description: Некорректный запрос
       content:
@@ -1151,6 +1212,21 @@ components:
           type: string
           description: Сообщение о результате удаления
           example: Черновик заявки успешно удален
+    DownloadApplicationsRequest:
+      type: object
+      required:
+        - application_ids
+      properties:
+        application_ids:
+          type: array
+          description: Список ID заявок для скачивания
+          minItems: 1
+          items:
+            type: integer
+          example:
+            - 1
+            - 2
+            - 3
   examples:
     ApplicationNotDraftErrorExample:
       summary: Заявка не в статусе «Черновик»
