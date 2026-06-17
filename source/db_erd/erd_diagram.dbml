@@ -55,11 +55,11 @@ Table roles {
 Table role_permissions {
   id bigserial [pk, not null]
   role_id bigint [not null, ref: > roles.id]
-  permisson_id bigint [not null, ref: > permissons.id]
+  permission_id bigint [not null, ref: > permissions.id]
   created_at timestamp [not null]
 }
 
-Table permissons {
+Table permissions {
   id bigserial [pk, not null]
   name varchar(255) [not null]
   slug varchar(255) [not null]
@@ -74,11 +74,9 @@ Table notifications {
   content varchar(255) [not null]
   event_type varchar(20) [not null]
   is_read boolean [not null, default: false]
-  ticket_id bigint [null]
+  application_id bigint [null, ref: > applications.id]
   created_at timestamp [not null]
 }
-
-Ref: notifications.ticket_id > tickets.id
 
 Table employees {
   id bigserial [pk, not null]
@@ -104,10 +102,10 @@ Table positions {
   updated_at timestamp [not null]
 }
 
-Table employee_tickets {
+Table application_students {
   id bigserial [pk, not null]
-  employee_id bigint [not null, ref: > employees.id]
-  ticket_id bigint [not null, ref: > tickets.id]
+  student_id bigint [not null, ref: > employees.id]
+  application_id bigint [not null, ref: > applications.id]
   created_at timestamp [not null]
 }
 
@@ -115,7 +113,7 @@ Table comments {
   id bigserial [pk, not null]
   content varchar(255) [not null]
   created_by bigint [not null, ref: > users.id]
-  ticket_id bigint [not null, ref: > tickets.id]
+  application_id bigint [not null, ref: > applications.id]
   created_at timestamp [not null]
 }
 
@@ -128,15 +126,15 @@ Table departaments {
   updated_at timestamp [not null]
 }
 
-Table tickets {
+Table applications {
   id bigserial [pk, not null]
-  number_ticket varchar(20) [not null, unique]
+  number_application varchar(20) [not null, unique]
   start_date date [null]
   end_date date [null]
   approver_id bigint [null, ref: > users.id]
   created_by bigint [not null, ref: > employees.id]
   course_id bigint [null, ref: > courses.id]
-  state_ticket_id bigint [not null, ref: > state_tickets.id]
+  application_state_id bigint [not null, ref: > application_states.id]
   created_at timestamp [not null]
   updated_at timestamp [not null]
 }
@@ -159,7 +157,7 @@ Table organizations {
   updated_at timestamp [not null]
 }
 
-Table state_tickets {
+Table application_states {
   id bigserial [pk, not null]
   code varchar(255) [not null]
   name varchar(255) [not null]
