@@ -11,6 +11,8 @@ tags:
   description: Авторизация и данные текущего пользователя
 - name: Applications
   description: Работа с заявками на обучение
+- name: Students
+  description: Поиск, фильтрация и загрузка учеников для заявок на обучение
 security:
 - BearerAuth: []
 paths:
@@ -539,6 +541,42 @@ paths:
           $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
+    post:
+      summary: Поиск учеников из Excel-файла
+      description: |
+        Принимает Excel-файл со списком учеников, выполняет поиск учеников в базе данных
+        и возвращает ID найденных учеников.
+
+        Метод используется при загрузке Excel-файла в форме создания или редактирования заявки.
+
+        Если хотя бы один ученик из файла не найден в базе данных, API возвращает ошибку 400.
+        Если в Excel-файле найдены дубли учеников, API возвращает ошибку 400.
+      tags:
+        - Students
+      requestBody:
+        $ref: '#/components/requestBodies/UploadStudentsExcelRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/UploadStudentsExcel200Response'
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                studentNotFound:
+                  $ref: '#/components/examples/StudentNotFoundInExcelExample'
+                duplicateStudents:
+                  $ref: '#/components/examples/DuplicateStudentsInExcelExample'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
 components:
   securitySchemes:
     BearerAuth:
@@ -605,6 +643,12 @@ components:
             created_at_to: 2026-06-30
             sort_by: created_at
             sort_direction: desc
+    UploadStudentsExcelRequestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/UploadStudentsExcelRequest'
   responses:
     GetCurrentUser200Response:
       description: Данные текущего пользователя успешно получены
@@ -905,6 +949,17 @@ components:
           example:
             code: INTERNAL_SERVER_ERROR
             message: Внутренняя ошибка сервера
+    UploadStudentsExcel200Response:
+      description: Ученики из Excel-файла успешно найдены
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UploadStudentsExcelResponse'
+          example:
+            student_ids:
+              - 10
+              - 11
+              - 12
   schemas:
     ErrorResponse:
       type: object
@@ -1803,6 +1858,36 @@ components:
             - asc
             - desc
           example: desc
+    UploadStudentsExcelRequest:
+      type: object
+      required:
+        - file
+      properties:
+        file:
+          type: string
+          format: binary
+          description: Excel-файл со списком учеников
+    UploadStudentsExcelResponse:
+      type: object
+      required:
+        - student_ids
+        - students
+      properties:
+        student_ids:
+          type: array
+          description: Список ID найденных учеников
+          items:
+            type: integer
+          example:
+            - 10
+            - 11
+            - 12
+
+        students:
+          type: array
+          description: Список найденных учеников
+          items:
+            $ref: '#/components/schemas/Student'
   examples:
     ApplicationNotDraftErrorExample:
       summary: Заявка не в статусе «Черновик»
@@ -1828,7 +1913,6 @@ components:
         errors:
           - field: application_state_id
             message: Недопустимый переход статуса заявки
-
     ApplicationStateCommentRequiredExample:
       summary: Комментарий обязателен для выбранного статуса
       value:
@@ -1837,7 +1921,6 @@ components:
         errors:
           - field: comment
             message: Комментарий обязателен при отклонении заявки или отправке на корректировку
-
     ApplicationApproverIsCreatorExample:
       summary: Согласующий является создателем заявки
       value:
@@ -1846,7 +1929,6 @@ components:
         errors:
           - field: approver
             message: Согласующий не может рассматривать собственную заявку
-
     ApplicationStateChangeForbiddenExample:
       summary: Нет доступа к изменению статуса заявки
       value:
@@ -1855,3 +1937,31 @@ components:
         errors:
           - field: application
             message: У пользователя нет прав на изменение статуса этой заявки
+    StudentNotFoundInExcelExample:
+      summary: Ученик из Excel-файла не найден
+      value:
+        code: 400
+        message: Такого ученика нет
+        errors:
+          - field: file
+            message: Ученик из Excel-файла не найден в базе данных
+            row: 5
+            full_name: Иванов Иван Иванович
+          - field: file
+            message: Ученик из Excel-файла не найден в базе данных
+            row: 8
+            full_name: Петров Петр Петрович
+    DuplicateStudentsInExcelExample:
+      summary: В Excel-файле найдены дубли учеников
+      value:
+        code: 400
+        message: Найдены дубли в списке учеников
+        errors:
+          - field: file
+            message: Ученик повторяется в Excel-файле
+            row: 4
+            full_name: Иванов Иван Иванович
+          - field: file
+            message: Ученик повторяется в Excel-файле
+            row: 9
+            full_name: Иванов Иван Иванович        
