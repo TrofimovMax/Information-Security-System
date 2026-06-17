@@ -275,6 +275,33 @@ paths:
           $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
+  /api/v1/applications/downloads/excel:
+    post:
+      summary: Скачивание списка заявок в Excel
+      description: |
+        Формирует Excel-файл со списком заявок по переданным фильтрам.
+
+        Фильтры соответствуют фильтрам метода получения списка заявок.
+        Если фильтры не переданы, API возвращает Excel-файл со всеми заявками,
+        доступными текущему пользователю с учетом его роли и прав доступа.
+      tags:
+        - Applications
+      requestBody:
+        $ref: '#/components/requestBodies/DownloadApplicationsExcelRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/DownloadApplicationsExcel200Response'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+
 components:
   securitySchemes:
     BearerAuth:
@@ -299,7 +326,25 @@ components:
             - 10
             - 11
             - 12
-  
+    DownloadApplicationsExcelRequestBody:
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DownloadApplicationsExcelRequest'
+          example:
+            search: Java
+            application_state_id: 1
+            organization_id: 2
+            course_id: 5
+            start_date_from: 2026-06-01
+            start_date_to: 2026-06-30
+            end_date_from: 2026-06-01
+            end_date_to: 2026-06-30
+            created_at_from: 2026-06-01
+            created_at_to: 2026-06-30
+            sort_by: created_at
+            sort_direction: desc
   responses:
     GetCurrentUser200Response:
       description: Данные текущего пользователя успешно получены
@@ -427,6 +472,23 @@ components:
             multipleApplicationsZip:
               summary: ZIP-архив с PDF-файлами нескольких заявок
               value: ZIP-архив с PDF-файлами заявок
+    DownloadApplicationsExcel200Response:
+      description: Excel-файл со списком заявок успешно сформирован
+      headers:
+        Content-Disposition:
+          description: Имя файла для скачивания
+          schema:
+            type: string
+            example: attachment; filename="applications.xlsx"
+      content:
+        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+          schema:
+            type: string
+            format: binary
+          examples:
+            applicationsExcel:
+              summary: Excel-файл со списком заявок
+              value: Excel-файл со списком заявок
     BadRequestErrorResponse:
       description: Некорректный запрос
       content:
@@ -1260,6 +1322,85 @@ components:
             - 1
             - 2
             - 3
+    DownloadApplicationsExcelRequest:
+      type: object
+      properties:
+        search:
+          type: string
+          description: Поисковая строка для поиска заявки по номеру, названию курса или ФИО заявителя
+          example: Java
+
+        application_state_id:
+          type: integer
+          description: ID статуса заявки
+          example: 1
+
+        organization_id:
+          type: integer
+          description: ID организации
+          example: 2
+
+        course_id:
+          type: integer
+          description: ID курса
+          example: 5
+
+        start_date_from:
+          type: string
+          format: date
+          description: Дата начала обучения от
+          example: 2026-06-01
+
+        start_date_to:
+          type: string
+          format: date
+          description: Дата начала обучения до
+          example: 2026-06-30
+
+        end_date_from:
+          type: string
+          format: date
+          description: Дата окончания обучения от
+          example: 2026-06-01
+
+        end_date_to:
+          type: string
+          format: date
+          description: Дата окончания обучения до
+          example: 2026-06-30
+
+        created_at_from:
+          type: string
+          format: date
+          description: Дата создания заявки от
+          example: 2026-06-01
+
+        created_at_to:
+          type: string
+          format: date
+          description: Дата создания заявки до
+          example: 2026-06-30
+
+        sort_by:
+          type: string
+          description: Поле сортировки
+          enum:
+            - number_application
+            - course_name
+            - application_state
+            - organization
+            - start_date
+            - end_date
+            - created_at
+          example: created_at
+
+        sort_direction:
+          type: string
+          description: Направление сортировки
+          enum:
+            - asc
+            - desc
+          example: desc
   examples:
     ApplicationNotDraftErrorExample:
       summary: Заявка не в статусе «Черновик»
