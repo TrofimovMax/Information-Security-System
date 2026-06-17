@@ -417,7 +417,128 @@ paths:
           $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
+  /api/v1/students:
+    get:
+      summary: Получение учеников по фильтрам
+      description: |
+        Возвращает список учеников/сотрудников по переданным фильтрам.
 
+        Если передан application_id, метод возвращает учеников, добавленных в выбранную заявку.
+
+        Если application_id не передан, метод выполняет поиск сотрудников из общей базы,
+        например для ручного добавления учеников в заявку.
+
+        Поддерживает:
+        - поиск по ФИО;
+        - фильтрацию по заявке;
+        - фильтрацию по организации;
+        - фильтрацию по должности;
+        - фильтрацию по отделу;
+        - сортировку по ФИО, должности и отделу;
+        - пагинацию.
+      tags:
+        - Students
+      parameters:
+        - name: application_id
+          in: query
+          required: false
+          description: ID заявки. Если передан, возвращаются только ученики, добавленные в указанную заявку.
+          schema:
+            type: integer
+            example: 1
+
+        - name: search
+          in: query
+          required: false
+          description: Поиск ученика по ФИО
+          schema:
+            type: string
+            minLength: 2
+            example: Иванов
+
+        - name: organization_id
+          in: query
+          required: false
+          description: ID организации
+          schema:
+            type: integer
+            example: 1
+
+        - name: position_id
+          in: query
+          required: false
+          description: ID должности
+          schema:
+            type: integer
+            example: 3
+
+        - name: departament_id
+          in: query
+          required: false
+          description: ID отдела
+          schema:
+            type: integer
+            example: 5
+
+        - name: sort_by
+          in: query
+          required: false
+          description: Поле сортировки
+          schema:
+            type: string
+            enum:
+              - full_name
+              - position
+              - departament
+            example: full_name
+
+        - name: sort_direction
+          in: query
+          required: false
+          description: Направление сортировки
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            example: asc
+
+        - name: page
+          in: query
+          required: false
+          description: Номер страницы
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+            example: 1
+
+        - name: per_page
+          in: query
+          required: false
+          description: Количество записей на странице
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+            example: 20
+
+      responses:
+        '200':
+          $ref: '#/components/responses/GetStudents200Response'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
 components:
   securitySchemes:
     BearerAuth:
@@ -681,6 +802,49 @@ components:
             applicationsExcel:
               summary: Excel-файл со списком заявок
               value: Excel-файл со списком заявок
+    GetStudents200Response:
+      description: Список учеников успешно получен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/StudentsListResponse'
+          example:
+            items:
+              - id: 10
+                first_name: Иван
+                middle_name: Иванович
+                last_name: Иванов
+                email: ivanov@example.com
+                phone: "+79001234567"
+                position:
+                  id: 3
+                  name: Инженер-программист
+                departament:
+                  id: 5
+                  name: Отдел разработки
+                organization:
+                  id: 1
+                  name: ООО Ромашка
+              - id: 11
+                first_name: Петр
+                middle_name: Петрович
+                last_name: Петров
+                email: petrov@example.com
+                phone: "+79007654321"
+                position:
+                  id: 4
+                  name: Системный аналитик
+                departament:
+                  id: 6
+                  name: Отдел аналитики
+                organization:
+                  id: 1
+                  name: ООО Ромашка
+            meta:
+              page: 1
+              per_page: 20
+              total: 2
+              total_pages: 1
     BadRequestErrorResponse:
       description: Некорректный запрос
       content:
