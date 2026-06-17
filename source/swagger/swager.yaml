@@ -13,6 +13,8 @@ tags:
   description: Работа с заявками на обучение
 - name: Students
   description: Поиск, фильтрация и загрузка учеников для заявок на обучение
+- name: Notifications
+  description: Получение и фильтрация уведомлений пользователя
 security:
 - BearerAuth: []
 paths:
@@ -577,6 +579,102 @@ paths:
           $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
+  /api/v1/notifications:
+    get:
+      summary: Получение уведомлений
+      description: |
+        Возвращает список уведомлений с возможностью фильтрации.
+
+        Поддерживает:
+        - фильтрацию по пользователю;
+        - фильтрацию по признаку прочтения;
+        - фильтрацию по заявке;
+        - сортировку по ID;
+        - пагинацию.
+      tags:
+        - Notifications
+      parameters:
+        - name: user_id
+          in: query
+          required: false
+          description: ID пользователя, для которого необходимо получить уведомления
+          schema:
+            type: integer
+            example: 1
+
+        - name: is_read
+          in: query
+          required: false
+          description: Признак прочтения уведомления
+          schema:
+            type: boolean
+            example: false
+
+        - name: application_id
+          in: query
+          required: false
+          description: ID заявки, с которой связано уведомление
+          schema:
+            type: integer
+            example: 10
+
+        - name: sort_by
+          in: query
+          required: false
+          description: Поле сортировки
+          schema:
+            type: string
+            enum:
+              - id
+            default: id
+            example: id
+
+        - name: sort_direction
+          in: query
+          required: false
+          description: Направление сортировки
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+            default: desc
+            example: desc
+
+        - name: page
+          in: query
+          required: false
+          description: Номер страницы
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+            example: 1
+
+        - name: per_page
+          in: query
+          required: false
+          description: Количество записей на странице
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+            example: 20
+
+      responses:
+        '200':
+          $ref: '#/components/responses/GetNotifications200Response'
+        '400':
+          $ref: '#/components/responses/BadRequestErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
 components:
   securitySchemes:
     BearerAuth:
@@ -960,6 +1058,33 @@ components:
               - 10
               - 11
               - 12
+    GetNotifications200Response:
+      description: Список уведомлений успешно получен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotificationsListResponse'
+          example:
+            items:
+              - id: 1
+                user_id: 2
+                content: Заявка APP-2026-0001 отправлена на согласование
+                event_type: application_created
+                is_read: false
+                application_id: 10
+                created_at: 2026-06-17T10:00:00Z
+              - id: 2
+                user_id: 2
+                content: Заявка APP-2026-0001 согласована
+                event_type: application_approved
+                is_read: true
+                application_id: 10
+                created_at: 2026-06-17T11:30:00Z
+            meta:
+              page: 1
+              per_page: 20
+              total: 2
+              total_pages: 1
   schemas:
     ErrorResponse:
       type: object
@@ -1888,6 +2013,83 @@ components:
           description: Список найденных учеников
           items:
             $ref: '#/components/schemas/Student'
+    PaginationMeta:
+      type: object
+      required:
+        - page
+        - per_page
+        - total
+        - total_pages
+      properties:
+        page:
+          type: integer
+          description: Текущая страница
+          example: 1
+        per_page:
+          type: integer
+          description: Количество записей на странице
+          example: 20
+        total:
+          type: integer
+          description: Общее количество записей
+          example: 100
+        total_pages:
+          type: integer
+          description: Общее количество страниц
+          example: 5
+    NotificationsListResponse:
+      type: object
+      required:
+        - items
+        - meta
+      properties:
+        items:
+          type: array
+          description: Список уведомлений
+          items:
+            $ref: '#/components/schemas/Notification'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+    Notification:
+      type: object
+      required:
+        - id
+        - user_id
+        - content
+        - event_type
+        - is_read
+        - created_at
+      properties:
+        id:
+          type: integer
+          description: ID уведомления
+          example: 1
+        user_id:
+          type: integer
+          description: ID пользователя, которому адресовано уведомление
+          example: 2
+        content:
+          type: string
+          description: Текст уведомления
+          example: Заявка APP-2026-0001 отправлена на согласование
+        event_type:
+          type: string
+          description: Тип события уведомления
+          example: application_created
+        is_read:
+          type: boolean
+          description: Признак прочтения уведомления
+          example: false
+        application_id:
+          type: integer
+          nullable: true
+          description: ID связанной заявки
+          example: 10
+        created_at:
+          type: string
+          format: date-time
+          description: Дата и время создания уведомления
+          example: 2026-06-17T10:00:00Z
   examples:
     ApplicationNotDraftErrorExample:
       summary: Заявка не в статусе «Черновик»
