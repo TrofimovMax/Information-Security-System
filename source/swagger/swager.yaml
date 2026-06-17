@@ -14,7 +14,7 @@ tags:
 security:
 - BearerAuth: []
 paths:
-  /api/users/current:
+  /api/v1/users/current:
     get:
       tags:
       - Auth
@@ -34,7 +34,7 @@ paths:
           $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
-  /api/applications:
+  /api/v1/applications:
     get:
       tags:
       - Applications
@@ -161,7 +161,7 @@ paths:
           $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
-  /api/applications/{id}:
+  /api/v1/applications/{id}:
     get:
       tags:
       - Applications
