@@ -224,6 +224,22 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
   /api/v1/applications/downloads:
+    get:
+      summary: Скачивание шаблона Excel для загрузки учеников
+      description: Возвращает Excel-файл установленного формата для последующего заполнения и загрузки списка учеников в заявку.
+      tags:
+        - Applications
+      responses:
+        '200':
+          $ref: '#/components/responses/DownloadApplicationStudentsTemplate200Response'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
     post:
       summary: Скачивание выбранных заявок
       description: |
@@ -369,6 +385,23 @@ components:
             $ref: '#/components/schemas/DeleteApplicationDraftResponse'
           example:
             message: Черновик заявки успешно удален
+    DownloadApplicationStudentsTemplate200Response:
+      description: Excel-шаблон для загрузки учеников успешно сформирован
+      headers:
+        Content-Disposition:
+          description: Имя файла для скачивания
+          schema:
+            type: string
+            example: attachment; filename="application_students_template.xlsx"
+      content:
+        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+          schema:
+            type: string
+            format: binary
+          examples:
+            applicationStudentsTemplate:
+              summary: Excel-шаблон для загрузки учеников
+              value: Excel-файл шаблона
     DownloadApplications200Response:
       description: Файл с выбранными заявками успешно сформирован
       headers:
