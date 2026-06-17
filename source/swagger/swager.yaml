@@ -280,6 +280,65 @@ paths:
           $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
+  /api/v1/applications/{id}/state:
+    post:
+      summary: Изменение статуса заявки
+      description: |
+        Изменяет статус заявки при рассмотрении.
+
+        Метод используется Согласующим для выполнения действий:
+        - согласование заявки;
+        - отклонение заявки;
+        - отправка заявки на корректировку.
+
+        В запросе передается новый статус заявки через application_state_id.
+        Комментарий является опциональным, но может быть обязательным на уровне бизнес-логики
+        для отдельных статусов, например при отклонении или отправке на корректировку.
+      tags:
+        - Applications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID заявки
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        $ref: '#/components/requestBodies/ChangeApplicationStateRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/ChangeApplicationState200Response'
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidApplicationStateTransition:
+                  $ref: '#/components/examples/InvalidApplicationStateTransitionExample'
+                commentRequired:
+                  $ref: '#/components/examples/ApplicationStateCommentRequiredExample'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                approverIsCreator:
+                  $ref: '#/components/examples/ApplicationApproverIsCreatorExample'
+                noApplicationAccess:
+                  $ref: '#/components/examples/ApplicationStateChangeForbiddenExample'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
   /api/v1/applications/downloads:
     get:
       summary: Скачивание шаблона Excel для загрузки учеников
@@ -397,6 +456,15 @@ components:
               - 10
               - 11
               - 12
+    ChangeApplicationStateRequestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ChangeApplicationStateRequest'
+          example:
+            application_state_id: 3
+            comment: Необходимо скорректировать список учеников
     DownloadApplicationsExcelRequestBody:
       required: false
       content:
@@ -435,6 +503,59 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateApplicationResponse'
+    ChangeApplicationState200Response:
+      description: Статус заявки успешно изменен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationDetailsResponse'
+          example:
+            id: 1
+            number_application: APP-2026-0001
+            start_date: 2026-07-01
+            end_date: 2026-07-10
+            application_state:
+              id: 3
+              code: correction
+              name: На корректировке
+            course:
+              id: 5
+              name: Основы информационной безопасности
+            created_by:
+              id: 10
+              first_name: Иван
+              middle_name: Иванович
+              last_name: Иванов
+            approver:
+              id: 2
+              first_name: Петр
+              middle_name: Петрович
+              last_name: Петров
+            employees:
+              - id: 10
+                first_name: Иван
+                middle_name: Иванович
+                last_name: Иванов
+                email: ivanov@example.com
+                phone: "+79001234567"
+                departament:
+                  id: 1
+                  name: Отдел разработки
+                organization:
+                  id: 1
+                  name: ООО Ромашка
+                position:
+                  id: 1
+                  name: Инженер-программист
+            comments:
+              - content: Необходимо скорректировать список учеников
+                created_by:
+                  id: 2
+                  first_name: Петр
+                  middle_name: Петрович
+                  last_name: Петров
+            created_at: 2026-06-17T10:00:00Z
+            updated_at: 2026-06-17T12:00:00Z
     GetApplicationById200Response:
       description: Заявка успешно получена
       content:
@@ -1080,6 +1201,20 @@ components:
             - 10
             - 11
             - 12
+    ChangeApplicationStateRequest:
+      type: object
+      required:
+        - application_state_id
+      properties:
+        application_state_id:
+          type: integer
+          description: ID нового статуса заявки
+          example: 3
+        comment:
+          type: string
+          nullable: true
+          description: Комментарий Согласующего
+          example: Необходимо скорректировать список учеников
     ApplicationDetailsResponse:
       type: object
       required:
@@ -1521,3 +1656,38 @@ components:
         errors:
           - field: created_by
             message: Редактирование доступно только создателю заявки
+    InvalidApplicationStateTransitionExample:
+      summary: Недопустимый переход статуса заявки
+      value:
+        code: 400
+        message: Статус заявки не может быть изменен
+        errors:
+          - field: application_state_id
+            message: Недопустимый переход статуса заявки
+
+    ApplicationStateCommentRequiredExample:
+      summary: Комментарий обязателен для выбранного статуса
+      value:
+        code: 400
+        message: Комментарий обязателен
+        errors:
+          - field: comment
+            message: Комментарий обязателен при отклонении заявки или отправке на корректировку
+
+    ApplicationApproverIsCreatorExample:
+      summary: Согласующий является создателем заявки
+      value:
+        code: 403
+        message: Изменение статуса заявки недоступно
+        errors:
+          - field: approver
+            message: Согласующий не может рассматривать собственную заявку
+
+    ApplicationStateChangeForbiddenExample:
+      summary: Нет доступа к изменению статуса заявки
+      value:
+        code: 403
+        message: Доступ запрещен
+        errors:
+          - field: application
+            message: У пользователя нет прав на изменение статуса этой заявки
