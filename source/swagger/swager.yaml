@@ -1,822 +1,198 @@
 openapi: 3.0.3
-
 info:
   title: Training Requests API
   version: 1.0.0
   description: CRUD API для модуля «Заявки на обучение»
-
 servers:
-  - url: http://localhost:8080
-    description: Local server
-
+- url: http://localhost:8080
+  description: Local server
 tags:
-  - name: Auth
-    description: Авторизация и данные текущего пользователя
-  - name: Tickets
-    description: Работа с заявками на обучение
-
+- name: Auth
+  description: Авторизация и данные текущего пользователя
+- name: Applications
+  description: Работа с заявками на обучение
 security:
-  - BearerAuth: []
-
+- BearerAuth: []
 paths:
   /api/users/current:
     get:
       tags:
-        - Auth
+      - Auth
       summary: Получить текущего пользователя
       description: Возвращает данные текущего авторизованного пользователя по Bearer JWT токену.
       operationId: getCurrentUser
       security:
-        - BearerAuth: []
+      - BearerAuth: []
       responses:
         '200':
-          description: Данные текущего пользователя успешно получены
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - id
-                  - full_name
-                  - phone
-                  - email
-                  - organization_name
-                  - role_code
-                properties:
-                  id:
-                    type: integer
-                    description: ID пользователя
-                    example: 1
-                  full_name:
-                    type: string
-                    description: ФИО пользователя
-                    example: Иванов Иван Иванович
-                  phone:
-                    type: string
-                    description: Телефон пользователя
-                    example: "+79000000000"
-                  email:
-                    type: string
-                    format: email
-                    description: Email пользователя
-                    example: ivanov@example.com
-                  organization_name:
-                    type: string
-                    description: Название организации пользователя
-                    example: ООО Ромашка
-                  role_code:
-                    type: string
-                    description: Код роли пользователя
-                    example: APPLICANT
-
+          $ref: '#/components/responses/GetCurrentUser200Response'
         '401':
-          description: Пользователь не авторизован или токен недействителен
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: UNAUTHORIZED
-                message: Пользователь не авторизован
-
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
         '404':
-          description: Пользователь не найден
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: NOT_FOUND
-                message: Пользователь не найден
-
+          $ref: '#/components/responses/NotFoundErrorResponse'
         '429':
-          description: Превышен лимит запросов
-          headers:
-            Retry-After:
-              description: Количество секунд до повторной попытки
-              schema:
-                type: integer
-                example: 60
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: TOO_MANY_REQUESTS
-                message: Превышен лимит запросов
-
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
-          description: Внутренняя ошибка сервера
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: INTERNAL_SERVER_ERROR
-                message: Внутренняя ошибка сервера
-
-  /api/tickets:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+  /api/applications:
     get:
       tags:
-        - Tickets
+      - Applications
       summary: Получить список заявок на обучение
-      description: >
-        Возвращает список заявок с учётом роли текущего пользователя.
-        Заявитель видит свои заявки, Согласующий — доступные ему заявки.
-        Если список пустой, возвращается 200 с пустым массивом items.
-      operationId: getTickets
+      description: 'Возвращает список заявок с учётом роли текущего пользователя. Заявитель видит свои заявки, Согласующий
+        — доступные ему заявки. Если список пустой, возвращается 200 с пустым массивом items.'
+      operationId: getApplications
       parameters:
-        - name: page
-          in: query
-          required: false
-          description: Номер страницы
-          schema:
-            type: integer
-            minimum: 1
-            default: 1
-          example: 1
-
-        - name: size
-          in: query
-          required: false
-          description: Количество заявок на странице
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          example: 20
-
-        - name: search
-          in: query
-          required: false
-          description: Поиск по номеру заявки или названию курса
-          schema:
-            type: string
-          example: TR-2026
-
-        - name: state_ticket_id
-          in: query
-          required: false
-          description: Фильтр по ID статуса заявки
-          schema:
-            type: integer
-          example: 1
-
-        - name: organization_id
-          in: query
-          required: false
-          description: Фильтр по ID организации Заявителя
-          schema:
-            type: integer
-          example: 1
-
-        - name: created_by
-          in: query
-          required: false
-          description: Фильтр по ID Заявителя
-          schema:
-            type: integer
-          example: 10
-
-        - name: approver_id
-          in: query
-          required: false
-          description: Фильтр по ID Согласующего
-          schema:
-            type: integer
-          example: 2
-
-        - name: sort_by
-          in: query
-          required: false
-          description: Поле для сортировки
-          schema:
-            type: string
-            enum:
-              - number_ticket
-              - updated_at
-              - course_name
-              - organization_name
-              - created_by_full_name
-              - approver_full_name
-          example: updated_at
-
-        - name: sort_order
-          in: query
-          required: false
-          description: Направление сортировки
-          schema:
-            type: string
-            enum:
-              - asc
-              - desc
-            default: desc
-          example: desc
-
+      - name: page
+        in: query
+        required: false
+        description: Номер страницы
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        example: 1
+      - name: size
+        in: query
+        required: false
+        description: Количество заявок на странице
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        example: 20
+      - name: search
+        in: query
+        required: false
+        description: Поиск по номеру заявки или названию курса
+        schema:
+          type: string
+        example: TR-2026
+      - name: application_state_id
+        in: query
+        required: false
+        description: Фильтр по ID статуса заявки
+        schema:
+          type: integer
+        example: 1
+      - name: organization_id
+        in: query
+        required: false
+        description: Фильтр по ID организации Заявителя
+        schema:
+          type: integer
+        example: 1
+      - name: created_by
+        in: query
+        required: false
+        description: Фильтр по ID Заявителя
+        schema:
+          type: integer
+        example: 10
+      - name: approver_id
+        in: query
+        required: false
+        description: Фильтр по ID Согласующего
+        schema:
+          type: integer
+        example: 2
+      - name: sort_by
+        in: query
+        required: false
+        description: Поле для сортировки
+        schema:
+          type: string
+          enum:
+          - number_application
+          - updated_at
+          - course_name
+          - organization_name
+          - created_by_full_name
+          - approver_full_name
+        example: updated_at
+      - name: sort_order
+        in: query
+        required: false
+        description: Направление сортировки
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+          default: desc
+        example: desc
       responses:
         '200':
-          description: Список заявок успешно получен
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - items
-                  - pagination
-                properties:
-                  items:
-                    type: array
-                    description: Список заявок
-                    items:
-                      type: object
-                      required:
-                        - id
-                        - number_ticket
-                        - course
-                        - start_date
-                        - end_date
-                        - state_ticket
-                        - created_by
-                        - organization
-                        - created_at
-                        - updated_at
-                      properties:
-                        id:
-                          type: integer
-                          description: ID заявки
-                          example: 1
-
-                        number_ticket:
-                          type: string
-                          description: Номер заявки
-                          example: TR-2026-0001
-
-                        course:
-                          type: object
-                          description: Курс обучения
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID курса
-                              example: 5
-                            name:
-                              type: string
-                              description: Название курса
-                              example: Основы информационной безопасности
-
-                        start_date:
-                          type: string
-                          format: date
-                          description: Дата начала обучения
-                          example: "2026-06-15"
-
-                        end_date:
-                          type: string
-                          format: date
-                          description: Дата окончания обучения
-                          example: "2026-06-20"
-
-                        state_ticket:
-                          type: object
-                          description: Статус заявки
-                          required:
-                            - id
-                            - code
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID статуса заявки
-                              example: 1
-                            code:
-                              type: string
-                              description: Код статуса заявки
-                              example: WAITING_REVIEW
-                            name:
-                              type: string
-                              description: Название статуса заявки
-                              example: Ожидает рассмотрения
-
-                        created_by:
-                          type: object
-                          description: Сотрудник, создавший заявку
-                          required:
-                            - id
-                            - full_name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID сотрудника-заявителя
-                              example: 10
-                            full_name:
-                              type: string
-                              description: ФИО заявителя
-                              example: Иванов Иван Иванович
-
-                        approver:
-                          type: object
-                          nullable: true
-                          description: Пользователь, проверяющий заявку
-                          required:
-                            - id
-                            - full_name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID пользователя-согласующего
-                              example: 2
-                            full_name:
-                              type: string
-                              description: ФИО согласующего
-                              example: Петров Пётр Петрович
-
-                        organization:
-                          type: object
-                          description: Организация заявителя
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID организации
-                              example: 1
-                            name:
-                              type: string
-                              description: Название организации
-                              example: ООО Ромашка
-
-                        created_at:
-                          type: string
-                          format: date-time
-                          description: Дата и время создания заявки
-                          example: "2026-06-15T10:30:00Z"
-
-                        updated_at:
-                          type: string
-                          format: date-time
-                          description: Дата и время последнего обновления заявки
-                          example: "2026-06-15T12:00:00Z"
-
-                  pagination:
-                    type: object
-                    required:
-                      - page
-                      - size
-                      - total
-                      - total_pages
-                    properties:
-                      page:
-                        type: integer
-                        description: Текущая страница
-                        example: 1
-                      size:
-                        type: integer
-                        description: Количество записей на странице
-                        example: 20
-                      total:
-                        type: integer
-                        description: Общее количество записей
-                        example: 125
-                      total_pages:
-                        type: integer
-                        description: Общее количество страниц
-                        example: 7
-
+          $ref: '#/components/responses/GetApplications200Response'
         '400':
-          description: Некорректные параметры фильтрации, сортировки или пагинации
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: INVALID_QUERY_PARAMS
-                message: Некорректные параметры запроса
-                details:
-                  - field: size
-                    message: Значение size не должно превышать 100
-
+          $ref: '#/components/responses/BadRequestErrorResponse'
         '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: UNAUTHORIZED
-                message: Пользователь не авторизован
-
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
         '404':
-          description: Ресурс не найден
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: NOT_FOUND
-                message: Ресурс не найден
-
+          $ref: '#/components/responses/NotFoundErrorResponse'
         '429':
-          description: Превышен лимит запросов
-          headers:
-            Retry-After:
-              description: Количество секунд до повторной попытки
-              schema:
-                type: integer
-                example: 60
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: TOO_MANY_REQUESTS
-                message: Превышен лимит запросов
-
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
-          description: Внутренняя ошибка сервера
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: INTERNAL_SERVER_ERROR
-                message: Внутренняя ошибка сервера
+          $ref: '#/components/responses/InternalServerErrorResponse'
     post:
       tags:
-        - Tickets
+      - Applications
       summary: Создать заявку на обучение
-      description: >
-        Создаёт новую заявку на обучение. Создатель заявки определяется по текущему
-        авторизованному пользователю. Статус заявки задаётся через state_ticket_id,
-        например «Черновик» или «Ожидает рассмотрения».
-      operationId: createTicket
+      description: 'Создаёт новую заявку на обучение. Создатель заявки определяется по текущему авторизованному пользователю.
+        Статус заявки задаётся через application_state_id, например «Черновик» или «Ожидает рассмотрения».
+
+        '
+      operationId: createApplication
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - course_id
-                - start_date
-                - end_date
-                - state_ticket_id
-                - employee_ids
-              properties:
-                course_id:
-                  type: integer
-                  description: ID курса обучения
-                  example: 5
-
-                start_date:
-                  type: string
-                  format: date
-                  description: Дата начала обучения
-                  example: "2026-06-15"
-
-                end_date:
-                  type: string
-                  format: date
-                  description: Дата окончания обучения
-                  example: "2026-06-20"
-
-                state_ticket_id:
-                  type: integer
-                  description: ID статуса заявки
-                  example: 1
-
-                created_by_id:
-                  type: integer
-                  description: ID пользователя-заявителя
-                  example: 2
-
-                employee_ids:
-                  type: array
-                  description: Список ID сотрудников, добавляемых в заявку
-                  minItems: 1
-                  items:
-                    type: integer
-                  example:
-                    - 10
-                    - 11
-                    - 12
-
-            example:
-              course_id: 5
-              start_date: "2026-06-15"
-              end_date: "2026-06-20"
-              state_ticket_id: 1
-              created_by_id: 2
-              employee_ids:
-                - 10
-                - 11
-                - 12
-
+        $ref: '#/components/requestBodies/CreateApplicationRequestBody'
       responses:
         '200':
-          description: Заявка успешно создана
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - id
-                  - number_ticket
-                  - course
-                  - start_date
-                  - end_date
-                  - state_ticket
-                  - created_by
-                  - organization
-                  - created_at
-                  - updated_at
-                properties:
-                  id:
-                    type: integer
-                    description: ID заявки
-                    example: 1
-
-                  number_ticket:
-                    type: string
-                    description: Номер заявки
-                    example: TR-2026-0001
-
-                  course:
-                    type: object
-                    description: Курс обучения
-                    required:
-                      - id
-                      - name
-                    properties:
-                      id:
-                        type: integer
-                        description: ID курса
-                        example: 5
-                      name:
-                        type: string
-                        description: Название курса
-                        example: Основы информационной безопасности
-
-                  start_date:
-                    type: string
-                    format: date
-                    description: Дата начала обучения
-                    example: "2026-06-15"
-
-                  end_date:
-                    type: string
-                    format: date
-                    description: Дата окончания обучения
-                    example: "2026-06-20"
-
-                  state_ticket:
-                    type: object
-                    description: Статус заявки
-                    required:
-                      - id
-                      - code
-                      - name
-                    properties:
-                      id:
-                        type: integer
-                        description: ID статуса заявки
-                        example: 1
-                      code:
-                        type: string
-                        description: Код статуса заявки
-                        example: DRAFT
-                      name:
-                        type: string
-                        description: Название статуса заявки
-                        example: Черновик
-
-                  created_by:
-                    type: object
-                    description: Сотрудник, создавший заявку
-                    required:
-                      - id
-                      - full_name
-                    properties:
-                      id:
-                        type: integer
-                        description: ID сотрудника-заявителя
-                        example: 10
-                      full_name:
-                        type: string
-                        description: ФИО заявителя
-                        example: Иванов Иван Иванович
-
-                  approver:
-                    type: object
-                    nullable: true
-                    description: Пользователь, проверяющий заявку
-                    required:
-                      - id
-                      - full_name
-                    properties:
-                      id:
-                        type: integer
-                        description: ID пользователя-согласующего
-                        example: 2
-                      full_name:
-                        type: string
-                        description: ФИО согласующего
-                        example: Петров Пётр Петрович
-
-                  organization:
-                    type: object
-                    description: Организация заявителя
-                    required:
-                      - id
-                      - name
-                    properties:
-                      id:
-                        type: integer
-                        description: ID организации
-                        example: 1
-                      name:
-                        type: string
-                        description: Название организации
-                        example: ООО Ромашка
-
-                  employees:
-                    type: array
-                    description: Сотрудники, добавленные в заявку
-                    items:
-                      type: object
-                      required:
-                        - id
-                        - first_name
-                        - last_name
-                        - email
-                        - phone
-                        - position
-                        - departament
-                        - organization
-                      properties:
-                        id:
-                          type: integer
-                          description: ID сотрудника
-                          example: 10
-
-                        first_name:
-                          type: string
-                          description: Имя сотрудника
-                          example: Иван
-
-                        middle_name:
-                          type: string
-                          nullable: true
-                          description: Отчество сотрудника
-                          example: Иванович
-
-                        last_name:
-                          type: string
-                          description: Фамилия сотрудника
-                          example: Иванов
-
-                        email:
-                          type: string
-                          format: email
-                          description: Email сотрудника
-                          example: ivanov@example.com
-
-                        phone:
-                          type: string
-                          description: Телефон сотрудника
-                          example: "+79000000000"
-
-                        position:
-                          type: object
-                          description: Должность сотрудника
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID должности
-                              example: 1
-                            name:
-                              type: string
-                              description: Название должности
-                              example: Backend-разработчик
-
-                        departament:
-                          type: object
-                          description: Подразделение сотрудника
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID подразделения
-                              example: 1
-                            name:
-                              type: string
-                              description: Название подразделения
-                              example: Отдел разработки
-
-                        organization:
-                          type: object
-                          description: Организация сотрудника
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID организации
-                              example: 1
-                            name:
-                              type: string
-                              description: Название организации
-                              example: ООО Ромашка
-
-                  created_at:
-                    type: string
-                    format: date-time
-                    description: Дата и время создания заявки
-                    example: "2026-06-15T10:30:00Z"
-
-                  updated_at:
-                    type: string
-                    format: date-time
-                    description: Дата и время последнего обновления заявки
-                    example: "2026-06-15T10:30:00Z"
-
+          $ref: '#/components/responses/CreateApplication200Response'
         '400':
-          description: Некорректные данные заявки
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: VALIDATION_ERROR
-                message: Некорректные данные заявки
-                details:
-                  - field: employee_ids
-                    message: Список сотрудников не должен быть пустым
-
+          $ref: '#/components/responses/BadRequestErrorResponse'
         '401':
-          description: Пользователь не авторизован
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: UNAUTHORIZED
-                message: Пользователь не авторизован
-
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
         '404':
-          description: Связанный ресурс не найден
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: NOT_FOUND
-                message: Курс, статус, согласующий или сотрудник не найден
-
+          $ref: '#/components/responses/NotFoundErrorResponse'
         '429':
-          description: Превышен лимит запросов
-          headers:
-            Retry-After:
-              description: Количество секунд до повторной попытки
-              schema:
-                type: integer
-                example: 60
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: TOO_MANY_REQUESTS
-                message: Превышен лимит запросов
-
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
-          description: Внутренняя ошибка сервера
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: INTERNAL_SERVER_ERROR
-                message: Внутренняя ошибка сервера
-  /api/tickets/{id}:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+  /api/applications/{id}:
     get:
       tags:
-        - Tickets
+      - Applications
       summary: Получить заявку по ID
-      description: >
-        Возвращает карточку заявки на обучение, включая данные курса, статуса,
-        заявителя, согласующего, сотрудников, записанных на курс, и комментарии.
-      operationId: getTicketById
+      description: 'Возвращает карточку заявки на обучение, включая данные курса, статуса, заявителя, согласующего, сотрудников,
+        записанных на курс, и комментарии.
+
+        '
+      operationId: getApplicationById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID заявки
+        schema:
+          type: integer
+        example: 1
+      responses:
+        '200':
+          $ref: '#/components/responses/GetApplicationById200Response'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+    delete:
+      summary: Удаление черновика заявки
+      description: Удаляет заявку только в статусе «Черновик». Если заявка находится в другом статусе, удаление не выполняется.
+      tags:
+        - Applications
       parameters:
         - name: id
           in: path
@@ -824,417 +200,205 @@ paths:
           description: ID заявки
           schema:
             type: integer
-          example: 1
-
+            example: 1
       responses:
         '200':
-          description: Заявка успешно получена
+          $ref: '#/components/responses/DeleteApplicationDraft200Response'
+        '400':
+          description: Некорректный запрос
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - id
-                  - number_ticket
-                  - course
-                  - start_date
-                  - end_date
-                  - state_ticket
-                  - created_by
-                  - organization
-                  - employees
-                  - comments
-                  - created_at
-                  - updated_at
-                properties:
-                  id:
-                    type: integer
-                    description: ID заявки
-                    example: 1
-
-                  number_ticket:
-                    type: string
-                    description: Номер заявки
-                    example: TR-2026-0001
-
-                  course:
-                    type: object
-                    description: Курс обучения
-                    required:
-                      - id
-                      - name
-                    properties:
-                      id:
-                        type: integer
-                        description: ID курса
-                        example: 5
-                      name:
-                        type: string
-                        description: Название курса
-                        example: Основы информационной безопасности
-
-                  start_date:
-                    type: string
-                    format: date
-                    description: Дата начала обучения
-                    example: "2026-06-15"
-
-                  end_date:
-                    type: string
-                    format: date
-                    description: Дата окончания обучения
-                    example: "2026-06-20"
-
-                  state_ticket:
-                    type: object
-                    description: Статус заявки
-                    required:
-                      - id
-                      - code
-                      - name
-                    properties:
-                      id:
-                        type: integer
-                        description: ID статуса заявки
-                        example: 1
-                      code:
-                        type: string
-                        description: Код статуса заявки
-                        example: WAITING_REVIEW
-                      name:
-                        type: string
-                        description: Название статуса заявки
-                        example: Ожидает рассмотрения
-
-                  created_by:
-                    type: object
-                    description: Сотрудник, создавший заявку
-                    required:
-                      - id
-                      - first_name
-                      - last_name
-                      - email
-                      - phone
-                    properties:
-                      id:
-                        type: integer
-                        description: ID сотрудника-заявителя
-                        example: 10
-                      first_name:
-                        type: string
-                        description: Имя заявителя
-                        example: Иван
-                      middle_name:
-                        type: string
-                        nullable: true
-                        description: Отчество заявителя
-                        example: Иванович
-                      last_name:
-                        type: string
-                        description: Фамилия заявителя
-                        example: Иванов
-                      email:
-                        type: string
-                        format: email
-                        description: Email заявителя
-                        example: ivanov@example.com
-                      phone:
-                        type: string
-                        description: Телефон заявителя
-                        example: "+79000000000"
-
-                  approver:
-                    type: object
-                    nullable: true
-                    description: Пользователь, проверяющий заявку
-                    required:
-                      - id
-                      - first_name
-                      - last_name
-                    properties:
-                      id:
-                        type: integer
-                        description: ID пользователя-согласующего
-                        example: 2
-                      first_name:
-                        type: string
-                        description: Имя согласующего
-                        example: Пётр
-                      middle_name:
-                        type: string
-                        nullable: true
-                        description: Отчество согласующего
-                        example: Петрович
-                      last_name:
-                        type: string
-                        description: Фамилия согласующего
-                        example: Петров
-
-                  organization:
-                    type: object
-                    description: Организация заявителя
-                    required:
-                      - id
-                      - name
-                    properties:
-                      id:
-                        type: integer
-                        description: ID организации
-                        example: 1
-                      name:
-                        type: string
-                        description: Название организации
-                        example: ООО Ромашка
-
-                  employees:
-                    type: array
-                    description: Сотрудники, записанные на курс в рамках заявки
-                    items:
-                      type: object
-                      required:
-                        - id
-                        - first_name
-                        - last_name
-                        - email
-                        - phone
-                        - position
-                        - departament
-                        - organization
-                      properties:
-                        id:
-                          type: integer
-                          description: ID сотрудника
-                          example: 10
-
-                        first_name:
-                          type: string
-                          description: Имя сотрудника
-                          example: Иван
-
-                        middle_name:
-                          type: string
-                          nullable: true
-                          description: Отчество сотрудника
-                          example: Иванович
-
-                        last_name:
-                          type: string
-                          description: Фамилия сотрудника
-                          example: Иванов
-
-                        email:
-                          type: string
-                          format: email
-                          description: Email сотрудника
-                          example: ivanov@example.com
-
-                        phone:
-                          type: string
-                          description: Телефон сотрудника
-                          example: "+79000000000"
-
-                        position:
-                          type: object
-                          description: Должность сотрудника
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID должности
-                              example: 1
-                            name:
-                              type: string
-                              description: Название должности
-                              example: Backend-разработчик
-
-                        departament:
-                          type: object
-                          description: Подразделение сотрудника
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID подразделения
-                              example: 1
-                            name:
-                              type: string
-                              description: Название подразделения
-                              example: Отдел разработки
-
-                        organization:
-                          type: object
-                          description: Организация сотрудника
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID организации
-                              example: 1
-                            name:
-                              type: string
-                              description: Название организации
-                              example: ООО Ромашка
-
-                  comments:
-                    type: array
-                    description: Список комментариев к заявке
-                    items:
-                      type: object
-                      required:
-                        - content
-                        - created_by
-                      properties:
-                        content:
-                          type: string
-                          description: Текст комментария
-                          example: Заявка требует корректировки списка сотрудников
-
-                        created_by:
-                          type: object
-                          description: Пользователь, создавший комментарий
-                          required:
-                            - id
-                            - first_name
-                            - last_name
-                          properties:
-                            id:
-                              type: integer
-                              description: ID автора комментария
-                              example: 2
-                            first_name:
-                              type: string
-                              description: Имя автора комментария
-                              example: Пётр
-                            middle_name:
-                              type: string
-                              nullable: true
-                              description: Отчество автора комментария
-                              example: Петрович
-                            last_name:
-                              type: string
-                              description: Фамилия автора комментария
-                              example: Петров
-
-                  created_at:
-                    type: string
-                    format: date-time
-                    description: Дата и время создания заявки
-                    example: "2026-06-15T10:30:00Z"
-
-                  updated_at:
-                    type: string
-                    format: date-time
-                    description: Дата и время последнего обновления заявки
-                    example: "2026-06-15T12:00:00Z"
-
-              example:
-                id: 1
-                number_ticket: TR-2026-0001
-                course:
-                  id: 5
-                  name: Основы информационной безопасности
-                start_date: "2026-06-15"
-                end_date: "2026-06-20"
-                state_ticket:
-                  id: 1
-                  code: WAITING_REVIEW
-                  name: Ожидает рассмотрения
-                created_by:
-                  id: 10
-                  first_name: Иван
-                  middle_name: Иванович
-                  last_name: Иванов
-                  email: ivanov@example.com
-                  phone: "+79000000000"
-                approver:
-                  id: 2
-                  first_name: Пётр
-                  middle_name: Петрович
-                  last_name: Петров
-                organization:
-                  id: 1
-                  name: ООО Ромашка
-                employees:
-                  - id: 10
-                    first_name: Иван
-                    middle_name: Иванович
-                    last_name: Иванов
-                    email: ivanov@example.com
-                    phone: "+79000000000"
-                    position:
-                      id: 1
-                      name: Backend-разработчик
-                    departament:
-                      id: 1
-                      name: Отдел разработки
-                    organization:
-                      id: 1
-                      name: ООО Ромашка
-                comments:
-                  - content: Заявка требует корректировки списка сотрудников
-                    created_by:
-                      id: 2
-                      first_name: Пётр
-                      middle_name: Петрович
-                      last_name: Петров
-                created_at: "2026-06-15T10:30:00Z"
-                updated_at: "2026-06-15T12:00:00Z"
-
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                applicationNotDraft:
+                  $ref: '#/components/examples/ApplicationNotDraftErrorExample'
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenErrorResponse'
         '404':
-          description: Заявка не найдена
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: NOT_FOUND
-                message: Заявка не найдена
-
+          $ref: '#/components/responses/NotFoundErrorResponse'
         '429':
-          description: Превышен лимит запросов
-          headers:
-            Retry-After:
-              description: Количество секунд до повторной попытки
-              schema:
-                type: integer
-                example: 60
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: TOO_MANY_REQUESTS
-                message: Превышен лимит запросов
-
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
-          description: Внутренняя ошибка сервера
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-              example:
-                code: INTERNAL_SERVER_ERROR
-                message: Внутренняя ошибка сервера
-
+          $ref: '#/components/responses/InternalServerErrorResponse'
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
+  requestBodies:
+    CreateApplicationRequestBody:
+      description: Данные для создания заявки на обучение
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateApplicationRequest'
+          example:
+            course_id: 5
+            start_date: '2026-06-15'
+            end_date: '2026-06-20'
+            application_state_id: 1
+            created_by_id: 2
+            employee_ids:
+            - 10
+            - 11
+            - 12
+  
+  responses:
+    GetCurrentUser200Response:
+      description: Данные текущего пользователя успешно получены
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CurrentUserResponse'
+    GetApplications200Response:
+      description: Список заявок успешно получен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationsListResponse'
+    CreateApplication200Response:
+      description: Заявка успешно создана
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateApplicationResponse'
+    GetApplicationById200Response:
+      description: Заявка успешно получена
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApplicationDetailsResponse'
+          example:
+            id: 1
+            number_application: APP-2026-0001
+            course:
+              id: 5
+              name: Основы информационной безопасности
+            start_date: '2026-06-15'
+            end_date: '2026-06-20'
+            application_state:
+              id: 1
+              code: WAITING_REVIEW
+              name: Ожидает рассмотрения
+            created_by:
+              id: 10
+              first_name: Иван
+              middle_name: Иванович
+              last_name: Иванов
+              email: ivanov@example.com
+              phone: '+79000000000'
+            approver:
+              id: 2
+              first_name: Пётр
+              middle_name: Петрович
+              last_name: Петров
+            organization:
+              id: 1
+              name: ООО Ромашка
+            employees:
+            - id: 10
+              first_name: Иван
+              middle_name: Иванович
+              last_name: Иванов
+              email: ivanov@example.com
+              phone: '+79000000000'
+              position:
+                id: 1
+                name: Backend-разработчик
+              departament:
+                id: 1
+                name: Отдел разработки
+              organization:
+                id: 1
+                name: ООО Ромашка
+            comments:
+            - content: Заявка требует корректировки списка сотрудников
+              created_by:
+                id: 2
+                first_name: Пётр
+                middle_name: Петрович
+                last_name: Петров
+            created_at: '2026-06-15T10:30:00Z'
+            updated_at: '2026-06-15T12:00:00Z'
+    DeleteApplicationDraft200Response:
+      description: Черновик заявки успешно удален
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteApplicationDraftResponse'
+          example:
+            message: Черновик заявки успешно удален
+    BadRequestErrorResponse:
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: BAD_REQUEST
+            message: Некорректный запрос
+    UnauthorizedErrorResponse:
+      description: Пользователь не авторизован или токен недействителен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: UNAUTHORIZED
+            message: Пользователь не авторизован
+    ForbiddenErrorResponse:
+      description: Доступ запрещен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: 403
+            message: Доступ запрещен
+    NotFoundErrorResponse:
+      description: Ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: NOT_FOUND
+            message: Ресурс не найден
+    TooManyRequestsErrorResponse:
+      description: Превышен лимит запросов
+      headers:
+        Retry-After:
+          description: Количество секунд до повторной попытки
+          schema:
+            type: integer
+            example: 60
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: TOO_MANY_REQUESTS
+            message: Превышен лимит запросов
+    InternalServerErrorResponse:
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            code: INTERNAL_SERVER_ERROR
+            message: Внутренняя ошибка сервера
   schemas:
     ErrorResponse:
       type: object
       required:
-        - code
-        - message
+      - code
+      - message
       properties:
         code:
           type: string
@@ -1257,3 +421,742 @@ components:
               message:
                 type: string
                 example: Значение size не должно превышать 100
+    CurrentUserResponse:
+      type: object
+      required:
+      - id
+      - full_name
+      - phone
+      - email
+      - organization_name
+      - role_code
+      properties:
+        id:
+          type: integer
+          description: ID пользователя
+          example: 1
+        full_name:
+          type: string
+          description: ФИО пользователя
+          example: Иванов Иван Иванович
+        phone:
+          type: string
+          description: Телефон пользователя
+          example: '+79000000000'
+        email:
+          type: string
+          format: email
+          description: Email пользователя
+          example: ivanov@example.com
+        organization_name:
+          type: string
+          description: Название организации пользователя
+          example: ООО Ромашка
+        role_code:
+          type: string
+          description: Код роли пользователя
+          example: APPLICANT
+    ApplicationsListResponse:
+      type: object
+      required:
+      - items
+      - pagination
+      properties:
+        items:
+          type: array
+          description: Список заявок
+          items:
+            type: object
+            required:
+            - id
+            - number_application
+            - course
+            - start_date
+            - end_date
+            - application_state
+            - created_by
+            - organization
+            - created_at
+            - updated_at
+            properties:
+              id:
+                type: integer
+                description: ID заявки
+                example: 1
+              number_application:
+                type: string
+                description: Номер заявки
+                example: APP-2026-0001
+              course:
+                type: object
+                description: Курс обучения
+                required:
+                - id
+                - name
+                properties:
+                  id:
+                    type: integer
+                    description: ID курса
+                    example: 5
+                  name:
+                    type: string
+                    description: Название курса
+                    example: Основы информационной безопасности
+              start_date:
+                type: string
+                format: date
+                description: Дата начала обучения
+                example: '2026-06-15'
+              end_date:
+                type: string
+                format: date
+                description: Дата окончания обучения
+                example: '2026-06-20'
+              application_state:
+                type: object
+                description: Статус заявки
+                required:
+                - id
+                - code
+                - name
+                properties:
+                  id:
+                    type: integer
+                    description: ID статуса заявки
+                    example: 1
+                  code:
+                    type: string
+                    description: Код статуса заявки
+                    example: WAITING_REVIEW
+                  name:
+                    type: string
+                    description: Название статуса заявки
+                    example: Ожидает рассмотрения
+              created_by:
+                type: object
+                description: Сотрудник, создавший заявку
+                required:
+                - id
+                - full_name
+                properties:
+                  id:
+                    type: integer
+                    description: ID сотрудника-заявителя
+                    example: 10
+                  full_name:
+                    type: string
+                    description: ФИО заявителя
+                    example: Иванов Иван Иванович
+              approver:
+                type: object
+                nullable: true
+                description: Пользователь, проверяющий заявку
+                required:
+                - id
+                - full_name
+                properties:
+                  id:
+                    type: integer
+                    description: ID пользователя-согласующего
+                    example: 2
+                  full_name:
+                    type: string
+                    description: ФИО согласующего
+                    example: Петров Пётр Петрович
+              organization:
+                type: object
+                description: Организация заявителя
+                required:
+                - id
+                - name
+                properties:
+                  id:
+                    type: integer
+                    description: ID организации
+                    example: 1
+                  name:
+                    type: string
+                    description: Название организации
+                    example: ООО Ромашка
+              created_at:
+                type: string
+                format: date-time
+                description: Дата и время создания заявки
+                example: '2026-06-15T10:30:00Z'
+              updated_at:
+                type: string
+                format: date-time
+                description: Дата и время последнего обновления заявки
+                example: '2026-06-15T12:00:00Z'
+        pagination:
+          type: object
+          required:
+          - page
+          - size
+          - total
+          - total_pages
+          properties:
+            page:
+              type: integer
+              description: Текущая страница
+              example: 1
+            size:
+              type: integer
+              description: Количество записей на странице
+              example: 20
+            total:
+              type: integer
+              description: Общее количество записей
+              example: 125
+            total_pages:
+              type: integer
+              description: Общее количество страниц
+              example: 7
+    CreateApplicationResponse:
+      type: object
+      required:
+      - id
+      - number_application
+      - course
+      - start_date
+      - end_date
+      - application_state
+      - created_by
+      - organization
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: integer
+          description: ID заявки
+          example: 1
+        number_application:
+          type: string
+          description: Номер заявки
+          example: APP-2026-0001
+        course:
+          type: object
+          description: Курс обучения
+          required:
+          - id
+          - name
+          properties:
+            id:
+              type: integer
+              description: ID курса
+              example: 5
+            name:
+              type: string
+              description: Название курса
+              example: Основы информационной безопасности
+        start_date:
+          type: string
+          format: date
+          description: Дата начала обучения
+          example: '2026-06-15'
+        end_date:
+          type: string
+          format: date
+          description: Дата окончания обучения
+          example: '2026-06-20'
+        application_state:
+          type: object
+          description: Статус заявки
+          required:
+          - id
+          - code
+          - name
+          properties:
+            id:
+              type: integer
+              description: ID статуса заявки
+              example: 1
+            code:
+              type: string
+              description: Код статуса заявки
+              example: DRAFT
+            name:
+              type: string
+              description: Название статуса заявки
+              example: Черновик
+        created_by:
+          type: object
+          description: Сотрудник, создавший заявку
+          required:
+          - id
+          - full_name
+          properties:
+            id:
+              type: integer
+              description: ID сотрудника-заявителя
+              example: 10
+            full_name:
+              type: string
+              description: ФИО заявителя
+              example: Иванов Иван Иванович
+        approver:
+          type: object
+          nullable: true
+          description: Пользователь, проверяющий заявку
+          required:
+          - id
+          - full_name
+          properties:
+            id:
+              type: integer
+              description: ID пользователя-согласующего
+              example: 2
+            full_name:
+              type: string
+              description: ФИО согласующего
+              example: Петров Пётр Петрович
+        organization:
+          type: object
+          description: Организация заявителя
+          required:
+          - id
+          - name
+          properties:
+            id:
+              type: integer
+              description: ID организации
+              example: 1
+            name:
+              type: string
+              description: Название организации
+              example: ООО Ромашка
+        employees:
+          type: array
+          description: Сотрудники, добавленные в заявку
+          items:
+            type: object
+            required:
+            - id
+            - first_name
+            - last_name
+            - email
+            - phone
+            - position
+            - departament
+            - organization
+            properties:
+              id:
+                type: integer
+                description: ID сотрудника
+                example: 10
+              first_name:
+                type: string
+                description: Имя сотрудника
+                example: Иван
+              middle_name:
+                type: string
+                nullable: true
+                description: Отчество сотрудника
+                example: Иванович
+              last_name:
+                type: string
+                description: Фамилия сотрудника
+                example: Иванов
+              email:
+                type: string
+                format: email
+                description: Email сотрудника
+                example: ivanov@example.com
+              phone:
+                type: string
+                description: Телефон сотрудника
+                example: '+79000000000'
+              position:
+                type: object
+                description: Должность сотрудника
+                required:
+                - id
+                - name
+                properties:
+                  id:
+                    type: integer
+                    description: ID должности
+                    example: 1
+                  name:
+                    type: string
+                    description: Название должности
+                    example: Backend-разработчик
+              departament:
+                type: object
+                description: Подразделение сотрудника
+                required:
+                - id
+                - name
+                properties:
+                  id:
+                    type: integer
+                    description: ID подразделения
+                    example: 1
+                  name:
+                    type: string
+                    description: Название подразделения
+                    example: Отдел разработки
+              organization:
+                type: object
+                description: Организация сотрудника
+                required:
+                - id
+                - name
+                properties:
+                  id:
+                    type: integer
+                    description: ID организации
+                    example: 1
+                  name:
+                    type: string
+                    description: Название организации
+                    example: ООО Ромашка
+        created_at:
+          type: string
+          format: date-time
+          description: Дата и время создания заявки
+          example: '2026-06-15T10:30:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Дата и время последнего обновления заявки
+          example: '2026-06-15T10:30:00Z'
+    ApplicationDetailsResponse:
+      type: object
+      required:
+      - id
+      - number_application
+      - course
+      - start_date
+      - end_date
+      - application_state
+      - created_by
+      - organization
+      - employees
+      - comments
+      - created_at
+      - updated_at
+      properties:
+        id:
+          type: integer
+          description: ID заявки
+          example: 1
+        number_application:
+          type: string
+          description: Номер заявки
+          example: APP-2026-0001
+        course:
+          type: object
+          description: Курс обучения
+          required:
+          - id
+          - name
+          properties:
+            id:
+              type: integer
+              description: ID курса
+              example: 5
+            name:
+              type: string
+              description: Название курса
+              example: Основы информационной безопасности
+        start_date:
+          type: string
+          format: date
+          description: Дата начала обучения
+          example: '2026-06-15'
+        end_date:
+          type: string
+          format: date
+          description: Дата окончания обучения
+          example: '2026-06-20'
+        application_state:
+          type: object
+          description: Статус заявки
+          required:
+          - id
+          - code
+          - name
+          properties:
+            id:
+              type: integer
+              description: ID статуса заявки
+              example: 1
+            code:
+              type: string
+              description: Код статуса заявки
+              example: WAITING_REVIEW
+            name:
+              type: string
+              description: Название статуса заявки
+              example: Ожидает рассмотрения
+        created_by:
+          type: object
+          description: Сотрудник, создавший заявку
+          required:
+          - id
+          - first_name
+          - last_name
+          - email
+          - phone
+          properties:
+            id:
+              type: integer
+              description: ID сотрудника-заявителя
+              example: 10
+            first_name:
+              type: string
+              description: Имя заявителя
+              example: Иван
+            middle_name:
+              type: string
+              nullable: true
+              description: Отчество заявителя
+              example: Иванович
+            last_name:
+              type: string
+              description: Фамилия заявителя
+              example: Иванов
+            email:
+              type: string
+              format: email
+              description: Email заявителя
+              example: ivanov@example.com
+            phone:
+              type: string
+              description: Телефон заявителя
+              example: '+79000000000'
+        approver:
+          type: object
+          nullable: true
+          description: Пользователь, проверяющий заявку
+          required:
+          - id
+          - first_name
+          - last_name
+          properties:
+            id:
+              type: integer
+              description: ID пользователя-согласующего
+              example: 2
+            first_name:
+              type: string
+              description: Имя согласующего
+              example: Пётр
+            middle_name:
+              type: string
+              nullable: true
+              description: Отчество согласующего
+              example: Петрович
+            last_name:
+              type: string
+              description: Фамилия согласующего
+              example: Петров
+        organization:
+          type: object
+          description: Организация заявителя
+          required:
+          - id
+          - name
+          properties:
+            id:
+              type: integer
+              description: ID организации
+              example: 1
+            name:
+              type: string
+              description: Название организации
+              example: ООО Ромашка
+        employees:
+          type: array
+          description: Сотрудники, записанные на курс в рамках заявки
+          items:
+            type: object
+            required:
+            - id
+            - first_name
+            - last_name
+            - email
+            - phone
+            - position
+            - departament
+            - organization
+            properties:
+              id:
+                type: integer
+                description: ID сотрудника
+                example: 10
+              first_name:
+                type: string
+                description: Имя сотрудника
+                example: Иван
+              middle_name:
+                type: string
+                nullable: true
+                description: Отчество сотрудника
+                example: Иванович
+              last_name:
+                type: string
+                description: Фамилия сотрудника
+                example: Иванов
+              email:
+                type: string
+                format: email
+                description: Email сотрудника
+                example: ivanov@example.com
+              phone:
+                type: string
+                description: Телефон сотрудника
+                example: '+79000000000'
+              position:
+                type: object
+                description: Должность сотрудника
+                required:
+                - id
+                - name
+                properties:
+                  id:
+                    type: integer
+                    description: ID должности
+                    example: 1
+                  name:
+                    type: string
+                    description: Название должности
+                    example: Backend-разработчик
+              departament:
+                type: object
+                description: Подразделение сотрудника
+                required:
+                - id
+                - name
+                properties:
+                  id:
+                    type: integer
+                    description: ID подразделения
+                    example: 1
+                  name:
+                    type: string
+                    description: Название подразделения
+                    example: Отдел разработки
+              organization:
+                type: object
+                description: Организация сотрудника
+                required:
+                - id
+                - name
+                properties:
+                  id:
+                    type: integer
+                    description: ID организации
+                    example: 1
+                  name:
+                    type: string
+                    description: Название организации
+                    example: ООО Ромашка
+        comments:
+          type: array
+          description: Список комментариев к заявке
+          items:
+            type: object
+            required:
+            - content
+            - created_by
+            properties:
+              content:
+                type: string
+                description: Текст комментария
+                example: Заявка требует корректировки списка сотрудников
+              created_by:
+                type: object
+                description: Пользователь, создавший комментарий
+                required:
+                - id
+                - first_name
+                - last_name
+                properties:
+                  id:
+                    type: integer
+                    description: ID автора комментария
+                    example: 2
+                  first_name:
+                    type: string
+                    description: Имя автора комментария
+                    example: Пётр
+                  middle_name:
+                    type: string
+                    nullable: true
+                    description: Отчество автора комментария
+                    example: Петрович
+                  last_name:
+                    type: string
+                    description: Фамилия автора комментария
+                    example: Петров
+        created_at:
+          type: string
+          format: date-time
+          description: Дата и время создания заявки
+          example: '2026-06-15T10:30:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: Дата и время последнего обновления заявки
+          example: '2026-06-15T12:00:00Z'
+    CreateApplicationRequest:
+      type: object
+      required:
+      - course_id
+      - start_date
+      - end_date
+      - application_state_id
+      - employee_ids
+      properties:
+        course_id:
+          type: integer
+          description: ID курса обучения
+          example: 5
+        start_date:
+          type: string
+          format: date
+          description: Дата начала обучения
+          example: '2026-06-15'
+        end_date:
+          type: string
+          format: date
+          description: Дата окончания обучения
+          example: '2026-06-20'
+        application_state_id:
+          type: integer
+          description: ID статуса заявки
+          example: 1
+        created_by_id:
+          type: integer
+          description: ID пользователя-заявителя
+          example: 2
+        employee_ids:
+          type: array
+          description: Список ID сотрудников, добавляемых в заявку
+          minItems: 1
+          items:
+            type: integer
+          example:
+          - 10
+          - 11
+          - 12
+    DeleteApplicationDraftResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Сообщение о результате удаления
+          example: Черновик заявки успешно удален
+  examples:
+    ApplicationNotDraftErrorExample:
+      summary: Заявка не в статусе «Черновик»
+      value:
+        code: 400
+        message: Заявка не может быть удалена
+        errors:
+          - field: application_state
+            message: Заявка может быть удалена только в статусе «Черновик»
