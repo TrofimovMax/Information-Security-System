@@ -188,6 +188,63 @@ paths:
           $ref: '#/components/responses/TooManyRequestsErrorResponse'
         '500':
           $ref: '#/components/responses/InternalServerErrorResponse'
+    patch:
+      summary: Обновление заявки
+      description: |
+        Обновляет данные заявки.
+
+        Редактирование доступно только создателю заявки для заявок
+        в статусах «Черновик» или «На корректировке».
+
+        Если пользователь не является создателем заявки, API возвращает ошибку 403 Forbidden.
+        Если заявка находится в другом статусе, API возвращает ошибку 400 Bad Request.
+      tags:
+        - Applications
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID заявки
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApplicationRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateApplication200Response'
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                applicationCannotBeUpdatedByState:
+                  summary: Заявка не может быть обновлена из-за статуса
+                  value:
+                    code: 400
+                    message: Заявка не может быть обновлена
+                    errors:
+                      - field: application_state
+                        message: Заявка может быть обновлена только в статусе «Черновик» или «На корректировке»
+        '401':
+          $ref: '#/components/responses/UnauthorizedErrorResponse'
+        '403':
+          description: Доступ запрещен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                applicationUpdateForbiddenNotCreator:
+                  $ref: '#/components/examples/ApplicationUpdateForbiddenNotCreatorExample'
+        '404':
+          $ref: '#/components/responses/NotFoundErrorResponse'
+        '429':
+          $ref: '#/components/responses/TooManyRequestsErrorResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
     delete:
       summary: Удаление черновика заявки
       description: Удаляет заявку только в статусе «Черновик». Если заявка находится в другом статусе, удаление не выполняется.
@@ -326,6 +383,20 @@ components:
             - 10
             - 11
             - 12
+    UpdateApplicationRequestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateApplicationRequest'
+          example:
+            course_id: 5
+            start_date: 2026-07-01
+            end_date: 2026-07-10
+            employee_ids:
+              - 10
+              - 11
+              - 12
     DownloadApplicationsExcelRequestBody:
       required: false
       content:
@@ -977,6 +1048,38 @@ components:
           format: date-time
           description: Дата и время последнего обновления заявки
           example: '2026-06-15T10:30:00Z'
+    UpdateApplicationRequest:
+      type: object
+      properties:
+        course_id:
+          type: integer
+          nullable: true
+          description: ID курса
+          example: 5
+
+        start_date:
+          type: string
+          format: date
+          nullable: true
+          description: Дата начала обучения
+          example: 2026-07-01
+
+        end_date:
+          type: string
+          format: date
+          nullable: true
+          description: Дата окончания обучения
+          example: 2026-07-10
+
+        employee_ids:
+          type: array
+          description: Список ID сотрудников, добавленных в заявку как ученики
+          items:
+            type: integer
+          example:
+            - 10
+            - 11
+            - 12
     ApplicationDetailsResponse:
       type: object
       required:
@@ -1410,3 +1513,11 @@ components:
         errors:
           - field: application_state
             message: Заявка может быть удалена только в статусе «Черновик»
+    ApplicationUpdateForbiddenNotCreatorExample:
+      summary: Редактирование недоступно, пользователь не является создателем заявки
+      value:
+        code: 403
+        message: Редактирование заявки недоступно
+        errors:
+          - field: created_by
+            message: Редактирование доступно только создателю заявки
