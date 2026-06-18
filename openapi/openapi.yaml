@@ -27,6 +27,8 @@ paths:
     $ref: './paths/applications-id.yaml'
   /api/v1/applications/{id}/state:
     $ref: './paths/applications-id-state.yaml'
+  /api/v1/applications/downloads:
+    $ref: './paths/applications-downloads.yaml'
 
 components:
   securitySchemes:
@@ -40,6 +42,8 @@ components:
       $ref: './components/requestBodies/applications.yaml#/UpdateApplicationRequestBody'
     ChangeApplicationStateRequestBody:
       $ref: './components/requestBodies/applications.yaml#/ChangeApplicationStateRequestBody'
+    DownloadApplicationsRequestBody:
+      $ref: './components/requestBodies/applications.yaml#/DownloadApplicationsRequestBody'
 
   responses:
     GetCurrentUser200Response:
@@ -62,6 +66,12 @@ components:
 
     ChangeApplicationState200Response:
       $ref: './components/responses/applications.yaml#/ChangeApplicationState200Response'
+
+    DownloadApplicationStudentsTemplate200Response:
+      $ref: './components/responses/applications.yaml#/DownloadApplicationStudentsTemplate200Response'
+
+    DownloadApplications200Response:
+      $ref: './components/responses/applications.yaml#/DownloadApplications200Response'
 
     BadRequestErrorResponse:
       $ref: './components/responses/common.yaml#/BadRequestErrorResponse'
@@ -124,6 +134,9 @@ components:
 
     ChangeApplicationStateRequest:
       $ref: './components/schemas/applications.yaml#/ChangeApplicationStateRequest'
+
+    DownloadApplicationsRequest:
+      $ref: './components/schemas/applications.yaml#/DownloadApplicationsRequest'
 
     ErrorResponse:
       $ref: './components/schemas/common.yaml'

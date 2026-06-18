@@ -259,3 +259,35 @@ ChangeApplicationState200Response:
               last_name: Петров
         created_at: '2026-06-17T10:00:00Z'
         updated_at: '2026-06-17T12:00:00Z'
+
+DownloadApplicationStudentsTemplate200Response:
+  description: Excel-шаблон для загрузки учеников успешно сформирован
+  headers:
+    Content-Disposition:
+      description: Имя файла для скачивания
+      schema:
+        type: string
+        example: attachment; filename="application_students_template.xlsx"
+  content:
+    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+      schema:
+        type: string
+        format: binary
+
+DownloadApplications200Response:
+  description: Файл с выбранными заявками успешно сформирован
+  headers:
+    Content-Disposition:
+      description: Имя файла для скачивания
+      schema:
+        type: string
+        example: attachment; filename="applications.zip"
+  content:
+    application/pdf:
+      schema:
+        type: string
+        format: binary
+    application/zip:
+      schema:
+        type: string
+        format: binary

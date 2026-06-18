@@ -1,0 +1,49 @@
+get:
+  tags:
+    - Applications
+  summary: Скачивание шаблона Excel для загрузки учеников
+  description: Возвращает Excel-файл установленного формата для последующего заполнения и загрузки списка учеников в заявку.
+  operationId: downloadApplicationStudentsTemplate
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      $ref: '../components/responses/applications.yaml#/DownloadApplicationStudentsTemplate200Response'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      $ref: '../components/responses/common.yaml#/ForbiddenErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'
+
+post:
+  tags:
+    - Applications
+  summary: Скачивание выбранных заявок
+  description: |
+    Формирует файл для скачивания выбранных заявок.
+
+    Если передана одна заявка, API возвращает PDF-файл.
+    Если передано несколько заявок, API возвращает ZIP-архив с PDF-файлами заявок.
+  operationId: downloadApplications
+  security:
+    - BearerAuth: []
+  requestBody:
+    $ref: '../components/requestBodies/applications.yaml#/DownloadApplicationsRequestBody'
+  responses:
+    '200':
+      $ref: '../components/responses/applications.yaml#/DownloadApplications200Response'
+    '400':
+      $ref: '../components/responses/common.yaml#/BadRequestErrorResponse'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      $ref: '../components/responses/common.yaml#/ForbiddenErrorResponse'
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'

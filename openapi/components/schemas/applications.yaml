@@ -526,3 +526,19 @@ ChangeApplicationStateRequest:
       nullable: true
       description: Комментарий Согласующего
       example: Необходимо скорректировать список учеников
+
+DownloadApplicationsRequest:
+  type: object
+  required:
+    - application_ids
+  properties:
+    application_ids:
+      type: array
+      description: Список ID заявок для скачивания
+      minItems: 1
+      items:
+        type: integer
+      example:
+        - 1
+        - 2
+        - 3

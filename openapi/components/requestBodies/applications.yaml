@@ -41,3 +41,16 @@ ChangeApplicationStateRequestBody:
       example:
         application_state_id: 3
         comment: Необходимо скорректировать список учеников
+
+DownloadApplicationsRequestBody:
+  description: Список заявок для скачивания
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/applications.yaml#/DownloadApplicationsRequest'
+      example:
+        application_ids:
+          - 1
+          - 2
+          - 3
