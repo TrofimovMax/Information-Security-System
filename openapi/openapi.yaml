@@ -14,6 +14,10 @@ tags:
     description: Авторизация и данные текущего пользователя
   - name: Applications
     description: Работа с заявками на обучение
+  - name: Students
+    description: Поиск, фильтрация и загрузка учеников для заявок на обучение
+  - name: Notifications
+    description: Получение и фильтрация уведомлений пользователя
 
 security:
   - BearerAuth: []
@@ -33,6 +37,8 @@ paths:
     $ref: './paths/applications-downloads-excel.yaml'
   /api/v1/students:
     $ref: './paths/students.yaml'
+  /api/v1/notifications:
+    $ref: './paths/notifications.yaml'
 components:
   securitySchemes:
     BearerAuth:
@@ -88,6 +94,9 @@ components:
 
     UploadStudentsExcel200Response:
       $ref: './components/responses/students.yaml#/UploadStudentsExcel200Response'
+
+    GetNotifications200Response:
+      $ref: './components/responses/notifications.yaml#/GetNotifications200Response'
 
     BadRequestErrorResponse:
       $ref: './components/responses/common.yaml#/BadRequestErrorResponse'
@@ -180,6 +189,15 @@ components:
 
     UploadStudentsExcelResponse:
       $ref: './components/schemas/students.yaml#/UploadStudentsExcelResponse'
+
+    NotificationsListResponse:
+      $ref: './components/schemas/notifications.yaml#/NotificationsListResponse'
+
+    Notification:
+      $ref: './components/schemas/notifications.yaml#/Notification'
+
+    NotificationsPaginationMeta:
+      $ref: './components/schemas/notifications.yaml#/NotificationsPaginationMeta'
 
     ErrorResponse:
       $ref: './components/schemas/common.yaml'
