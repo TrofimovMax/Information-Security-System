@@ -1,0 +1,81 @@
+GetApplications200Response:
+  description: Список заявок успешно получен
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/applications.yaml#/ApplicationsListResponse'
+      example:
+        items:
+          - id: 1
+            number_application: APP-2026-0001
+            course:
+              id: 5
+              name: Основы информационной безопасности
+            start_date: '2026-06-15'
+            end_date: '2026-06-20'
+            application_state:
+              id: 1
+              code: WAITING_REVIEW
+              name: Ожидает рассмотрения
+            created_by:
+              id: 10
+              full_name: Иванов Иван Иванович
+            approver:
+              id: 2
+              full_name: Петров Пётр Петрович
+            organization:
+              id: 1
+              name: ООО Ромашка
+            created_at: '2026-06-15T10:30:00Z'
+            updated_at: '2026-06-15T12:00:00Z'
+        pagination:
+          page: 1
+          size: 20
+          total: 1
+          total_pages: 1
+
+CreateApplication200Response:
+  description: Заявка успешно создана
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/applications.yaml#/CreateApplicationResponse'
+      example:
+        id: 1
+        number_application: APP-2026-0001
+        course:
+          id: 5
+          name: Основы информационной безопасности
+        start_date: '2026-06-15'
+        end_date: '2026-06-20'
+        application_state:
+          id: 1
+          code: DRAFT
+          name: Черновик
+        created_by:
+          id: 10
+          full_name: Иванов Иван Иванович
+        approver:
+          id: 2
+          full_name: Петров Пётр Петрович
+        organization:
+          id: 1
+          name: ООО Ромашка
+        employees:
+          - id: 10
+            first_name: Иван
+            middle_name: Иванович
+            last_name: Иванов
+            email: ivanov@example.com
+            phone: '+79000000000'
+            position:
+              id: 1
+              name: Backend-разработчик
+            departament:
+              id: 1
+              name: Отдел разработки
+            organization:
+              id: 1
+              name: ООО Ромашка
+        created_at: '2026-06-15T10:30:00Z'
+        updated_at: '2026-06-15T10:30:00Z'

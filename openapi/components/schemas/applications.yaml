@@ -1,0 +1,330 @@
+ApplicationCourse:
+  type: object
+  required:
+    - id
+    - name
+  properties:
+    id:
+      type: integer
+      description: ID курса
+      example: 5
+    name:
+      type: string
+      description: Название курса
+      example: Основы информационной безопасности
+
+ApplicationState:
+  type: object
+  required:
+    - id
+    - code
+    - name
+  properties:
+    id:
+      type: integer
+      description: ID статуса заявки
+      example: 1
+    code:
+      type: string
+      description: Код статуса заявки
+      example: WAITING_REVIEW
+    name:
+      type: string
+      description: Название статуса заявки
+      example: Ожидает рассмотрения
+
+ApplicationOrganization:
+  type: object
+  required:
+    - id
+    - name
+  properties:
+    id:
+      type: integer
+      description: ID организации
+      example: 1
+    name:
+      type: string
+      description: Название организации
+      example: ООО Ромашка
+
+ApplicationUserShort:
+  type: object
+  required:
+    - id
+    - full_name
+  properties:
+    id:
+      type: integer
+      description: ID пользователя или сотрудника
+      example: 10
+    full_name:
+      type: string
+      description: ФИО
+      example: Иванов Иван Иванович
+
+ApplicationEmployee:
+  type: object
+  required:
+    - id
+    - first_name
+    - last_name
+    - email
+    - phone
+    - position
+    - departament
+    - organization
+  properties:
+    id:
+      type: integer
+      description: ID сотрудника
+      example: 10
+    first_name:
+      type: string
+      description: Имя сотрудника
+      example: Иван
+    middle_name:
+      type: string
+      nullable: true
+      description: Отчество сотрудника
+      example: Иванович
+    last_name:
+      type: string
+      description: Фамилия сотрудника
+      example: Иванов
+    email:
+      type: string
+      format: email
+      description: Email сотрудника
+      example: ivanov@example.com
+    phone:
+      type: string
+      description: Телефон сотрудника
+      example: '+79000000000'
+    position:
+      type: object
+      description: Должность сотрудника
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          description: ID должности
+          example: 1
+        name:
+          type: string
+          description: Название должности
+          example: Backend-разработчик
+    departament:
+      type: object
+      description: Подразделение сотрудника
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          description: ID подразделения
+          example: 1
+        name:
+          type: string
+          description: Название подразделения
+          example: Отдел разработки
+    organization:
+      $ref: '#/ApplicationOrganization'
+
+ApplicationListItem:
+  type: object
+  required:
+    - id
+    - number_application
+    - course
+    - start_date
+    - end_date
+    - application_state
+    - created_by
+    - organization
+    - created_at
+    - updated_at
+  properties:
+    id:
+      type: integer
+      description: ID заявки
+      example: 1
+    number_application:
+      type: string
+      description: Номер заявки
+      example: APP-2026-0001
+    course:
+      $ref: '#/ApplicationCourse'
+    start_date:
+      type: string
+      format: date
+      description: Дата начала обучения
+      example: '2026-06-15'
+    end_date:
+      type: string
+      format: date
+      description: Дата окончания обучения
+      example: '2026-06-20'
+    application_state:
+      $ref: '#/ApplicationState'
+    created_by:
+      $ref: '#/ApplicationUserShort'
+    approver:
+      allOf:
+        - $ref: '#/ApplicationUserShort'
+      nullable: true
+      description: Пользователь, проверяющий заявку
+    organization:
+      $ref: '#/ApplicationOrganization'
+    created_at:
+      type: string
+      format: date-time
+      description: Дата и время создания заявки
+      example: '2026-06-15T10:30:00Z'
+    updated_at:
+      type: string
+      format: date-time
+      description: Дата и время последнего обновления заявки
+      example: '2026-06-15T12:00:00Z'
+
+ApplicationsPaginationMeta:
+  type: object
+  required:
+    - page
+    - size
+    - total
+    - total_pages
+  properties:
+    page:
+      type: integer
+      description: Текущая страница
+      example: 1
+    size:
+      type: integer
+      description: Количество записей на странице
+      example: 20
+    total:
+      type: integer
+      description: Общее количество записей
+      example: 125
+    total_pages:
+      type: integer
+      description: Общее количество страниц
+      example: 7
+
+ApplicationsListResponse:
+  type: object
+  required:
+    - items
+    - pagination
+  properties:
+    items:
+      type: array
+      description: Список заявок
+      items:
+        $ref: '#/ApplicationListItem'
+    pagination:
+      $ref: '#/ApplicationsPaginationMeta'
+
+CreateApplicationRequest:
+  type: object
+  required:
+    - course_id
+    - start_date
+    - end_date
+    - application_state_id
+    - employee_ids
+  properties:
+    course_id:
+      type: integer
+      description: ID курса обучения
+      example: 5
+    start_date:
+      type: string
+      format: date
+      description: Дата начала обучения
+      example: '2026-06-15'
+    end_date:
+      type: string
+      format: date
+      description: Дата окончания обучения
+      example: '2026-06-20'
+    application_state_id:
+      type: integer
+      description: ID статуса заявки
+      example: 1
+    employee_ids:
+      type: array
+      description: Список ID сотрудников, добавляемых в заявку
+      minItems: 1
+      items:
+        type: integer
+      example:
+        - 10
+        - 11
+        - 12
+
+CreateApplicationResponse:
+  type: object
+  required:
+    - id
+    - number_application
+    - course
+    - start_date
+    - end_date
+    - application_state
+    - created_by
+    - organization
+    - employees
+    - created_at
+    - updated_at
+  properties:
+    id:
+      type: integer
+      description: ID заявки
+      example: 1
+    number_application:
+      type: string
+      description: Номер заявки
+      example: APP-2026-0001
+    course:
+      $ref: '#/ApplicationCourse'
+    start_date:
+      type: string
+      format: date
+      description: Дата начала обучения
+      example: '2026-06-15'
+    end_date:
+      type: string
+      format: date
+      description: Дата окончания обучения
+      example: '2026-06-20'
+    application_state:
+      $ref: '#/ApplicationState'
+    created_by:
+      $ref: '#/ApplicationUserShort'
+    approver:
+      allOf:
+        - $ref: '#/ApplicationUserShort'
+      nullable: true
+      description: Пользователь, проверяющий заявку
+    organization:
+      $ref: '#/ApplicationOrganization'
+    employees:
+      type: array
+      description: Сотрудники, добавленные в заявку
+      items:
+        $ref: '#/ApplicationEmployee'
+    created_at:
+      type: string
+      format: date-time
+      description: Дата и время создания заявки
+      example: '2026-06-15T10:30:00Z'
+    updated_at:
+      type: string
+      format: date-time
+      description: Дата и время последнего обновления заявки
+      example: '2026-06-15T10:30:00Z'

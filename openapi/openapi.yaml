@@ -21,15 +21,30 @@ security:
 paths:
   /api/v1/users/current:
     $ref: './paths/users-current.yaml'
+  /api/v1/applications:
+    $ref: './paths/applications.yaml'
 
 components:
   securitySchemes:
     BearerAuth:
       $ref: './components/securitySchemes.yaml'
+  
+  requestBodies:
+    CreateApplicationRequestBody:
+      $ref: './components/requestBodies/applications.yaml#/CreateApplicationRequestBody'
 
   responses:
     GetCurrentUser200Response:
       $ref: './components/responses/users.yaml#/GetCurrentUser200Response'
+    
+    GetApplications200Response:
+      $ref: './components/responses/applications.yaml#/GetApplications200Response'
+
+    CreateApplication200Response:
+      $ref: './components/responses/applications.yaml#/CreateApplication200Response'
+
+    BadRequestErrorResponse:
+      $ref: './components/responses/common.yaml#/BadRequestErrorResponse'
     UnauthorizedErrorResponse:
       $ref: './components/responses/common.yaml#/UnauthorizedErrorResponse'
     ForbiddenErrorResponse:
@@ -42,7 +57,38 @@ components:
       $ref: './components/responses/common.yaml#/InternalServerErrorResponse'
 
   schemas:
+    ApplicationsListResponse:
+      $ref: './components/schemas/applications.yaml#/ApplicationsListResponse'
+
+    CreateApplicationRequest:
+      $ref: './components/schemas/applications.yaml#/CreateApplicationRequest'
+
+    CreateApplicationResponse:
+      $ref: './components/schemas/applications.yaml#/CreateApplicationResponse'
+
+    ApplicationListItem:
+      $ref: './components/schemas/applications.yaml#/ApplicationListItem'
+
+    ApplicationEmployee:
+      $ref: './components/schemas/applications.yaml#/ApplicationEmployee'
+
+    ApplicationCourse:
+      $ref: './components/schemas/applications.yaml#/ApplicationCourse'
+
+    ApplicationState:
+      $ref: './components/schemas/applications.yaml#/ApplicationState'
+
+    ApplicationOrganization:
+      $ref: './components/schemas/applications.yaml#/ApplicationOrganization'
+
+    ApplicationUserShort:
+      $ref: './components/schemas/applications.yaml#/ApplicationUserShort'
+
+    ApplicationsPaginationMeta:
+      $ref: './components/schemas/applications.yaml#/ApplicationsPaginationMeta'
+
     ErrorResponse:
       $ref: './components/schemas/common.yaml'
+
     CurrentUserResponse:
       $ref: './components/schemas/users.yaml'

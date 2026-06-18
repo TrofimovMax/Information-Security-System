@@ -1,3 +1,13 @@
+BadRequestErrorResponse:
+  description: Некорректный запрос
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/common.yaml'
+      example:
+        code: BAD_REQUEST
+        message: Некорректный запрос
+
 UnauthorizedErrorResponse:
   description: Пользователь не авторизован или токен недействителен
   content:

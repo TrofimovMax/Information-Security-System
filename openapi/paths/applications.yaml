@@ -1,0 +1,143 @@
+get:
+  tags:
+    - Applications
+  summary: Получить список заявок на обучение
+  description: >
+    Возвращает список заявок с учётом роли текущего пользователя.
+    Заявитель видит свои заявки, Согласующий — доступные ему заявки.
+    Если список пустой, возвращается 200 с пустым массивом items.
+  operationId: getApplications
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: page
+      in: query
+      required: false
+      description: Номер страницы
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+
+    - name: size
+      in: query
+      required: false
+      description: Количество заявок на странице
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      example: 20
+
+    - name: search
+      in: query
+      required: false
+      description: Поиск по номеру заявки или названию курса
+      schema:
+        type: string
+      example: APP-2026
+
+    - name: application_state_id
+      in: query
+      required: false
+      description: Фильтр по ID статуса заявки
+      schema:
+        type: integer
+      example: 1
+
+    - name: organization_id
+      in: query
+      required: false
+      description: Фильтр по ID организации Заявителя
+      schema:
+        type: integer
+      example: 1
+
+    - name: created_by
+      in: query
+      required: false
+      description: Фильтр по ID Заявителя
+      schema:
+        type: integer
+      example: 10
+
+    - name: approver_id
+      in: query
+      required: false
+      description: Фильтр по ID Согласующего
+      schema:
+        type: integer
+      example: 2
+
+    - name: sort_by
+      in: query
+      required: false
+      description: Поле для сортировки
+      schema:
+        type: string
+        enum:
+          - number_application
+          - updated_at
+          - course_name
+          - organization_name
+          - created_by_full_name
+          - approver_full_name
+      example: updated_at
+
+    - name: sort_order
+      in: query
+      required: false
+      description: Направление сортировки
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
+      example: desc
+
+  responses:
+    '200':
+      $ref: '../components/responses/applications.yaml#/GetApplications200Response'
+    '400':
+      $ref: '../components/responses/common.yaml#/BadRequestErrorResponse'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'
+
+post:
+  tags:
+    - Applications
+  summary: Создать заявку на обучение
+  description: >
+    Создаёт новую заявку на обучение.
+    Создатель заявки определяется по текущему авторизованному пользователю.
+    Статус заявки задаётся через application_state_id, например «Черновик»
+    или «Ожидает рассмотрения».
+  operationId: createApplication
+  security:
+    - BearerAuth: []
+  requestBody:
+    $ref: '../components/requestBodies/applications.yaml#/CreateApplicationRequestBody'
+  responses:
+    '200':
+      $ref: '../components/responses/applications.yaml#/CreateApplication200Response'
+    '400':
+      $ref: '../components/responses/common.yaml#/BadRequestErrorResponse'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      $ref: '../components/responses/common.yaml#/ForbiddenErrorResponse'
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'

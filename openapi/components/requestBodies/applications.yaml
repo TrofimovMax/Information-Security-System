@@ -1,0 +1,16 @@
+CreateApplicationRequestBody:
+  description: Данные для создания заявки на обучение
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/applications.yaml#/CreateApplicationRequest'
+      example:
+        course_id: 5
+        start_date: '2026-06-15'
+        end_date: '2026-06-20'
+        application_state_id: 1
+        employee_ids:
+          - 10
+          - 11
+          - 12
