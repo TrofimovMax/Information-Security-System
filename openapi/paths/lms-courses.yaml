@@ -1,0 +1,90 @@
+get:
+  tags:
+    - LMS
+  summary: Получить список актуальных курсов из СДО
+  description: |
+    Возвращает список актуальных курсов из Системы дистанционного обучения.
+
+    Метод используется при создании или редактировании заявки на обучение
+    для выбора курса из актуального списка курсов СДО.
+
+    Поддерживает:
+    - поиск курса по названию;
+    - фильтрацию по состоянию курса;
+    - пагинацию.
+
+    Состояния курса:
+    - active — курс уже идёт;
+    - future — курс ещё не начался;
+    - all — все доступные курсы.
+
+    Возвращает:
+    - ID курса;
+    - название курса;
+    - дату начала курса;
+    - дату окончания курса.
+  operationId: getLmsCourses
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: search
+      in: query
+      required: false
+      description: Поиск курса по названию
+      schema:
+        type: string
+        minLength: 2
+      example: Информационная безопасность
+
+    - name: course_status
+      in: query
+      required: false
+      description: |
+        Фильтр по состоянию курса.
+
+        active — курс уже идёт.
+        future — курс ещё не начался.
+        all — все доступные курсы.
+      schema:
+        type: string
+        enum:
+          - active
+          - future
+          - all
+        default: active
+      example: future
+
+    - name: page
+      in: query
+      required: false
+      description: Номер страницы
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+
+    - name: per_page
+      in: query
+      required: false
+      description: Количество курсов на странице
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      example: 20
+
+  responses:
+    '200':
+      $ref: '../components/responses/lms.yaml#/GetLmsCourses200Response'
+    '400':
+      $ref: '../components/responses/common.yaml#/BadRequestErrorResponse'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      $ref: '../components/responses/common.yaml#/ForbiddenErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'

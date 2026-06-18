@@ -1,0 +1,81 @@
+LmsCourse:
+  type: object
+  required:
+    - id
+    - name
+    - start_date
+    - end_date
+    - status
+  properties:
+    id:
+      type: integer
+      description: ID курса в СДО
+      example: 5
+
+    name:
+      type: string
+      description: Название курса
+      example: Основы информационной безопасности
+
+    start_date:
+      type: string
+      format: date
+      description: Дата начала курса
+      example: '2026-06-15'
+
+    end_date:
+      type: string
+      format: date
+      description: Дата окончания курса
+      example: '2026-06-20'
+
+    status:
+      type: string
+      description: Состояние курса
+      enum:
+        - active
+        - future
+      example: future
+
+LmsCoursesPaginationMeta:
+  type: object
+  required:
+    - page
+    - per_page
+    - total
+    - total_pages
+  properties:
+    page:
+      type: integer
+      description: Текущая страница
+      example: 1
+
+    per_page:
+      type: integer
+      description: Количество записей на странице
+      example: 20
+
+    total:
+      type: integer
+      description: Общее количество записей
+      example: 100
+
+    total_pages:
+      type: integer
+      description: Общее количество страниц
+      example: 5
+
+LmsCoursesListResponse:
+  type: object
+  required:
+    - items
+    - meta
+  properties:
+    items:
+      type: array
+      description: Список актуальных курсов из СДО
+      items:
+        $ref: '#/LmsCourse'
+
+    meta:
+      $ref: '#/LmsCoursesPaginationMeta'

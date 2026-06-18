@@ -1,0 +1,23 @@
+GetLmsCourses200Response:
+  description: Список актуальных курсов из СДО успешно получен
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/lms.yaml#/LmsCoursesListResponse'
+      example:
+        items:
+          - id: 5
+            name: Основы информационной безопасности
+            start_date: '2026-06-15'
+            end_date: '2026-06-20'
+            status: active
+          - id: 6
+            name: Безопасная разработка веб-приложений
+            start_date: '2026-07-01'
+            end_date: '2026-07-10'
+            status: future
+        meta:
+          page: 1
+          per_page: 20
+          total: 2
+          total_pages: 1

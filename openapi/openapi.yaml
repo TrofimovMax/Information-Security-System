@@ -18,6 +18,8 @@ tags:
     description: Поиск, фильтрация и загрузка учеников для заявок на обучение
   - name: Notifications
     description: Получение и фильтрация уведомлений пользователя
+  - name: LMS
+    description: Получение актуальных курсов из Системы дистанционного обучения
 
 security:
   - BearerAuth: []
@@ -39,6 +41,8 @@ paths:
     $ref: './paths/students.yaml'
   /api/v1/notifications:
     $ref: './paths/notifications.yaml'
+  /api/v1/lms/courses:
+    $ref: './paths/lms-courses.yaml'
 components:
   securitySchemes:
     BearerAuth:
@@ -97,6 +101,9 @@ components:
 
     GetNotifications200Response:
       $ref: './components/responses/notifications.yaml#/GetNotifications200Response'
+
+    GetLmsCourses200Response:
+      $ref: './components/responses/lms.yaml#/GetLmsCourses200Response'
 
     BadRequestErrorResponse:
       $ref: './components/responses/common.yaml#/BadRequestErrorResponse'
@@ -198,6 +205,15 @@ components:
 
     NotificationsPaginationMeta:
       $ref: './components/schemas/notifications.yaml#/NotificationsPaginationMeta'
+
+    LmsCoursesListResponse:
+      $ref: './components/schemas/lms.yaml#/LmsCoursesListResponse'
+
+    LmsCourse:
+      $ref: './components/schemas/lms.yaml#/LmsCourse'
+
+    LmsCoursesPaginationMeta:
+      $ref: './components/schemas/lms.yaml#/LmsCoursesPaginationMeta'
 
     ErrorResponse:
       $ref: './components/schemas/common.yaml'
