@@ -25,6 +25,8 @@ paths:
     $ref: './paths/applications.yaml'
   /api/v1/applications/{id}:
     $ref: './paths/applications-id.yaml'
+  /api/v1/applications/{id}/state:
+    $ref: './paths/applications-id-state.yaml'
 
 components:
   securitySchemes:
@@ -36,6 +38,8 @@ components:
       $ref: './components/requestBodies/applications.yaml#/CreateApplicationRequestBody'
     UpdateApplicationRequestBody:
       $ref: './components/requestBodies/applications.yaml#/UpdateApplicationRequestBody'
+    ChangeApplicationStateRequestBody:
+      $ref: './components/requestBodies/applications.yaml#/ChangeApplicationStateRequestBody'
 
   responses:
     GetCurrentUser200Response:
@@ -55,6 +59,9 @@ components:
 
     DeleteApplicationDraft200Response:
       $ref: './components/responses/applications.yaml#/DeleteApplicationDraft200Response'
+
+    ChangeApplicationState200Response:
+      $ref: './components/responses/applications.yaml#/ChangeApplicationState200Response'
 
     BadRequestErrorResponse:
       $ref: './components/responses/common.yaml#/BadRequestErrorResponse'
@@ -115,6 +122,9 @@ components:
     ApplicationComment:
       $ref: './components/schemas/applications.yaml#/ApplicationComment'
 
+    ChangeApplicationStateRequest:
+      $ref: './components/schemas/applications.yaml#/ChangeApplicationStateRequest'
+
     ErrorResponse:
       $ref: './components/schemas/common.yaml'
 
@@ -130,3 +140,15 @@ components:
 
     ApplicationNotDraftErrorExample:
       $ref: './components/examples/applications.yaml#/ApplicationNotDraftErrorExample'
+
+    InvalidApplicationStateTransitionExample:
+      $ref: './components/examples/applications.yaml#/InvalidApplicationStateTransitionExample'
+
+    ApplicationStateCommentRequiredExample:
+      $ref: './components/examples/applications.yaml#/ApplicationStateCommentRequiredExample'
+
+    ApplicationApproverIsCreatorExample:
+      $ref: './components/examples/applications.yaml#/ApplicationApproverIsCreatorExample'
+
+    ApplicationStateChangeForbiddenExample:
+      $ref: './components/examples/applications.yaml#/ApplicationStateChangeForbiddenExample'

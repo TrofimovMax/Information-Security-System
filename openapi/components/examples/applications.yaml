@@ -24,3 +24,39 @@ ApplicationNotDraftErrorExample:
     details:
       - field: application_state
         message: Заявка может быть удалена только в статусе «Черновик»
+
+InvalidApplicationStateTransitionExample:
+  summary: Недопустимый переход статуса заявки
+  value:
+    code: BAD_REQUEST
+    message: Статус заявки не может быть изменен
+    details:
+      - field: application_state_id
+        message: Недопустимый переход статуса заявки
+
+ApplicationStateCommentRequiredExample:
+  summary: Комментарий обязателен для выбранного статуса
+  value:
+    code: BAD_REQUEST
+    message: Комментарий обязателен
+    details:
+      - field: comment
+        message: Комментарий обязателен при отклонении заявки или отправке на корректировку
+
+ApplicationApproverIsCreatorExample:
+  summary: Согласующий является создателем заявки
+  value:
+    code: FORBIDDEN
+    message: Изменение статуса заявки недоступно
+    details:
+      - field: approver
+        message: Согласующий не может рассматривать собственную заявку
+
+ApplicationStateChangeForbiddenExample:
+  summary: Нет доступа к изменению статуса заявки
+  value:
+    code: FORBIDDEN
+    message: Доступ запрещен
+    details:
+      - field: application
+        message: У пользователя нет прав на изменение статуса этой заявки

@@ -30,3 +30,14 @@ UpdateApplicationRequestBody:
           - 10
           - 11
           - 12
+
+ChangeApplicationStateRequestBody:
+  description: Данные для изменения статуса заявки
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/applications.yaml#/ChangeApplicationStateRequest'
+      example:
+        application_state_id: 3
+        comment: Необходимо скорректировать список учеников

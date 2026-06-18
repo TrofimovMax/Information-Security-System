@@ -200,3 +200,62 @@ DeleteApplicationDraft200Response:
         $ref: '../schemas/applications.yaml#/DeleteApplicationDraftResponse'
       example:
         message: Черновик заявки успешно удален
+
+ChangeApplicationState200Response:
+  description: Статус заявки успешно изменен
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/applications.yaml#/ApplicationDetailsResponse'
+      example:
+        id: 1
+        number_application: APP-2026-0001
+        course:
+          id: 5
+          name: Основы информационной безопасности
+        start_date: '2026-07-01'
+        end_date: '2026-07-10'
+        application_state:
+          id: 3
+          code: CORRECTION
+          name: На корректировке
+        created_by:
+          id: 10
+          first_name: Иван
+          middle_name: Иванович
+          last_name: Иванов
+          email: ivanov@example.com
+          phone: '+79000000000'
+        approver:
+          id: 2
+          first_name: Пётр
+          middle_name: Петрович
+          last_name: Петров
+        organization:
+          id: 1
+          name: ООО Ромашка
+        employees:
+          - id: 10
+            first_name: Иван
+            middle_name: Иванович
+            last_name: Иванов
+            email: ivanov@example.com
+            phone: '+79000000000'
+            position:
+              id: 1
+              name: Backend-разработчик
+            departament:
+              id: 1
+              name: Отдел разработки
+            organization:
+              id: 1
+              name: ООО Ромашка
+        comments:
+          - content: Необходимо скорректировать список учеников
+            created_by:
+              id: 2
+              first_name: Пётр
+              middle_name: Петрович
+              last_name: Петров
+        created_at: '2026-06-17T10:00:00Z'
+        updated_at: '2026-06-17T12:00:00Z'
