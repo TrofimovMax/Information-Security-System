@@ -31,6 +31,8 @@ paths:
     $ref: './paths/applications-downloads.yaml'
   /api/v1/applications/downloads/excel:
     $ref: './paths/applications-downloads-excel.yaml'
+  /api/v1/students:
+    $ref: './paths/students.yaml'
 components:
   securitySchemes:
     BearerAuth:
@@ -47,6 +49,8 @@ components:
       $ref: './components/requestBodies/applications.yaml#/DownloadApplicationsRequestBody'
     DownloadApplicationsExcelRequestBody:
       $ref: './components/requestBodies/applications.yaml#/DownloadApplicationsExcelRequestBody'
+    UploadStudentsExcelRequestBody:
+      $ref: './components/requestBodies/students.yaml#/UploadStudentsExcelRequestBody'
 
   responses:
     GetCurrentUser200Response:
@@ -78,6 +82,12 @@ components:
 
     DownloadApplicationsExcel200Response:
       $ref: './components/responses/applications.yaml#/DownloadApplicationsExcel200Response'
+
+    GetStudents200Response:
+      $ref: './components/responses/students.yaml#/GetStudents200Response'
+
+    UploadStudentsExcel200Response:
+      $ref: './components/responses/students.yaml#/UploadStudentsExcel200Response'
 
     BadRequestErrorResponse:
       $ref: './components/responses/common.yaml#/BadRequestErrorResponse'
@@ -147,6 +157,30 @@ components:
     DownloadApplicationsExcelRequest:
       $ref: './components/schemas/applications.yaml#/DownloadApplicationsExcelRequest'
 
+    StudentsListResponse:
+      $ref: './components/schemas/students.yaml#/StudentsListResponse'
+
+    Student:
+      $ref: './components/schemas/students.yaml#/Student'
+
+    StudentPosition:
+      $ref: './components/schemas/students.yaml#/StudentPosition'
+
+    StudentDepartment:
+      $ref: './components/schemas/students.yaml#/StudentDepartment'
+
+    StudentOrganization:
+      $ref: './components/schemas/students.yaml#/StudentOrganization'
+
+    StudentsPaginationMeta:
+      $ref: './components/schemas/students.yaml#/StudentsPaginationMeta'
+
+    UploadStudentsExcelRequest:
+      $ref: './components/schemas/students.yaml#/UploadStudentsExcelRequest'
+
+    UploadStudentsExcelResponse:
+      $ref: './components/schemas/students.yaml#/UploadStudentsExcelResponse'
+
     ErrorResponse:
       $ref: './components/schemas/common.yaml'
 
@@ -174,3 +208,9 @@ components:
 
     ApplicationStateChangeForbiddenExample:
       $ref: './components/examples/applications.yaml#/ApplicationStateChangeForbiddenExample'
+
+    StudentNotFoundInExcelExample:
+      $ref: './components/examples/students.yaml#/StudentNotFoundInExcelExample'
+
+    DuplicateStudentsInExcelExample:
+      $ref: './components/examples/students.yaml#/DuplicateStudentsInExcelExample'

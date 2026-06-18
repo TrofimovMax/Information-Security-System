@@ -1,0 +1,164 @@
+get:
+  tags:
+    - Students
+  summary: Получение учеников по фильтрам
+  description: |
+    Возвращает список учеников/сотрудников по переданным фильтрам.
+
+    Если передан application_id, метод возвращает учеников, добавленных в выбранную заявку.
+
+    Если application_id не передан, метод выполняет поиск сотрудников из общей базы,
+    например для ручного добавления учеников в заявку.
+
+    Поддерживает:
+    - поиск по ФИО;
+    - фильтрацию по заявке;
+    - фильтрацию по организации;
+    - фильтрацию по должности;
+    - фильтрацию по отделу;
+    - сортировку по ФИО, должности и отделу;
+    - пагинацию.
+  operationId: getStudents
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: application_id
+      in: query
+      required: false
+      description: ID заявки. Если передан, возвращаются только ученики, добавленные в указанную заявку.
+      schema:
+        type: integer
+      example: 1
+
+    - name: search
+      in: query
+      required: false
+      description: Поиск ученика по ФИО
+      schema:
+        type: string
+        minLength: 2
+      example: Иванов
+
+    - name: organization_id
+      in: query
+      required: false
+      description: ID организации
+      schema:
+        type: integer
+      example: 1
+
+    - name: position_id
+      in: query
+      required: false
+      description: ID должности
+      schema:
+        type: integer
+      example: 3
+
+    - name: departament_id
+      in: query
+      required: false
+      description: ID отдела
+      schema:
+        type: integer
+      example: 5
+
+    - name: sort_by
+      in: query
+      required: false
+      description: Поле сортировки
+      schema:
+        type: string
+        enum:
+          - full_name
+          - position
+          - departament
+      example: full_name
+
+    - name: sort_direction
+      in: query
+      required: false
+      description: Направление сортировки
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+      example: asc
+
+    - name: page
+      in: query
+      required: false
+      description: Номер страницы
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      example: 1
+
+    - name: per_page
+      in: query
+      required: false
+      description: Количество записей на странице
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      example: 20
+
+  responses:
+    '200':
+      $ref: '../components/responses/students.yaml#/GetStudents200Response'
+    '400':
+      $ref: '../components/responses/common.yaml#/BadRequestErrorResponse'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      $ref: '../components/responses/common.yaml#/ForbiddenErrorResponse'
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'
+
+post:
+  tags:
+    - Students
+  summary: Поиск учеников из Excel-файла
+  description: |
+    Принимает Excel-файл со списком учеников, выполняет поиск учеников в базе данных
+    и возвращает ID найденных учеников.
+
+    Метод используется при загрузке Excel-файла в форме создания или редактирования заявки.
+
+    Если хотя бы один ученик из файла не найден в базе данных, API возвращает ошибку 400.
+    Если в Excel-файле найдены дубли учеников, API возвращает ошибку 400.
+  operationId: uploadStudentsExcel
+  security:
+    - BearerAuth: []
+  requestBody:
+    $ref: '../components/requestBodies/students.yaml#/UploadStudentsExcelRequestBody'
+  responses:
+    '200':
+      $ref: '../components/responses/students.yaml#/UploadStudentsExcel200Response'
+    '400':
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/common.yaml'
+          examples:
+            studentNotFound:
+              $ref: '../components/examples/students.yaml#/StudentNotFoundInExcelExample'
+            duplicateStudents:
+              $ref: '../components/examples/students.yaml#/DuplicateStudentsInExcelExample'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      $ref: '../components/responses/common.yaml#/ForbiddenErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'

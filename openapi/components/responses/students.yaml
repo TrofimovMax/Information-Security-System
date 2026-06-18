@@ -1,0 +1,55 @@
+GetStudents200Response:
+  description: Список учеников успешно получен
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/students.yaml#/StudentsListResponse'
+      example:
+        items:
+          - id: 10
+            first_name: Иван
+            middle_name: Иванович
+            last_name: Иванов
+            email: ivanov@example.com
+            phone: '+79001234567'
+            position:
+              id: 3
+              name: Инженер-программист
+            departament:
+              id: 5
+              name: Отдел разработки
+            organization:
+              id: 1
+              name: ООО Ромашка
+          - id: 11
+            first_name: Петр
+            middle_name: Петрович
+            last_name: Петров
+            email: petrov@example.com
+            phone: '+79007654321'
+            position:
+              id: 4
+              name: Системный аналитик
+            departament:
+              id: 6
+              name: Отдел аналитики
+            organization:
+              id: 1
+              name: ООО Ромашка
+        meta:
+          page: 1
+          per_page: 20
+          total: 2
+          total_pages: 1
+
+UploadStudentsExcel200Response:
+  description: Ученики из Excel-файла успешно найдены
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/students.yaml#/UploadStudentsExcelResponse'
+      example:
+        student_ids:
+          - 10
+          - 11
+          - 12

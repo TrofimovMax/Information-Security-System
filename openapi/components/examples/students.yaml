@@ -1,0 +1,29 @@
+StudentNotFoundInExcelExample:
+  summary: Ученик из Excel-файла не найден
+  value:
+    code: BAD_REQUEST
+    message: Такого ученика нет
+    details:
+      - field: file
+        message: Ученик из Excel-файла не найден в базе данных
+        row: 5
+        full_name: Иванов Иван Иванович
+      - field: file
+        message: Ученик из Excel-файла не найден в базе данных
+        row: 8
+        full_name: Петров Петр Петрович
+
+DuplicateStudentsInExcelExample:
+  summary: В Excel-файле найдены дубли учеников
+  value:
+    code: BAD_REQUEST
+    message: Найдены дубли в списке учеников
+    details:
+      - field: file
+        message: Ученик повторяется в Excel-файле
+        row: 4
+        full_name: Иванов Иван Иванович
+      - field: file
+        message: Ученик повторяется в Excel-файле
+        row: 9
+        full_name: Иванов Иван Иванович

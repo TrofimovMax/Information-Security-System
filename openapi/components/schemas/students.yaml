@@ -1,0 +1,153 @@
+StudentPosition:
+  type: object
+  required:
+    - id
+    - name
+  properties:
+    id:
+      type: integer
+      description: ID должности
+      example: 3
+    name:
+      type: string
+      description: Название должности
+      example: Инженер-программист
+
+StudentDepartment:
+  type: object
+  required:
+    - id
+    - name
+  properties:
+    id:
+      type: integer
+      description: ID отдела
+      example: 5
+    name:
+      type: string
+      description: Название отдела
+      example: Отдел разработки
+
+StudentOrganization:
+  type: object
+  required:
+    - id
+    - name
+  properties:
+    id:
+      type: integer
+      description: ID организации
+      example: 1
+    name:
+      type: string
+      description: Название организации
+      example: ООО Ромашка
+
+Student:
+  type: object
+  required:
+    - id
+    - first_name
+    - last_name
+    - email
+    - phone
+    - position
+    - departament
+    - organization
+  properties:
+    id:
+      type: integer
+      description: ID ученика/сотрудника
+      example: 10
+    first_name:
+      type: string
+      description: Имя ученика
+      example: Иван
+    middle_name:
+      type: string
+      nullable: true
+      description: Отчество ученика
+      example: Иванович
+    last_name:
+      type: string
+      description: Фамилия ученика
+      example: Иванов
+    email:
+      type: string
+      format: email
+      description: Email ученика
+      example: ivanov@example.com
+    phone:
+      type: string
+      description: Телефон ученика
+      example: '+79001234567'
+    position:
+      $ref: '#/StudentPosition'
+    departament:
+      $ref: '#/StudentDepartment'
+    organization:
+      $ref: '#/StudentOrganization'
+
+StudentsPaginationMeta:
+  type: object
+  required:
+    - page
+    - per_page
+    - total
+    - total_pages
+  properties:
+    page:
+      type: integer
+      description: Текущая страница
+      example: 1
+    per_page:
+      type: integer
+      description: Количество записей на странице
+      example: 20
+    total:
+      type: integer
+      description: Общее количество записей
+      example: 100
+    total_pages:
+      type: integer
+      description: Общее количество страниц
+      example: 5
+
+StudentsListResponse:
+  type: object
+  required:
+    - items
+    - meta
+  properties:
+    items:
+      type: array
+      description: Список учеников/сотрудников
+      items:
+        $ref: '#/Student'
+    meta:
+      $ref: '#/StudentsPaginationMeta'
+
+UploadStudentsExcelRequest:
+  type: object
+  required:
+    - file
+  properties:
+    file:
+      type: string
+      format: binary
+      description: Excel-файл со списком учеников
+
+UploadStudentsExcelResponse:
+  type: object
+  required:
+    - student_ids
+  properties:
+    student_ids:
+      type: array
+      description: Список ID найденных учеников
+      items:
+        type: integer
+      example:
+        - 10
+        - 11
+        - 12

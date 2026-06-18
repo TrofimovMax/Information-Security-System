@@ -1,0 +1,7 @@
+UploadStudentsExcelRequestBody:
+  description: Excel-файл со списком учеников для поиска в базе данных
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        $ref: '../schemas/students.yaml#/UploadStudentsExcelRequest'
