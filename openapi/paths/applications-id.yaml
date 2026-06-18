@@ -1,0 +1,125 @@
+get:
+  tags:
+    - Applications
+  summary: Получить заявку по ID
+  description: >
+    Возвращает карточку заявки на обучение, включая данные курса, статуса,
+    заявителя, согласующего, сотрудников, записанных на курс, и комментарии.
+  operationId: getApplicationById
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID заявки
+      schema:
+        type: integer
+      example: 1
+  responses:
+    '200':
+      $ref: '../components/responses/applications.yaml#/GetApplicationById200Response'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      $ref: '../components/responses/common.yaml#/ForbiddenErrorResponse'
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'
+
+patch:
+  tags:
+    - Applications
+  summary: Обновление заявки
+  description: |
+    Обновляет данные заявки.
+
+    Редактирование доступно только создателю заявки для заявок
+    в статусах «Черновик» или «На корректировке».
+
+    Если пользователь не является создателем заявки, API возвращает ошибку 403 Forbidden.
+    Если заявка находится в другом статусе, API возвращает ошибку 400 Bad Request.
+  operationId: updateApplication
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID заявки
+      schema:
+        type: integer
+      example: 1
+  requestBody:
+    $ref: '../components/requestBodies/applications.yaml#/UpdateApplicationRequestBody'
+  responses:
+    '200':
+      $ref: '../components/responses/applications.yaml#/UpdateApplication200Response'
+    '400':
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/common.yaml'
+          examples:
+            applicationCannotBeUpdatedByState:
+              $ref: '../components/examples/applications.yaml#/ApplicationCannotBeUpdatedByStateExample'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      description: Доступ запрещен
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/common.yaml'
+          examples:
+            applicationUpdateForbiddenNotCreator:
+              $ref: '../components/examples/applications.yaml#/ApplicationUpdateForbiddenNotCreatorExample'
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'
+
+delete:
+  tags:
+    - Applications
+  summary: Удаление черновика заявки
+  description: Удаляет заявку только в статусе «Черновик». Если заявка находится в другом статусе, удаление не выполняется.
+  operationId: deleteApplicationDraft
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID заявки
+      schema:
+        type: integer
+      example: 1
+  responses:
+    '200':
+      $ref: '../components/responses/applications.yaml#/DeleteApplicationDraft200Response'
+    '400':
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/common.yaml'
+          examples:
+            applicationNotDraft:
+              $ref: '../components/examples/applications.yaml#/ApplicationNotDraftErrorExample'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      $ref: '../components/responses/common.yaml#/ForbiddenErrorResponse'
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'

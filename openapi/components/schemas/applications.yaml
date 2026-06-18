@@ -328,3 +328,186 @@ CreateApplicationResponse:
       format: date-time
       description: Дата и время последнего обновления заявки
       example: '2026-06-15T10:30:00Z'
+
+ApplicationPerson:
+  type: object
+  required:
+    - id
+    - first_name
+    - last_name
+  properties:
+    id:
+      type: integer
+      description: ID пользователя или сотрудника
+      example: 10
+    first_name:
+      type: string
+      description: Имя
+      example: Иван
+    middle_name:
+      type: string
+      nullable: true
+      description: Отчество
+      example: Иванович
+    last_name:
+      type: string
+      description: Фамилия
+      example: Иванов
+
+ApplicationRequester:
+  type: object
+  required:
+    - id
+    - first_name
+    - last_name
+    - email
+    - phone
+  properties:
+    id:
+      type: integer
+      description: ID сотрудника-заявителя
+      example: 10
+    first_name:
+      type: string
+      description: Имя заявителя
+      example: Иван
+    middle_name:
+      type: string
+      nullable: true
+      description: Отчество заявителя
+      example: Иванович
+    last_name:
+      type: string
+      description: Фамилия заявителя
+      example: Иванов
+    email:
+      type: string
+      format: email
+      description: Email заявителя
+      example: ivanov@example.com
+    phone:
+      type: string
+      description: Телефон заявителя
+      example: '+79000000000'
+
+ApplicationComment:
+  type: object
+  required:
+    - content
+    - created_by
+  properties:
+    content:
+      type: string
+      description: Текст комментария
+      example: Заявка требует корректировки списка сотрудников
+    created_by:
+      $ref: '#/ApplicationPerson'
+
+ApplicationDetailsResponse:
+  type: object
+  required:
+    - id
+    - number_application
+    - course
+    - start_date
+    - end_date
+    - application_state
+    - created_by
+    - organization
+    - employees
+    - comments
+    - created_at
+    - updated_at
+  properties:
+    id:
+      type: integer
+      description: ID заявки
+      example: 1
+    number_application:
+      type: string
+      description: Номер заявки
+      example: APP-2026-0001
+    course:
+      $ref: '#/ApplicationCourse'
+    start_date:
+      type: string
+      format: date
+      description: Дата начала обучения
+      example: '2026-06-15'
+    end_date:
+      type: string
+      format: date
+      description: Дата окончания обучения
+      example: '2026-06-20'
+    application_state:
+      $ref: '#/ApplicationState'
+    created_by:
+      $ref: '#/ApplicationRequester'
+    approver:
+      allOf:
+        - $ref: '#/ApplicationPerson'
+      nullable: true
+      description: Пользователь, проверяющий заявку
+    organization:
+      $ref: '#/ApplicationOrganization'
+    employees:
+      type: array
+      description: Сотрудники, записанные на курс в рамках заявки
+      items:
+        $ref: '#/ApplicationEmployee'
+    comments:
+      type: array
+      description: Список комментариев к заявке
+      items:
+        $ref: '#/ApplicationComment'
+    created_at:
+      type: string
+      format: date-time
+      description: Дата и время создания заявки
+      example: '2026-06-15T10:30:00Z'
+    updated_at:
+      type: string
+      format: date-time
+      description: Дата и время последнего обновления заявки
+      example: '2026-06-15T12:00:00Z'
+
+UpdateApplicationRequest:
+  type: object
+  properties:
+    course_id:
+      type: integer
+      nullable: true
+      description: ID курса
+      example: 5
+    start_date:
+      type: string
+      format: date
+      nullable: true
+      description: Дата начала обучения
+      example: '2026-07-01'
+    end_date:
+      type: string
+      format: date
+      nullable: true
+      description: Дата окончания обучения
+      example: '2026-07-10'
+    employee_ids:
+      type: array
+      nullable: true
+      description: Список ID сотрудников, добавленных в заявку как ученики
+      items:
+        type: integer
+      example:
+        - 10
+        - 11
+        - 12
+
+DeleteApplicationDraftResponse:
+  type: object
+  required:
+    - message
+  properties:
+    message:
+      type: string
+      description: Сообщение о результате удаления
+      example: Черновик заявки успешно удален

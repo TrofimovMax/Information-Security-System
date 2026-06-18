@@ -14,3 +14,19 @@ CreateApplicationRequestBody:
           - 10
           - 11
           - 12
+
+UpdateApplicationRequestBody:
+  description: Данные для обновления заявки на обучение
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/applications.yaml#/UpdateApplicationRequest'
+      example:
+        course_id: 5
+        start_date: '2026-07-01'
+        end_date: '2026-07-10'
+        employee_ids:
+          - 10
+          - 11
+          - 12

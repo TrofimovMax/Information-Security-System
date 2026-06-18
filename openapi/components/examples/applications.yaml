@@ -1,0 +1,26 @@
+ApplicationCannotBeUpdatedByStateExample:
+  summary: Заявка не может быть обновлена из-за статуса
+  value:
+    code: BAD_REQUEST
+    message: Заявка не может быть обновлена
+    details:
+      - field: application_state
+        message: Заявка может быть обновлена только в статусе «Черновик» или «На корректировке»
+
+ApplicationUpdateForbiddenNotCreatorExample:
+  summary: Редактирование недоступно, пользователь не является создателем заявки
+  value:
+    code: FORBIDDEN
+    message: Редактирование заявки недоступно
+    details:
+      - field: created_by
+        message: Редактирование доступно только создателю заявки
+
+ApplicationNotDraftErrorExample:
+  summary: Заявка не в статусе «Черновик»
+  value:
+    code: BAD_REQUEST
+    message: Заявка не может быть удалена
+    details:
+      - field: application_state
+        message: Заявка может быть удалена только в статусе «Черновик»

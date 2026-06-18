@@ -23,6 +23,8 @@ paths:
     $ref: './paths/users-current.yaml'
   /api/v1/applications:
     $ref: './paths/applications.yaml'
+  /api/v1/applications/{id}:
+    $ref: './paths/applications-id.yaml'
 
 components:
   securitySchemes:
@@ -32,6 +34,8 @@ components:
   requestBodies:
     CreateApplicationRequestBody:
       $ref: './components/requestBodies/applications.yaml#/CreateApplicationRequestBody'
+    UpdateApplicationRequestBody:
+      $ref: './components/requestBodies/applications.yaml#/UpdateApplicationRequestBody'
 
   responses:
     GetCurrentUser200Response:
@@ -42,6 +46,15 @@ components:
 
     CreateApplication200Response:
       $ref: './components/responses/applications.yaml#/CreateApplication200Response'
+    
+    GetApplicationById200Response:
+      $ref: './components/responses/applications.yaml#/GetApplicationById200Response'
+
+    UpdateApplication200Response:
+      $ref: './components/responses/applications.yaml#/UpdateApplication200Response'
+
+    DeleteApplicationDraft200Response:
+      $ref: './components/responses/applications.yaml#/DeleteApplicationDraft200Response'
 
     BadRequestErrorResponse:
       $ref: './components/responses/common.yaml#/BadRequestErrorResponse'
@@ -87,8 +100,33 @@ components:
     ApplicationsPaginationMeta:
       $ref: './components/schemas/applications.yaml#/ApplicationsPaginationMeta'
 
+    ApplicationDetailsResponse:
+      $ref: './components/schemas/applications.yaml#/ApplicationDetailsResponse'
+
+    UpdateApplicationRequest:
+      $ref: './components/schemas/applications.yaml#/UpdateApplicationRequest'
+
+    DeleteApplicationDraftResponse:
+      $ref: './components/schemas/applications.yaml#/DeleteApplicationDraftResponse'
+
+    ApplicationPerson:
+      $ref: './components/schemas/applications.yaml#/ApplicationPerson'
+
+    ApplicationComment:
+      $ref: './components/schemas/applications.yaml#/ApplicationComment'
+
     ErrorResponse:
       $ref: './components/schemas/common.yaml'
 
     CurrentUserResponse:
       $ref: './components/schemas/users.yaml'
+
+  examples:
+    ApplicationCannotBeUpdatedByStateExample:
+      $ref: './components/examples/applications.yaml#/ApplicationCannotBeUpdatedByStateExample'
+
+    ApplicationUpdateForbiddenNotCreatorExample:
+      $ref: './components/examples/applications.yaml#/ApplicationUpdateForbiddenNotCreatorExample'
+
+    ApplicationNotDraftErrorExample:
+      $ref: './components/examples/applications.yaml#/ApplicationNotDraftErrorExample'
