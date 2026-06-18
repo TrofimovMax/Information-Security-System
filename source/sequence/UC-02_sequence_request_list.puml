@@ -10,27 +10,43 @@ autonumber
 == Открытие списка заявок ==
 
 User -> Portal: Перейти в модуль\n«Заявки на обучение»
-Portal -> DB: Запросить роль пользователя\nи права доступа в модуле
-DB --> Portal: Предоставить список для данного пользователя
+activate User
+activate Portal
+deactivate User
+
+Portal -> DB: Запросить роль пользователя,\nправа доступа и доступные заявки
+activate DB
+DB --> Portal: Роль пользователя,\nправа доступа и список доступных заявок
+deactivate DB
 
 Portal --> User: Отобразить заявки\nв табличной форме и доступные действия
+activate User
 Portal --> User: Отобразить выбор количества заявок\nна странице и пагинацию
+deactivate Portal
+deactivate User
 
 == Работа со списком заявок ==
 
 opt Поиск по списку заявок
     loop Поиск заявки до получения результата или сброса поиска
         User -> Portal: Ввести поисковый запрос
+        activate User
+        activate Portal
+        deactivate User
         Portal -> DB: Выполнить поиск среди заявок,\nдоступных пользователю
+        activate DB
         DB --> Portal: Найденные заявки
-
+        deactivate DB
         alt Заявки по запросу найдены
             Portal --> User: Отобразить результат поиска
-
+            activate User
         else Заявки по запросу не найдены
             Portal --> User: Отобразить пустой результат поиска
             Portal --> User: Сообщение «Заявки по запросу не найдены»
             User -> Portal: Изменить поисковый запрос\nили сбросить поиск
+            Portal --> User: Принять обновлённые параметры поиска
+            deactivate Portal
+            deactivate User
         end
     end
 end
@@ -38,93 +54,159 @@ end
 opt Фильтрация списка заявок
     loop Фильтрация заявок до получения результата или сброса фильтров
         User -> Portal: Выбрать параметры фильтрации
+        activate User
+        activate Portal
+        deactivate User
         Portal -> DB: Применить фильтры к заявкам,\nдоступным пользователю
+        activate DB
         DB --> Portal: Отфильтрованный список заявок
-
+        deactivate DB
         alt Заявки по фильтрам найдены
             Portal --> User: Отобразить отфильтрованный список
-
+            activate User
         else Заявки по фильтрам не найдены
             Portal --> User: Отобразить пустой список
             Portal --> User: Сообщение «Заявки по выбранным фильтрам не найдены»
+
             User -> Portal: Изменить параметры фильтрации\nили сбросить фильтры
+            Portal --> User: Принять обновлённые параметры фильтрации
+            deactivate Portal
+            deactivate User
         end
     end
 end
 
 opt Сортировка списка заявок
     User -> Portal: Выбрать столбец или параметр сортировки
+    activate User
+    activate Portal
+    deactivate User
     Portal -> DB: Запросить заявки\nс выбранной сортировкой
+    activate DB
     DB --> Portal: Отсортированный список заявок
+    deactivate DB
     Portal --> User: Обновить табличное представление
+    activate User
+    deactivate Portal
+    deactivate User
 end
 
 == Выбор заявок и действия со списком ==
 
 opt Выбор нескольких заявок
     User -> Portal: Выбрать одну или несколько заявок
+    activate User
+    activate Portal
+    deactivate User
     Portal -> Portal: Зафиксировать выбранные заявки
+    Portal --> Portal: Выбранные заявки зафиксированы
     Portal -> Portal: Определить действия,\nдоступные для выбранных заявок
+    Portal --> Portal: Доступные действия определены
     Portal --> User: Отобразить доступные групповые действия
+    activate User
+    deactivate Portal
+    deactivate User
 end
 
 opt Скачивание списка
-    User -> Portal: Иницировать скачивания списка
+    User -> Portal: Инициировать скачивание списка
+    activate User
+    activate Portal
+    deactivate User
     Portal -> DB: Запросить данные с учётом\nтекущих фильтров и прав доступа
+    activate DB
     DB --> Portal: Данные для выгрузки
-
+    deactivate DB
+    Portal -> Portal: Сформировать файл выгрузки
     alt Файл сформирован
+        Portal --> Portal: Файл выгрузки сформирован
         Portal --> User: Передать файл для скачивания
+        activate User
     else Ошибка формирования файла
+        Portal --> Portal: Файл выгрузки не сформирован
         Portal --> User: Сообщение об ошибке формирования файла
+        deactivate Portal
+        deactivate User
     end
 end
 
 opt Скачивание выбранных заявок
     User -> Portal: Инициировать скачивание выбранных заявок
+    activate User
+    activate Portal
+    deactivate User
     Portal -> Portal: Проверить доступ\nк выбранным заявкам
-
+    Portal --> Portal: Результат проверки доступа
     alt Все выбранные заявки доступны
         Portal -> DB: Запросить данные выбранных заявок
+        activate DB
         DB --> Portal: Данные выбранных заявок
+        deactivate DB
         Portal --> User: Передать файл или архив
+        activate User
     else Одна или несколько заявок недоступны
         Portal --> User: Сообщение об ограничении доступа
+        deactivate Portal
+        deactivate User
     end
 end
 
 == Переход в карточку заявки ==
 
 User -> Portal: Выбрать заявку из списка
+activate User
+activate Portal
+deactivate User
+
 Portal -> Portal: Проверить доступ пользователя\nк выбранной заявке
+Portal --> Portal: Результат проверки доступа
 
 alt Доступ к заявке есть
     Portal -> DB: Запросить полные данные заявки
+    activate DB
     DB --> Portal: Данные заявки
-    Portal --> User: Открыть карточку заявки
+    deactivate DB
 
+    Portal --> User: Открыть карточку заявки
+    activate User
 else Доступа к заявке нет
-    Portal --> User: Запретить открытие карточки
-    Portal --> User: Сообщение об отсутствии прав доступа
+    Portal -> Portal: Подготовить отказ\nв открытии карточки заявки
+    Portal --> Portal: Отказ подготовлен
+    Portal --> User: Запретить открытие карточки\nи отобразить сообщение\nоб отсутствии прав доступа
+    deactivate Portal
+    deactivate User
 end
 
 == Удаление черновика ==
 
 opt Удаление черновика из списка заявок
-    User -> Portal: Выбрать заявку в статусе черновика»\nв списке заявок
-
+    User -> Portal: Выбрать заявку в статусе «Черновик»\nв списке заявок
+    activate User
+    activate Portal
+    Portal --> User: Отметить выбранную заявку
     User -> Portal: Инициировать удаление черновика
+    deactivate User
     Portal -> Portal: Проверить статус заявки\nи право пользователя на удаление
+    Portal --> Portal: Результат проверки удаления
 
     alt Заявка является черновиком и удаление разрешено
         Portal -> DB: Удалить черновик
+        activate DB
         DB --> Portal: Черновик удалён
-        Portal -> DB: Запросить обновлённый список заявок
-        DB --> Portal: Обновлённый список заявок
-        Portal --> User: Обновить список заявок
+        deactivate DB
 
+        Portal -> DB: Запросить обновлённый список заявок
+        activate DB
+        DB --> Portal: Обновлённый список заявок
+        deactivate DB
+
+        Portal --> User: Обновить список заявок
+        activate User
     else Заявка не является черновиком
         Portal --> User: Сообщение «Удалить можно только заявку\nв статусе Черновик»
+        deactivate Portal
+        deactivate User
+    end
 end
 
 @enduml
