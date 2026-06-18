@@ -54,3 +54,24 @@ DownloadApplicationsRequestBody:
           - 1
           - 2
           - 3
+
+DownloadApplicationsExcelRequestBody:
+  description: Фильтры для скачивания списка заявок в Excel
+  required: false
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/applications.yaml#/DownloadApplicationsExcelRequest'
+      example:
+        search: Java
+        application_state_id: 1
+        organization_id: 2
+        course_id: 5
+        start_date_from: '2026-06-01'
+        start_date_to: '2026-06-30'
+        end_date_from: '2026-06-01'
+        end_date_to: '2026-06-30'
+        created_at_from: '2026-06-01'
+        created_at_to: '2026-06-30'
+        sort_by: created_at
+        sort_direction: desc

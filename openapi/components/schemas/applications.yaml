@@ -542,3 +542,83 @@ DownloadApplicationsRequest:
         - 1
         - 2
         - 3
+
+DownloadApplicationsExcelRequest:
+  type: object
+  properties:
+    search:
+      type: string
+      description: Поисковая строка для поиска заявки по номеру, названию курса или ФИО заявителя
+      example: Java
+
+    application_state_id:
+      type: integer
+      description: ID статуса заявки
+      example: 1
+
+    organization_id:
+      type: integer
+      description: ID организации
+      example: 2
+
+    course_id:
+      type: integer
+      description: ID курса
+      example: 5
+
+    start_date_from:
+      type: string
+      format: date
+      description: Дата начала обучения от
+      example: '2026-06-01'
+
+    start_date_to:
+      type: string
+      format: date
+      description: Дата начала обучения до
+      example: '2026-06-30'
+
+    end_date_from:
+      type: string
+      format: date
+      description: Дата окончания обучения от
+      example: '2026-06-01'
+
+    end_date_to:
+      type: string
+      format: date
+      description: Дата окончания обучения до
+      example: '2026-06-30'
+
+    created_at_from:
+      type: string
+      format: date
+      description: Дата создания заявки от
+      example: '2026-06-01'
+
+    created_at_to:
+      type: string
+      format: date
+      description: Дата создания заявки до
+      example: '2026-06-30'
+
+    sort_by:
+      type: string
+      description: Поле сортировки
+      enum:
+        - number_application
+        - course_name
+        - application_state
+        - organization
+        - start_date
+        - end_date
+        - created_at
+      example: created_at
+
+    sort_direction:
+      type: string
+      description: Направление сортировки
+      enum:
+        - asc
+        - desc
+      example: desc

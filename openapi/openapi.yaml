@@ -29,7 +29,8 @@ paths:
     $ref: './paths/applications-id-state.yaml'
   /api/v1/applications/downloads:
     $ref: './paths/applications-downloads.yaml'
-
+  /api/v1/applications/downloads/excel:
+    $ref: './paths/applications-downloads-excel.yaml'
 components:
   securitySchemes:
     BearerAuth:
@@ -44,6 +45,8 @@ components:
       $ref: './components/requestBodies/applications.yaml#/ChangeApplicationStateRequestBody'
     DownloadApplicationsRequestBody:
       $ref: './components/requestBodies/applications.yaml#/DownloadApplicationsRequestBody'
+    DownloadApplicationsExcelRequestBody:
+      $ref: './components/requestBodies/applications.yaml#/DownloadApplicationsExcelRequestBody'
 
   responses:
     GetCurrentUser200Response:
@@ -72,6 +75,9 @@ components:
 
     DownloadApplications200Response:
       $ref: './components/responses/applications.yaml#/DownloadApplications200Response'
+
+    DownloadApplicationsExcel200Response:
+      $ref: './components/responses/applications.yaml#/DownloadApplicationsExcel200Response'
 
     BadRequestErrorResponse:
       $ref: './components/responses/common.yaml#/BadRequestErrorResponse'
@@ -137,6 +143,9 @@ components:
 
     DownloadApplicationsRequest:
       $ref: './components/schemas/applications.yaml#/DownloadApplicationsRequest'
+
+    DownloadApplicationsExcelRequest:
+      $ref: './components/schemas/applications.yaml#/DownloadApplicationsExcelRequest'
 
     ErrorResponse:
       $ref: './components/schemas/common.yaml'

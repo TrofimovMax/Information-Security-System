@@ -291,3 +291,17 @@ DownloadApplications200Response:
       schema:
         type: string
         format: binary
+
+DownloadApplicationsExcel200Response:
+  description: Excel-файл со списком заявок успешно сформирован
+  headers:
+    Content-Disposition:
+      description: Имя файла для скачивания
+      schema:
+        type: string
+        example: attachment; filename="applications.xlsx"
+  content:
+    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+      schema:
+        type: string
+        format: binary
