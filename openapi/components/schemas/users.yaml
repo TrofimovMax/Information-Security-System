@@ -1,0 +1,34 @@
+type: object
+required:
+  - id
+  - full_name
+  - phone
+  - email
+  - organization_name
+  - role_code
+properties:
+  id:
+    type: integer
+    description: ID пользователя
+    example: 1
+  full_name:
+    type: string
+    description: ФИО пользователя
+    example: Иванов Иван Иванович
+  phone:
+    type: string
+    description: Телефон пользователя
+    example: '+79000000000'
+  email:
+    type: string
+    format: email
+    description: Email пользователя
+    example: ivanov@example.com
+  organization_name:
+    type: string
+    description: Название организации пользователя
+    example: ООО Ромашка
+  role_code:
+    type: string
+    description: Код роли пользователя
+    example: APPLICANT

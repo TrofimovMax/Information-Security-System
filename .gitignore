@@ -4,3 +4,4 @@ materials/
 *.drawio.bkp
 *.bkp
 tmp/
+openapi/dist/

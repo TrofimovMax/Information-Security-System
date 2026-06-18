@@ -1,0 +1,6 @@
+GetCurrentUser200Response:
+  description: Данные текущего пользователя успешно получены
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/users.yaml'

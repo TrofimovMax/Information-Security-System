@@ -1,0 +1,19 @@
+get:
+  tags:
+    - Auth
+  summary: Получить текущего пользователя
+  description: Возвращает данные текущего авторизованного пользователя по Bearer JWT токену.
+  operationId: getCurrentUser
+  security:
+    - BearerAuth: []
+  responses:
+    '200':
+      $ref: '../components/responses/users.yaml#/GetCurrentUser200Response'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'

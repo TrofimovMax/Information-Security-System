@@ -1,0 +1,48 @@
+openapi: 3.0.3
+
+info:
+  title: Training Requests API
+  version: 1.0.0
+  description: CRUD API для модуля «Заявки на обучение»
+
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+tags:
+  - name: Auth
+    description: Авторизация и данные текущего пользователя
+  - name: Applications
+    description: Работа с заявками на обучение
+
+security:
+  - BearerAuth: []
+
+paths:
+  /api/v1/users/current:
+    $ref: './paths/users-current.yaml'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      $ref: './components/securitySchemes.yaml'
+
+  responses:
+    GetCurrentUser200Response:
+      $ref: './components/responses/users.yaml#/GetCurrentUser200Response'
+    UnauthorizedErrorResponse:
+      $ref: './components/responses/common.yaml#/UnauthorizedErrorResponse'
+    ForbiddenErrorResponse:
+      $ref: './components/responses/common.yaml#/ForbiddenErrorResponse'
+    NotFoundErrorResponse:
+      $ref: './components/responses/common.yaml#/NotFoundErrorResponse'
+    TooManyRequestsErrorResponse:
+      $ref: './components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    InternalServerErrorResponse:
+      $ref: './components/responses/common.yaml#/InternalServerErrorResponse'
+
+  schemas:
+    ErrorResponse:
+      $ref: './components/schemas/common.yaml'
+    CurrentUserResponse:
+      $ref: './components/schemas/users.yaml'
