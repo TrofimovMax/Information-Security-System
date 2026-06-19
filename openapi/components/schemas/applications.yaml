@@ -63,7 +63,7 @@ ApplicationUserShort:
       description: ФИО
       example: Иванов Иван Иванович
 
-ApplicationEmployee:
+ApplicationStudent:
   type: object
   required:
     - id
@@ -230,13 +230,26 @@ ApplicationsListResponse:
       $ref: '#/ApplicationsPaginationMeta'
 
 CreateApplicationRequest:
+  oneOf:
+    - $ref: '#/CreateApplicationSubmitRequest'
+    - $ref: '#/CreateApplicationDraftByCourseRequest'
+    - $ref: '#/CreateApplicationDraftByStudentsRequest'
+  description: |
+    Данные для создания заявки.
+
+    Варианты:
+    - полноценная отправка заявки — должны быть заполнены курс, даты и список учеников;
+    - сохранение черновика по курсу — должны быть заполнены курс и даты;
+    - сохранение черновика по ученикам — должен быть заполнен список учеников.
+
+CreateApplicationSubmitRequest:
   type: object
   required:
     - course_id
     - start_date
     - end_date
     - application_state_id
-    - employee_ids
+    - student_ids
   properties:
     course_id:
       type: integer
@@ -254,9 +267,83 @@ CreateApplicationRequest:
       example: '2026-06-20'
     application_state_id:
       type: integer
-      description: ID статуса заявки
+      description: ID статуса заявки. Для полноценной отправки используется статус «Ожидает рассмотрения».
+      example: 2
+    student_ids:
+      type: array
+      description: Список ID сотрудников, добавляемых в заявку
+      minItems: 1
+      items:
+        type: integer
+      example:
+        - 10
+        - 11
+        - 12
+
+CreateApplicationDraftByCourseRequest:
+  type: object
+  required:
+    - course_id
+    - start_date
+    - end_date
+    - application_state_id
+  properties:
+    course_id:
+      type: integer
+      description: ID курса обучения
+      example: 5
+    start_date:
+      type: string
+      format: date
+      description: Дата начала обучения
+      example: '2026-06-15'
+    end_date:
+      type: string
+      format: date
+      description: Дата окончания обучения
+      example: '2026-06-20'
+    application_state_id:
+      type: integer
+      description: ID статуса заявки. Для черновика используется статус «Черновик».
       example: 1
-    employee_ids:
+    student_ids:
+      type: array
+      nullable: true
+      description: Список ID сотрудников, добавляемых в заявку
+      items:
+        type: integer
+      example:
+        - 10
+        - 11
+
+CreateApplicationDraftByStudentsRequest:
+  type: object
+  required:
+    - application_state_id
+    - student_ids
+  properties:
+    course_id:
+      type: integer
+      nullable: true
+      description: ID курса обучения
+      example: 5
+    start_date:
+      type: string
+      format: date
+      nullable: true
+      description: Дата начала обучения
+      example: '2026-06-15'
+    end_date:
+      type: string
+      format: date
+      nullable: true
+      description: Дата окончания обучения
+      example: '2026-06-20'
+    application_state_id:
+      type: integer
+      description: ID статуса заявки. Для черновика используется статус «Черновик».
+      example: 1
+    student_ids:
       type: array
       description: Список ID сотрудников, добавляемых в заявку
       minItems: 1
@@ -278,7 +365,7 @@ CreateApplicationResponse:
     - application_state
     - created_by
     - organization
-    - employees
+    - students
     - created_at
     - updated_at
   properties:
@@ -313,11 +400,11 @@ CreateApplicationResponse:
       description: Пользователь, проверяющий заявку
     organization:
       $ref: '#/ApplicationOrganization'
-    employees:
+    students:
       type: array
       description: Сотрудники, добавленные в заявку
       items:
-        $ref: '#/ApplicationEmployee'
+        $ref: '#/ApplicationStudent'
     created_at:
       type: string
       format: date-time
@@ -414,7 +501,7 @@ ApplicationDetailsResponse:
     - application_state
     - created_by
     - organization
-    - employees
+    - students
     - comments
     - created_at
     - updated_at
@@ -450,11 +537,11 @@ ApplicationDetailsResponse:
       description: Пользователь, проверяющий заявку
     organization:
       $ref: '#/ApplicationOrganization'
-    employees:
+    students:
       type: array
       description: Сотрудники, записанные на курс в рамках заявки
       items:
-        $ref: '#/ApplicationEmployee'
+        $ref: '#/ApplicationStudent'
     comments:
       type: array
       description: Список комментариев к заявке
@@ -491,7 +578,7 @@ UpdateApplicationRequest:
       nullable: true
       description: Дата окончания обучения
       example: '2026-07-10'
-    employee_ids:
+    student_ids:
       type: array
       nullable: true
       description: Список ID сотрудников, добавленных в заявку как ученики

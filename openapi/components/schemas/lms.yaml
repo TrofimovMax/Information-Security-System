@@ -291,7 +291,7 @@ CreateLmsApplicationRequest:
     requester:
       allOf:
         - $ref: '#/LmsApplicationPerson'
-      description: Заявитель из таблицы employees
+      description: Заявитель из таблицы students
 
     approver:
       allOf:

@@ -61,7 +61,7 @@ CreateApplication200Response:
         organization:
           id: 1
           name: ООО Ромашка
-        employees:
+        students:
           - id: 10
             first_name: Иван
             middle_name: Иванович
@@ -113,7 +113,7 @@ GetApplicationById200Response:
         organization:
           id: 1
           name: ООО Ромашка
-        employees:
+        students:
           - id: 10
             first_name: Иван
             middle_name: Иванович
@@ -172,7 +172,7 @@ UpdateApplication200Response:
         organization:
           id: 1
           name: ООО Ромашка
-        employees:
+        students:
           - id: 10
             first_name: Иван
             middle_name: Иванович
@@ -234,7 +234,7 @@ ChangeApplicationState200Response:
         organization:
           id: 1
           name: ООО Ромашка
-        employees:
+        students:
           - id: 10
             first_name: Иван
             middle_name: Иванович

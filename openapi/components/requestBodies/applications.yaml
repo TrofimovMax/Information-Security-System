@@ -10,7 +10,7 @@ CreateApplicationRequestBody:
         start_date: '2026-06-15'
         end_date: '2026-06-20'
         application_state_id: 1
-        employee_ids:
+        student_ids:
           - 10
           - 11
           - 12
@@ -26,7 +26,7 @@ UpdateApplicationRequestBody:
         course_id: 5
         start_date: '2026-07-01'
         end_date: '2026-07-10'
-        employee_ids:
+        student_ids:
           - 10
           - 11
           - 12
