@@ -21,3 +21,17 @@ GetLmsCourses200Response:
           per_page: 20
           total: 2
           total_pages: 1
+
+CreateLmsApplication202Response:
+  description: Заявка принята СДО для обработки
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/lms.yaml#/CreateLmsApplicationAcceptedResponse'
+      example:
+        portal_application_id: 1
+        number_application: APP-2026-0001
+        lms_application_id: LMS-APP-10001
+        status: accepted_for_processing
+        message: Заявка принята СДО для обработки
+        accepted_at: '2026-06-17T10:00:05Z'

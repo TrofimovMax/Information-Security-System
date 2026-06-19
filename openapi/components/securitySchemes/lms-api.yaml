@@ -1,0 +1,4 @@
+type: apiKey
+in: header
+name: X-Portal-Integration-Token
+description: Технический токен Портала для передачи заявок в СДО

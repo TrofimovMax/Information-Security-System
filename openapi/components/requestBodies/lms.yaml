@@ -1,0 +1,46 @@
+CreateLmsApplicationRequestBody:
+  description: Данные согласованной заявки для передачи в СДО
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/lms.yaml#/CreateLmsApplicationRequest'
+      example:
+        portal_application_id: 1
+        number_application: APP-2026-0001
+        webhook_url: https://portal.example.com/api/v1/lms/webhooks/applications/1/state
+        course:
+          id: 5
+          external_course_id: LMS-COURSE-1005
+          name: Основы информационной безопасности
+          start_date: '2026-06-15'
+          end_date: '2026-06-20'
+        requester:
+          id: 10
+          first_name: Иван
+          middle_name: Иванович
+          last_name: Иванов
+          email: ivanov@example.com
+          phone: '+79000000000'
+        approver:
+          id: 2
+          first_name: Пётр
+          middle_name: Петрович
+          last_name: Петров
+        students:
+          - id: 10
+            first_name: Иван
+            middle_name: Иванович
+            last_name: Иванов
+            email: ivanov@example.com
+            phone: '+79000000000'
+            position:
+              id: 1
+              name: Backend-разработчик
+            departament:
+              id: 1
+              name: Отдел разработки
+            organization:
+              id: 1
+              name: ООО Ромашка
+        sent_at: '2026-06-17T10:00:00Z'

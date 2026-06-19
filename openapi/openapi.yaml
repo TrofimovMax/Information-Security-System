@@ -47,13 +47,17 @@ paths:
     $ref: './paths/notifications.yaml'
   /api/v1/lms/courses:
     $ref: './paths/lms-courses.yaml'
+  /api/v1/lms/applications:
+    $ref: './paths/lms-applications.yaml'
 components:
   securitySchemes:
     BearerAuth:
       $ref: './components/securitySchemes.yaml'
     LmsWebhookAuth:
       $ref: './components/securitySchemes/lms-webhook.yaml'
-  
+    LmsApiAuth:
+      $ref: './components/securitySchemes/lms-api.yaml'
+
   requestBodies:
     CreateApplicationRequestBody:
       $ref: './components/requestBodies/applications.yaml#/CreateApplicationRequestBody'
@@ -69,6 +73,8 @@ components:
       $ref: './components/requestBodies/students.yaml#/UploadStudentsExcelRequestBody'
     LmsApplicationStateWebhookRequestBody:
       $ref: './components/requestBodies/lms-webhooks.yaml#/LmsApplicationStateWebhookRequestBody'
+    CreateLmsApplicationRequestBody:
+      $ref: './components/requestBodies/lms.yaml#/CreateLmsApplicationRequestBody'
 
   responses:
     GetCurrentUser200Response:
@@ -112,6 +118,9 @@ components:
 
     GetLmsCourses200Response:
       $ref: './components/responses/lms.yaml#/GetLmsCourses200Response'
+
+    CreateLmsApplication202Response:
+      $ref: './components/responses/lms.yaml#/CreateLmsApplication202Response'
 
     LmsApplicationStateWebhook202Response:
       $ref: './components/responses/lms-webhooks.yaml#/LmsApplicationStateWebhook202Response'
@@ -225,6 +234,30 @@ components:
 
     LmsCoursesPaginationMeta:
       $ref: './components/schemas/lms.yaml#/LmsCoursesPaginationMeta'
+
+    CreateLmsApplicationRequest:
+      $ref: './components/schemas/lms.yaml#/CreateLmsApplicationRequest'
+
+    CreateLmsApplicationAcceptedResponse:
+      $ref: './components/schemas/lms.yaml#/CreateLmsApplicationAcceptedResponse'
+
+    LmsApplicationCourse:
+      $ref: './components/schemas/lms.yaml#/LmsApplicationCourse'
+
+    LmsApplicationPerson:
+      $ref: './components/schemas/lms.yaml#/LmsApplicationPerson'
+
+    LmsApplicationStudent:
+      $ref: './components/schemas/lms.yaml#/LmsApplicationStudent'
+
+    LmsApplicationPosition:
+      $ref: './components/schemas/lms.yaml#/LmsApplicationPosition'
+
+    LmsApplicationDepartment:
+      $ref: './components/schemas/lms.yaml#/LmsApplicationDepartment'
+
+    LmsApplicationOrganization:
+      $ref: './components/schemas/lms.yaml#/LmsApplicationOrganization'
 
     LmsApplicationStateWebhookRequest:
       $ref: './components/schemas/lms-webhooks.yaml#/LmsApplicationStateWebhookRequest'
