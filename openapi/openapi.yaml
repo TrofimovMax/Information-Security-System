@@ -18,6 +18,8 @@ tags:
     description: Поиск, фильтрация и загрузка учеников для заявок на обучение
   - name: Notifications
     description: Получение и фильтрация уведомлений пользователя
+  - name: LMS Webhooks
+    description: Webhook API Портала для получения событий из Системы дистанционного обучения
   - name: LMS
     description: Получение актуальных курсов из Системы дистанционного обучения
 
@@ -39,6 +41,8 @@ paths:
     $ref: './paths/applications-downloads-excel.yaml'
   /api/v1/students:
     $ref: './paths/students.yaml'
+  /api/v1/lms/webhooks/applications/{id}/state:
+    $ref: './paths/lms-webhooks-applications-state.yaml'
   /api/v1/notifications:
     $ref: './paths/notifications.yaml'
   /api/v1/lms/courses:
@@ -47,6 +51,8 @@ components:
   securitySchemes:
     BearerAuth:
       $ref: './components/securitySchemes.yaml'
+    LmsWebhookAuth:
+      $ref: './components/securitySchemes/lms-webhook.yaml'
   
   requestBodies:
     CreateApplicationRequestBody:
@@ -61,6 +67,8 @@ components:
       $ref: './components/requestBodies/applications.yaml#/DownloadApplicationsExcelRequestBody'
     UploadStudentsExcelRequestBody:
       $ref: './components/requestBodies/students.yaml#/UploadStudentsExcelRequestBody'
+    LmsApplicationStateWebhookRequestBody:
+      $ref: './components/requestBodies/lms-webhooks.yaml#/LmsApplicationStateWebhookRequestBody'
 
   responses:
     GetCurrentUser200Response:
@@ -104,6 +112,9 @@ components:
 
     GetLmsCourses200Response:
       $ref: './components/responses/lms.yaml#/GetLmsCourses200Response'
+
+    LmsApplicationStateWebhook202Response:
+      $ref: './components/responses/lms-webhooks.yaml#/LmsApplicationStateWebhook202Response'
 
     BadRequestErrorResponse:
       $ref: './components/responses/common.yaml#/BadRequestErrorResponse'
@@ -215,6 +226,12 @@ components:
     LmsCoursesPaginationMeta:
       $ref: './components/schemas/lms.yaml#/LmsCoursesPaginationMeta'
 
+    LmsApplicationStateWebhookRequest:
+      $ref: './components/schemas/lms-webhooks.yaml#/LmsApplicationStateWebhookRequest'
+
+    LmsApplicationStateWebhookAcceptedResponse:
+      $ref: './components/schemas/lms-webhooks.yaml#/LmsApplicationStateWebhookAcceptedResponse'
+
     ErrorResponse:
       $ref: './components/schemas/common.yaml'
 
@@ -248,3 +265,9 @@ components:
 
     DuplicateStudentsInExcelExample:
       $ref: './components/examples/students.yaml#/DuplicateStudentsInExcelExample'
+
+    ApplicationInvalidStateForLmsEventExample:
+      $ref: './components/examples/lms-webhooks.yaml#/ApplicationInvalidStateForLmsEventExample'
+
+    ApplicationApproverNotAssignedExample:
+      $ref: './components/examples/lms-webhooks.yaml#/ApplicationApproverNotAssignedExample'

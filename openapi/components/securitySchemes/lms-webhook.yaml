@@ -1,0 +1,4 @@
+type: apiKey
+in: header
+name: X-LMS-Webhook-Token
+description: Технический токен СДО для вызова webhook API Портала

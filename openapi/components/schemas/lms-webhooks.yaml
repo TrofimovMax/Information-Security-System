@@ -1,0 +1,79 @@
+LmsApplicationStateWebhookRequest:
+  type: object
+  required:
+    - event_type
+    - event_datetime
+  properties:
+    event_type:
+      type: string
+      description: Тип события, переданного СДО
+      enum:
+        - accepted
+        - completed
+        - postponed
+      example: completed
+
+    event_datetime:
+      type: string
+      format: date-time
+      description: Дата и время события на стороне СДО
+      example: '2026-06-25T15:30:00Z'
+
+    completion_date:
+      type: string
+      format: date
+      nullable: true
+      description: Дата завершения обучения. Передается для события completed.
+      example: '2026-06-25'
+
+    postponed_until:
+      type: string
+      format: date
+      nullable: true
+      description: Дата, до которой отложено обучение. Передается для события postponed.
+      example: '2026-07-01'
+
+    comment:
+      type: string
+      nullable: true
+      description: Комментарий СДО по событию
+      example: Обучение по заявке завершено
+
+LmsApplicationStateWebhookAcceptedResponse:
+  type: object
+  required:
+    - application_id
+    - number_application
+    - event_type
+    - message
+    - accepted_at
+  properties:
+    application_id:
+      type: integer
+      description: ID заявки в Портале
+      example: 1
+
+    number_application:
+      type: string
+      description: Номер заявки в Портале
+      example: APP-2026-0001
+
+    event_type:
+      type: string
+      description: Тип события, переданного СДО
+      enum:
+        - accepted
+        - completed
+        - postponed
+      example: completed
+
+    message:
+      type: string
+      description: Сообщение о принятии события
+      example: Событие СДО принято для обработки
+
+    accepted_at:
+      type: string
+      format: date-time
+      description: Дата и время принятия события Порталом
+      example: '2026-06-25T15:30:05Z'

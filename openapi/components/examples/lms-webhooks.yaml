@@ -1,0 +1,17 @@
+ApplicationInvalidStateForLmsEventExample:
+  summary: Заявка находится в неподходящем статусе
+  value:
+    code: BAD_REQUEST
+    message: Состояние заявки не может быть изменено
+    details:
+      - field: application_state
+        message: Данная заявка находится в другом статусе и не может быть обработана по событию СДО
+
+ApplicationApproverNotAssignedExample:
+  summary: У заявки не назначен согласующий
+  value:
+    code: BAD_REQUEST
+    message: Уведомление не может быть создано
+    details:
+      - field: approver_id
+        message: Для заявки не назначен согласующий, поэтому невозможно создать уведомление

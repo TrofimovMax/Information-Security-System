@@ -1,0 +1,12 @@
+LmsApplicationStateWebhook202Response:
+  description: Событие СДО принято Порталом для обработки
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/lms-webhooks.yaml#/LmsApplicationStateWebhookAcceptedResponse'
+      example:
+        application_id: 1
+        number_application: APP-2026-0001
+        event_type: completed
+        message: Событие СДО принято для обработки
+        accepted_at: '2026-06-25T15:30:05Z'
