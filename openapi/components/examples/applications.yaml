@@ -60,3 +60,34 @@ ApplicationStateChangeForbiddenExample:
     details:
       - field: application
         message: У пользователя нет прав на изменение статуса этой заявки
+
+DuplicateStudentsInApplicationExample:
+  summary: В заявке указаны дубли учеников
+  value:
+    code: BAD_REQUEST
+    message: Найдены дубли в списке учеников
+    details:
+      - field: employee_ids
+        message: Ученик с ID 10 повторяется в списке
+      - field: employee_ids
+        message: Ученик с ID 12 повторяется в списке
+
+StudentsNotFoundInApplicationExample:
+  summary: Один или несколько учеников не найдены
+  value:
+    code: BAD_REQUEST
+    message: Один или несколько учеников не найдены
+    details:
+      - field: employee_ids
+        message: Ученик с ID 999 не найден
+      - field: employee_ids
+        message: Ученик с ID 1000 не найден
+
+CourseNotFoundInApplicationExample:
+  summary: Курс не найден
+  value:
+    code: BAD_REQUEST
+    message: Курс не найден
+    details:
+      - field: course_id
+        message: Курс с ID 999 не найден

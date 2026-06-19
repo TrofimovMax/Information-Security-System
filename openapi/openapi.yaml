@@ -304,3 +304,12 @@ components:
 
     ApplicationApproverNotAssignedExample:
       $ref: './components/examples/lms-webhooks.yaml#/ApplicationApproverNotAssignedExample'
+
+    DuplicateStudentsInApplicationExample:
+      $ref: './components/examples/applications.yaml#/DuplicateStudentsInApplicationExample'
+
+    StudentsNotFoundInApplicationExample:
+      $ref: './components/examples/applications.yaml#/StudentsNotFoundInApplicationExample'
+
+    CourseNotFoundInApplicationExample:
+      $ref: './components/examples/applications.yaml#/CourseNotFoundInApplicationExample'
