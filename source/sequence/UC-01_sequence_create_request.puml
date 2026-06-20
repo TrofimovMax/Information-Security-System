@@ -13,7 +13,6 @@ autonumber
 == Открытие формы создания заявки ==
 
 Requester -> Portal: Инициировать создание заявки
-activate Requester
 activate Portal
 
 Portal -> DB: Запросить сведения о Заявителе\nи его организации
@@ -23,12 +22,10 @@ deactivate DB
 
 Portal --> Requester: Отобразить форму создания заявки\nсо всеми полями и заполненными сведениями
 deactivate Portal
-deactivate Requester
 
 opt Загрузка ранее сохранённого черновика
     Requester -> Portal: Инициировать загрузку черновика
     activate Portal
-    activate Requester
     Portal -> DB: Запросить черновики Заявителя
     activate DB
     DB --> Portal: Данные черновиков
@@ -37,14 +34,12 @@ opt Загрузка ранее сохранённого черновика
     Requester -> Portal: Выбрать черновик из списка
     Portal --> Requester: Загрузить данные черновика
     deactivate Portal
-    deactivate Requester
 end
 
 == Выбор курса ==
 
 Requester -> Portal: Ввести часть названия курса
 activate Portal
-activate Requester
 
 Portal -> LMS: Запросить список актуальных курсов\nпо введённому значению
 activate LMS
@@ -58,16 +53,13 @@ Requester -> Portal: Выбрать курс\nиз списка найденны
 activate Portal
 Portal --> Requester: Заполнить данные курса\nи даты обучения в форме заявки
 deactivate Portal
-deactivate Requester
 
 == Формирование списка учеников ==
 
 loop Повторяется необходимое количество раз
     ... Добавление учеников вручную ...
 
-
     Requester -> Portal: Иницировать добавление ученика
-    activate Requester
     activate Portal
     Portal --> Requester: Отобразить строку для ввода ученика
     deactivate Portal
@@ -87,12 +79,10 @@ loop Повторяется необходимое количество раз
     activate Portal
     Portal --> Requester: Автоматически заполнить данные ученика
     deactivate Portal
-    deactivate Requester
 
     opt Удаление ученика из списка
         Requester -> Portal: Выбрать ученика
         activate Portal
-        activate Requester
         Portal --> Requester: Отметить выбранного ученика
         deactivate Portal
 
@@ -100,36 +90,29 @@ loop Повторяется необходимое количество раз
         activate Portal
         Portal --> Requester: Удалить ученика из списка
         deactivate Portal
-        deactivate Requester
     end
 
     opt Скачать шаблон Excel-файла
         Requester -> Portal: Нажать «Скачать шаблон»
         activate Portal
-        activate Requester
         Portal --> Requester: Передать шаблон Excel-файла
         deactivate Portal
-        deactivate Requester
     end
 
     opt Загрузка списка учеников через Excel
         loop Загрузка Excel-файла до успешной проверки данных
             Requester -> Portal: Загрузить Excel-файл\nсо списком учеников
-            activate Requester
             activate Portal
-            deactivate Requester
 
             Portal -> Portal: Проверить загруженный файл\nи содержащиеся в нём данные
             Portal --> Portal: Результат проверки файла
 
             alt В загруженном файле обнаружены ошибки
                 Portal --> Requester: Вернуть ошибку с деталями,\nкоторые требуют доработки
-                activate Requester
                 Portal --> Requester: Вернуть к выбору файла\nдля повторной загрузки
             else Загруженный файл прошёл проверку
                 Portal --> Requester: Отобразить загруженный список учеников
                 deactivate Portal
-                deactivate Requester
             end
         end
     end
@@ -139,14 +122,11 @@ end
 
 opt Поиск по списку учеников
     Requester -> Portal: Ввести поисковый запрос\nпо списку учеников
-    activate Requester
     activate Portal
-    deactivate Requester
     Portal -> Portal: Выполнить поиск\nпо списку учеников
     Portal --> Portal: Результат поиска\nпо списку учеников
     alt Ученики по поисковому запросу не найдены
         Portal --> Requester: Отобразить пустой список учеников
-        activate Requester
         Requester -> Portal: Изменить поисковый запрос\nили сбросить поиск
         Portal -> Portal: Выполнить повторный поиск\nпо списку учеников
         Portal --> Portal: Результат повторного поиска
@@ -154,69 +134,56 @@ opt Поиск по списку учеников
     else Ученики по поисковому запросу найдены
         Portal --> Requester: Отобразить найденных учеников
         deactivate Portal
-        deactivate Requester
     end
 end
 
 opt Фильтрация списка учеников
     Requester -> Portal: Выбрать параметры фильтрации\nсписка учеников
-    activate Requester
     activate Portal
-    deactivate Requester
     Portal -> Portal: Применить выбранные фильтры\nк списку учеников
     Portal --> Portal: Результат применения фильтров
     alt Ученики по выбранным фильтрам не найдены
         Portal --> Requester: Отобразить пустой список учеников
-        activate Requester
         Requester -> Portal: Изменить параметры фильтрации\nили сбросить фильтры
         Portal -> Portal: Применить обновлённые фильтры\nк списку учеников
         Portal --> Portal: Результат применения обновлённых фильтров
     else Ученики по выбранным фильтрам найдены
         Portal --> Requester: Отобразить отфильтрованный список учеников
         deactivate Portal
-        deactivate Requester
     end
 end
 
 opt Сортировка списка учеников
     Requester -> Portal: Выбрать параметр сортировки\nсписка учеников
-    activate Requester
     activate Portal
     Portal -> Portal: Отсортировать список учеников\nпо выбранному параметру
     Portal --> Portal: Список учеников отсортирован
     Portal --> Requester: Отобразить отсортированный список учеников
     deactivate Portal
-    deactivate Requester
 end
 
 opt Пагинация списка учеников
     Requester -> Portal: Выбрать страницу списка учеников\nили количество учеников на странице
-    activate Requester
     activate Portal
     Portal -> Portal: Применить параметры пагинации
     Portal --> Portal: Параметры пагинации применены
     Portal --> Requester: Отобразить выбранную страницу\nсписка учеников
     deactivate Portal
-    deactivate Requester
 end
 
 == Отправка заявки на рассмотрение ==
 
 Requester -> Portal: Инициировать отправку заявки\nна рассмотрение
-activate Requester
 activate Portal
-deactivate Requester
 Portal -> Portal: Проверить обязательные поля,\nформат данных и дубли учеников
 Portal --> Portal: Результат проверки заявки
 
 alt Обнаружены незаполненные обязательные поля
     Portal --> Requester: Сформировать сообщение\nс перечнем незаполненных полей
-    activate Requester
     Portal --> Requester: Визуально выделить\nнезаполненные обязательные поля
 else Обнаружены дубли в списке учеников
     Portal --> Requester: Сформировать сообщение\nо найденных дублях
     Portal --> Requester: Визуально выделить\nдублирующиеся записи
-    deactivate Requester
 else Заявка валидна
     Portal -> DB: Сохранить заявку\nс соответствующим статусом
     activate DB
@@ -227,21 +194,15 @@ else Заявка валидна
     Portal -> Mail: Передать email-уведомление\nдля Согласующего
     activate Mail
     Mail --> Approver: Email о новой заявке
-    activate Approver
     deactivate Mail
-    deactivate Approver
 
     Portal --> Requester: Сообщение «Заявка успешно отправлена»
-    activate Requester
     deactivate Portal
-    deactivate Requester
 end
 
 opt Сохранение заявки как черновика
     Requester -> Portal: Инициировать сохранение заявки\nв качестве черновика
-    activate Requester
     activate Portal
-    deactivate Requester
 
     Portal -> Portal: Проверить доступные данные заявки
     Portal --> Portal: Доступные данные заявки проверены
@@ -252,9 +213,7 @@ opt Сохранение заявки как черновика
     deactivate DB
 
     Portal --> Requester: Сообщение «Черновик сохранён»
-    activate Requester
     deactivate Portal
-    deactivate Requester
 end
 
 @enduml
