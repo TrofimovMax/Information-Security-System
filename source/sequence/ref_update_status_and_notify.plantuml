@@ -1,0 +1,40 @@
+@startuml REF_UpdateStatusAndNotify
+title REF: Контрольная проверка заявки, сохранение статуса и уведомление участников
+
+actor "Согласующий" as Approver
+actor "Заявитель" as Requester
+participant "Портал" as Portal
+database "БД Портала" as DB
+participant "Почтовая служба" as Mail
+
+activate Portal
+Portal -> Portal: Выполнить контрольную проверку заявки:\nправа доступа, автор заявки,\nтекущий статус и допустимость перехода
+Portal --> Portal: Результат контрольной проверки
+
+alt #LightPink Контрольная проверка не пройдена
+    Portal --> Approver: 400 ErrorResponse\nИзменение статуса заявки отклонено
+    deactivate Portal
+else #White Контрольная проверка пройдена
+    Portal -> DB: Сохранить заявку\nс новым статусом
+    activate Portal
+    activate DB
+    DB --> Portal: Статус заявки обновлён
+    Portal -> DB: Сохранить комментарий Согласующего\nпри его наличии
+    DB --> Portal: Комментарий сохранён
+    Portal -> DB: Создать уведомление для Заявителя
+    DB --> Portal: Уведомление создано
+    deactivate DB
+
+    Portal -> Mail: Передать email-уведомление\nЗаявителю об изменении статуса заявки
+    activate Mail
+    deactivate Portal
+    Mail --> Requester: Email об изменении статуса заявки
+    deactivate Mail
+
+    Portal --> Requester: Уведомление об изменении\nстатуса заявки
+    activate Portal
+    Portal --> Approver: 200 ChangeApplicationState200Response\nУведомление об успешном\nизменении статуса заявки
+    deactivate Portal
+end
+
+@enduml

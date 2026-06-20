@@ -60,7 +60,7 @@ alt Запрос выполнен корректно
     deactivate LMS
     Portal --> Requester: 200 LmsCoursesListResponse\nОтобразить найденные курсы
     deactivate Portal
-else Некорректные параметры запроса
+else #LightPink Некорректные параметры запроса
     LMS --> Portal: 400 ErrorResponse\nОшибка получения списка курсов
     activate LMS
     activate Portal
@@ -94,7 +94,7 @@ loop Повторяется необходимое количество раз
 
     alt Запрос выполнен корректно
         Portal --> Requester: 200 StudentsListResponse\nОтобразить список найденных учеников
-    else Некорректные параметры поиска
+    else #LightPink Некорректные параметры поиска
         Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке поиска
         deactivate Portal
     end
@@ -121,7 +121,7 @@ loop Повторяется необходимое количество раз
         activate Portal
         alt Шаблон успешно сформирован
             Portal --> Requester: 200 DownloadApplicationStudentsTemplate200Response\nПередать шаблон Excel-файла
-        else Ошибка запроса
+        else #LightPink Ошибка запроса
             Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке скачивания
             deactivate Portal
         end
@@ -135,10 +135,10 @@ loop Повторяется необходимое количество раз
             Portal -> Portal: Проверить загруженный файл\nи содержащиеся в нём данные
             Portal --> Portal: Результат проверки файла
 
-            alt В загруженном файле обнаружены ошибки
+            alt #LightPink В загруженном файле обнаружены ошибки
                 Portal --> Requester: 400 ErrorResponse\nВернуть ошибку с деталями,\nкоторые требуют доработки
                 Portal --> Requester: Вернуть к выбору файла\nдля повторной загрузки
-            else Загруженный файл прошёл проверку
+            else #White Загруженный файл прошёл проверку
                 Portal --> Requester: 200 UploadStudentsExcelResponse\nОтобразить загруженный список учеников
                 deactivate Portal
             end
@@ -160,13 +160,13 @@ activate Portal
 Portal -> Portal: Проверить обязательные поля,\nформат данных и дубли учеников
 Portal --> Portal: Результат проверки заявки
 
-alt Обнаружены незаполненные обязательные поля
+alt #LightPink Обнаружены незаполненные обязательные поля
     Portal --> Requester: 400 ErrorResponse\nСформировать сообщение\nс перечнем незаполненных полей
     Portal --> Requester: Визуально выделить\nнезаполненные обязательные поля
-else Обнаружены дубли в списке учеников
+else #LightPink Обнаружены дубли в списке учеников
     Portal --> Requester: 400 ErrorResponse\nСформировать сообщение\nо найденных дублях
     Portal --> Requester: Визуально выделить\nдублирующиеся записи
-else Заявка валидна
+else #White Заявка валидна
     Portal -> DB: Сохранить заявку\nс соответствующим статусом
     activate DB
     DB --> Portal: Заявка сохранена
@@ -188,9 +188,9 @@ opt Сохранение заявки как черновика
     Portal -> Portal: Проверить доступные данные заявки
     Portal --> Portal: Доступные данные заявки проверены
 
-    alt Данные черновика не соответствуют допустимой модели
+    alt #LightPink Данные черновика не соответствуют допустимой модели
         Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке сохранения черновика
-    else Черновик может быть сохранён
+    else #White Черновик может быть сохранён
         Portal -> DB: Сохранить заявку\nс соответствующим статусом
         activate DB
         DB --> Portal: Черновик сохранён
