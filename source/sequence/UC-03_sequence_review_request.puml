@@ -12,15 +12,8 @@ autonumber
 
 == Открытие заявки для рассмотрения ==
 
-' Approver -> Portal: Перейти в модуль\n«Заявки на обучение»
-' Portal -> DB: Запросить список заявок,\nдоступных Согласующему
-' DB --> Portal: Список заявок
-' Portal --> Approver: Отобразить список заявок
-
 Approver -> Portal: Выбрать заявку для рассмотрения
-activate Approver
 activate Portal
-deactivate Approver
 Portal -> DB: Запросить данные выбранной заявки
 activate DB
 DB --> Portal: Данные заявки
@@ -28,38 +21,30 @@ deactivate DB
 Portal -> Portal: Проверить, что Согласующий\nне является создателем заявки
 break Согласующий является создателем заявки
     Portal --> Approver: Открыть карточку заявки
-    activate Approver
     Portal --> Approver: Не отображать действия\nдля рассмотрения заявки
     deactivate Portal
-    deactivate Approver
 end
 Portal -> Portal: Проверить статус заявки\nна доступность для рассмотрения
 activate Portal
 break Заявка находится в статусе,\nнедоступном для рассмотрения
     Portal --> Approver: Открыть карточку заявки\nтолько для просмотра
-    activate Approver
     Portal --> Approver: Не отображать действия\nдля рассмотрения заявки
-    deactivate Approver
 end
 Portal --> Approver: Открыть карточку заявки
 Portal --> Approver: Отобразить действия\nдля рассмотрения заявки
 deactivate Portal
 opt Скачать заявку
     Approver -> Portal: Иницировать скачивание заявки
-    activate Approver
     activate Portal
-    deactivate Approver
     Portal -> DB: Запросить данные заявки для файла
     activate DB
     DB --> Portal: Данные заявки
     deactivate DB
     alt Файл сформирован
         Portal --> Approver: Передать файл заявки
-        activate Approver
     else Ошибка формирования файла
         Portal --> Approver: Сообщение об ошибке скачивания
         deactivate Portal
-        deactivate Approver
     end
 end
 
@@ -67,39 +52,31 @@ end
 
 opt Поиск по списку учеников
     Approver -> Portal: Ввести поисковый запрос\nпо списку учеников
-    activate Approver
     activate Portal
-    deactivate Approver
     Portal -> Portal: Выполнить поиск\nпо списку учеников
 
     alt Ученики по поисковому запросу не найдены
         Portal --> Approver: Отобразить пустой список учеников
-        activate Approver
         Approver -> Portal: Изменить поисковый запрос\nили сбросить поиск
         Portal --> Approver: Отобразить актуальный список учеников
     else Ученики по поисковому запросу найдены
         Portal --> Approver: Отобразить найденных учеников
         deactivate Portal
-        deactivate Approver
     end
 end
 
 opt Фильтрация списка учеников
     Approver -> Portal: Выбрать параметры фильтрации\nсписка учеников
-    activate Approver
     activate Portal
-    deactivate Approver
     Portal -> Portal: Применить выбранные фильтры\nк списку учеников
 
     alt Ученики по выбранным фильтрам не найдены
         Portal --> Approver: Отобразить пустой список учеников
-        activate Approver
         Approver -> Portal: Изменить параметры фильтрации\nили сбросить фильтры
         Portal --> Approver: Отобразить актуальный список учеников
     else Ученики по выбранным фильтрам найдены
         Portal --> Approver: Отобразить отфильтрованный список учеников
         deactivate Portal
-        deactivate Approver
     end
 end
 
@@ -111,12 +88,10 @@ end
 
 opt Пагинация списка учеников
     Approver -> Portal: Выбрать страницу списка учеников\nили количество учеников на странице
-    activate Approver
     activate Portal
     Portal -> Portal: Применить параметры пагинации
     Portal --> Approver: Отобразить выбранную страницу\nсписка учеников
     deactivate Portal
-    deactivate Approver
 end
 
 == Принятие решения по заявке ==
@@ -150,7 +125,6 @@ alt Согласующий согласует заявку
 
         Portal --> Approver: Отобразить заявку\nс соответствующим статусом
         activate Portal
-        activate Approver
         Approver -> Portal: Отправить заявку на корректировку
         Portal --> Approver: Запросить комментарий\nс деталями корректировки
         Approver -> Portal: Ввести комментарий
@@ -166,7 +140,6 @@ alt Согласующий согласует заявку
 
             Portal --> Approver: Отобразить заявку\nс соответствующим статусом
             deactivate Portal
-            deactivate Approver
         end
 
     else СДО вернуло ошибку или не ответило
@@ -200,17 +173,14 @@ alt Согласующий согласует заявку
             Portal -> Mail: Передать уведомление Согласующему\nоб ошибке передачи в СДО
             activate Mail
             Mail --> Approver: Email об ошибке СДО
-            activate Approver
             deactivate Mail
             Portal --> Approver: Отобразить заявку\nс соответствующим статусом
             deactivate Portal
-            deactivate Approver
         end
     end
 
 else Согласующий отклоняет заявку
     Approver -> Portal: Инициировать отклонение заявки
-    activate Approver
     activate Portal
     Portal --> Approver: Запросить комментарий\nс причиной отклонения
 
@@ -226,7 +196,6 @@ else Согласующий отклоняет заявку
         end ref
 
         Portal --> Approver: Отобразить заявку\nс соответствующим статусом
-        deactivate Approver
         == Архивирование отклонённой заявки ==
 
         ... Через 3 года после отклонения заявки ...
@@ -240,17 +209,14 @@ else Согласующий отклоняет заявку
 
 else Согласующий отправляет заявку на корректировку
     Approver -> Portal: Инициировать отправку заявки на корректировку
-    activate Approver
     activate Portal
     Portal --> Approver: Запросить комментарий\nс деталями корректировки
 
     Approver -> Portal: Ввести комментарий
-    deactivate Approver
     Portal -> Portal: Проверить наличие комментария
 
     alt Комментарий не указан
         Portal --> Approver: Сообщение\n«Необходимо указать детали корректировки»
-        activate Approver
     else Комментарий указан
         ref over Portal, DB, Mail, Requester, Approver
             Контрольная проверка заявки, сохранение статуса и уведомление участников
@@ -258,7 +224,6 @@ else Согласующий отправляет заявку на коррек�
 
         Portal --> Approver: Отобразить заявку\nс соответствующим статусом
         deactivate Portal
-        deactivate Approver
     end
 end
 
@@ -282,13 +247,10 @@ deactivate DB
 Portal -> Mail: Передать сообщение Заявителю\nоб успешном изменении статуса заявки
 activate Mail
 Mail --> Requester: Cообщение об успешном\n изменении статуса заявки
-activate Requester
 deactivate Mail
 
 Portal --> Requester: Уведомление об успешном\n изменении статуса заявки
-deactivate Requester
-activate Approver
 Portal --> Approver: Уведомление об успешном\n изменении статуса заявки
 deactivate Portal
-deactivate Approver
+
 @enduml
