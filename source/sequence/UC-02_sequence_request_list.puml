@@ -9,110 +9,115 @@ autonumber
 
 == Открытие списка заявок ==
 
-User -> Portal: Перейти в модуль\n«Заявки на обучение»
-activate User
+User -> Portal: Перейти в модуль\n«Заявки на обучение»\nGET /api/v1/users/current\nGET /api/v1/applications?page={page}&size={size}
 activate Portal
-deactivate User
 
 Portal -> DB: Запросить роль пользователя,\nправа доступа и доступные заявки
 activate DB
 DB --> Portal: Роль пользователя,\nправа доступа и список доступных заявок
 deactivate DB
 
-Portal --> User: Отобразить заявки\nв табличной форме и доступные действия
-activate User
-Portal --> User: Отобразить выбор количества заявок\nна странице и пагинацию
+alt Запрос выполнен корректно
+    Portal --> User: 200 CurrentUserResponse\n200 ApplicationsListResponse\nОтобразить заявки\nв табличной форме и доступные действия
+    Portal --> User: Отобразить выбор количества заявок\nна странице и пагинацию
+else Некорректные параметры запроса
+    Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке загрузки списка заявок
+end
+
 deactivate Portal
-deactivate User
 
 == Работа со списком заявок ==
 
 opt Поиск по списку заявок
     loop Поиск заявки до получения результата или сброса поиска
-        User -> Portal: Ввести поисковый запрос
-        activate User
+        User -> Portal: Ввести поисковый запрос\nGET /api/v1/applications?search={search}&page={page}&size={size}
         activate Portal
-        deactivate User
         Portal -> DB: Выполнить поиск среди заявок,\nдоступных пользователю
         activate DB
         DB --> Portal: Найденные заявки
         deactivate DB
-        alt Заявки по запросу найдены
-            Portal --> User: Отобразить результат поиска
-            activate User
-        else Заявки по запросу не найдены
-            Portal --> User: Отобразить пустой результат поиска
+        alt Запрос выполнен корректно и заявки найдены
+            Portal --> User: 200 ApplicationsListResponse\nОтобразить результат поиска
+        else Запрос выполнен корректно, но заявки не найдены
+            Portal --> User: 200 ApplicationsListResponse\nОтобразить пустой результат поиска
             Portal --> User: Сообщение «Заявки по запросу не найдены»
             User -> Portal: Изменить поисковый запрос\nили сбросить поиск
             Portal --> User: Принять обновлённые параметры поиска
+        else Некорректные параметры поиска
+            Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке поиска
             deactivate Portal
-            deactivate User
         end
     end
 end
 
 opt Фильтрация списка заявок
     loop Фильтрация заявок до получения результата или сброса фильтров
-        User -> Portal: Выбрать параметры фильтрации
-        activate User
+        User -> Portal: Выбрать параметры фильтрации\nGET /api/v1/applications?application_state_id={state_id}\n&organization_id={organization_id}\n&created_by={created_by}\n&approver_id={approver_id}\n&start_date={start_date}\n&end_date={end_date}\n&page={page}\n&size={size}
         activate Portal
-        deactivate User
         Portal -> DB: Применить фильтры к заявкам,\nдоступным пользователю
         activate DB
         DB --> Portal: Отфильтрованный список заявок
         deactivate DB
-        alt Заявки по фильтрам найдены
-            Portal --> User: Отобразить отфильтрованный список
-            activate User
-        else Заявки по фильтрам не найдены
-            Portal --> User: Отобразить пустой список
+        alt Запрос выполнен корректно и заявки найдены
+            Portal --> User: 200 ApplicationsListResponse\nОтобразить отфильтрованный список
+        else Запрос выполнен корректно, но заявки не найдены
+            Portal --> User: 200 ApplicationsListResponse\nОтобразить пустой список
             Portal --> User: Сообщение «Заявки по выбранным фильтрам не найдены»
-
             User -> Portal: Изменить параметры фильтрации\nили сбросить фильтры
             Portal --> User: Принять обновлённые параметры фильтрации
+        else Некорректные параметры фильтрации
+            Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке фильтрации
             deactivate Portal
-            deactivate User
         end
     end
 end
 
 opt Сортировка списка заявок
-    User -> Portal: Выбрать столбец или параметр сортировки
-    activate User
+    User -> Portal: Выбрать столбец или параметр сортировки\nGET /api/v1/applications?sort_by={sort_by}\n&sort_order={sort_order}\n&page={page}\n&size={size}
     activate Portal
-    deactivate User
     Portal -> DB: Запросить заявки\nс выбранной сортировкой
     activate DB
     DB --> Portal: Отсортированный список заявок
     deactivate DB
-    Portal --> User: Обновить табличное представление
-    activate User
-    deactivate Portal
-    deactivate User
+    alt Параметры сортировки корректны
+        Portal --> User: 200 ApplicationsListResponse\nОбновить табличное представление
+    else Некорректные параметры сортировки
+        Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке сортировки
+        deactivate Portal
+    end
+end
+
+opt Пагинация списка заявок
+    User -> Portal: Выбрать страницу списка заявок\nили количество заявок на странице\nGET /api/v1/applications?page={page}&size={size}
+    activate Portal
+    Portal -> DB: Запросить заявки\nс учётом параметров пагинации
+    activate DB
+    DB --> Portal: Страница списка заявок
+    deactivate DB
+    alt Параметры пагинации корректны
+        Portal --> User: 200 ApplicationsListResponse\nОтобразить выбранную страницу\nсписка заявок
+    else Некорректные параметры пагинации
+        Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке пагинации
+        deactivate Portal
+    end
 end
 
 == Выбор заявок и действия со списком ==
 
 opt Выбор нескольких заявок
     User -> Portal: Выбрать одну или несколько заявок
-    activate User
     activate Portal
-    deactivate User
     Portal -> Portal: Зафиксировать выбранные заявки
     Portal --> Portal: Выбранные заявки зафиксированы
     Portal -> Portal: Определить действия,\nдоступные для выбранных заявок
     Portal --> Portal: Доступные действия определены
     Portal --> User: Отобразить доступные групповые действия
-    activate User
     deactivate Portal
-    deactivate User
 end
 
 opt Скачивание списка
-    User -> Portal: Инициировать скачивание списка
-    activate User
+    User -> Portal: Инициировать скачивание списка\nPOST /api/v1/applications/downloads/excel
     activate Portal
-    deactivate User
     Portal -> DB: Запросить данные с учётом\nтекущих фильтров и прав доступа
     activate DB
     DB --> Portal: Данные для выгрузки
@@ -120,21 +125,17 @@ opt Скачивание списка
     Portal -> Portal: Сформировать файл выгрузки
     alt Файл сформирован
         Portal --> Portal: Файл выгрузки сформирован
-        Portal --> User: Передать файл для скачивания
-        activate User
-    else Ошибка формирования файла
+        Portal --> User: 200 DownloadApplicationsExcel200Response\nПередать файл для скачивания
+    else Ошибка формирования файла или некорректные параметры
         Portal --> Portal: Файл выгрузки не сформирован
-        Portal --> User: Сообщение об ошибке формирования файла
+        Portal --> User: 400 ErrorResponse\nСообщение об ошибке формирования файла
         deactivate Portal
-        deactivate User
     end
 end
 
 opt Скачивание выбранных заявок
-    User -> Portal: Инициировать скачивание выбранных заявок
-    activate User
+    User -> Portal: Инициировать скачивание выбранных заявок\nPOST /api/v1/applications/downloads
     activate Portal
-    deactivate User
     Portal -> Portal: Проверить доступ\nк выбранным заявкам
     Portal --> Portal: Результат проверки доступа
     alt Все выбранные заявки доступны
@@ -142,21 +143,17 @@ opt Скачивание выбранных заявок
         activate DB
         DB --> Portal: Данные выбранных заявок
         deactivate DB
-        Portal --> User: Передать файл или архив
-        activate User
+        Portal --> User: 200 DownloadApplications200Response\nПередать файл или архив
     else Одна или несколько заявок недоступны
-        Portal --> User: Сообщение об ограничении доступа
+        Portal --> User: 400 ErrorResponse\nСообщение об ограничении доступа
         deactivate Portal
-        deactivate User
     end
 end
 
 == Переход в карточку заявки ==
 
-User -> Portal: Выбрать заявку из списка
-activate User
+User -> Portal: Выбрать заявку из списка\nGET /api/v1/applications/{id}
 activate Portal
-deactivate User
 
 Portal -> Portal: Проверить доступ пользователя\nк выбранной заявке
 Portal --> Portal: Результат проверки доступа
@@ -166,26 +163,21 @@ alt Доступ к заявке есть
     activate DB
     DB --> Portal: Данные заявки
     deactivate DB
-
-    Portal --> User: Открыть карточку заявки
-    activate User
+    Portal --> User: 200 ApplicationDetailsResponse\nОткрыть карточку заявки
 else Доступа к заявке нет
     Portal -> Portal: Подготовить отказ\nв открытии карточки заявки
     Portal --> Portal: Отказ подготовлен
-    Portal --> User: Запретить открытие карточки\nи отобразить сообщение\nоб отсутствии прав доступа
+    Portal --> User: 400 ErrorResponse\nЗапретить открытие карточки\nи отобразить сообщение\nоб отсутствии прав доступа
     deactivate Portal
-    deactivate User
 end
 
 == Удаление черновика ==
 
 opt Удаление черновика из списка заявок
     User -> Portal: Выбрать заявку в статусе «Черновик»\nв списке заявок
-    activate User
     activate Portal
     Portal --> User: Отметить выбранную заявку
-    User -> Portal: Инициировать удаление черновика
-    deactivate User
+    User -> Portal: Инициировать удаление черновика\nDELETE /api/v1/applications/{id}
     Portal -> Portal: Проверить статус заявки\nи право пользователя на удаление
     Portal --> Portal: Результат проверки удаления
 
@@ -194,18 +186,15 @@ opt Удаление черновика из списка заявок
         activate DB
         DB --> Portal: Черновик удалён
         deactivate DB
-
-        Portal -> DB: Запросить обновлённый список заявок
+        Portal --> User: 200 DeleteApplicationDraftResponse\nСообщение «Черновик удалён»
+        Portal -> DB: Запросить обновлённый список заявок\nGET /api/v1/applications?page={page}&size={size}
         activate DB
         DB --> Portal: Обновлённый список заявок
         deactivate DB
-
-        Portal --> User: Обновить список заявок
-        activate User
+        Portal --> User: 200 ApplicationsListResponse\nОбновить список заявок
     else Заявка не является черновиком
-        Portal --> User: Сообщение «Удалить можно только заявку\nв статусе Черновик»
+        Portal --> User: 400 ErrorResponse\nСообщение «Удалить можно только заявку\nв статусе Черновик»
         deactivate Portal
-        deactivate User
     end
 end
 
