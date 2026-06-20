@@ -12,7 +12,7 @@ autonumber
 
 == Открытие формы создания заявки ==
 
-Requester -> Portal: Инициировать создание заявки
+Requester -> Portal: Инициировать создание заявки\nGET /api/v1/users/current
 activate Portal
 
 Portal -> DB: Запросить сведения о Заявителе\nи его организации
@@ -20,34 +20,54 @@ activate DB
 DB --> Portal: Сведения о Заявителе\nи его организации
 deactivate DB
 
-Portal --> Requester: Отобразить форму создания заявки\nсо всеми полями и заполненными сведениями
+Portal --> Requester: 200 CurrentUserResponse\nОтобразить форму создания заявки\nсо всеми полями и заполненными сведениями
 deactivate Portal
 
 opt Загрузка ранее сохранённого черновика
-    Requester -> Portal: Инициировать загрузку черновика
+    Requester -> Portal: Инициировать загрузку черновика\nGET /api/v1/applications?application_state_id={draft}
     activate Portal
     Portal -> DB: Запросить черновики Заявителя
     activate DB
     DB --> Portal: Данные черновиков
     deactivate DB
-    Portal --> Requester: Отобразить список черновиков\nв виде списка
-    Requester -> Portal: Выбрать черновик из списка
-    Portal --> Requester: Загрузить данные черновика
+
+    Portal --> Requester: 200 ApplicationsListResponse\nОтобразить список черновиков\nв виде списка
+
+    Requester -> Portal: Выбрать черновик из списка\nGET /api/v1/applications/{id}
+
+    Portal -> DB: Запросить данные выбранного черновика
+    activate DB
+    DB --> Portal: Данные выбранного черновика
+    deactivate DB
+
+    Portal --> Requester: 200 ApplicationDetailsResponse\nЗагрузить данные черновика
     deactivate Portal
 end
 
 == Выбор курса ==
 
-Requester -> Portal: Ввести часть названия курса
+Requester -> Portal: Ввести часть названия курса\nGET /api/v1/lms/courses?search={course_name}
 activate Portal
 
-Portal -> LMS: Запросить список актуальных курсов\nпо введённому значению
+Portal -> LMS: Запросить список актуальных курсов\nпо введённому значению\nGET /api/v1/lms/courses
 activate LMS
-LMS --> Portal: Найденные актуальные курсы
-deactivate LMS
-
-Portal --> Requester: Отобразить найденные курсы
 deactivate Portal
+deactivate LMS
+alt Запрос выполнен корректно
+    LMS --> Portal: 200 LmsCoursesListResponse\nНайденные актуальные курсы
+    activate LMS
+    activate Portal
+    deactivate LMS
+    Portal --> Requester: 200 LmsCoursesListResponse\nОтобразить найденные курсы
+    deactivate Portal
+else Некорректные параметры запроса
+    LMS --> Portal: 400 ErrorResponse\nОшибка получения списка курсов
+    activate LMS
+    activate Portal
+    deactivate LMS
+    Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке
+    deactivate Portal
+end
 
 Requester -> Portal: Выбрать курс\nиз списка найденных курсов
 activate Portal
@@ -59,12 +79,12 @@ deactivate Portal
 loop Повторяется необходимое количество раз
     ... Добавление учеников вручную ...
 
-    Requester -> Portal: Иницировать добавление ученика
+    Requester -> Portal: Инициировать добавление ученика
     activate Portal
     Portal --> Requester: Отобразить строку для ввода ученика
     deactivate Portal
 
-    Requester -> Portal: Ввести часть ФИО ученика
+    Requester -> Portal: Ввести часть ФИО ученика\nGET /api/v1/students?search={full_name}
     activate Portal
 
     Portal -> DB: Выполнить поиск ученика по ФИО
@@ -72,8 +92,12 @@ loop Повторяется необходимое количество раз
     DB --> Portal: Найденные ученики
     deactivate DB
 
-    Portal --> Requester: Отобразить список найденных учеников
-    deactivate Portal
+    alt Запрос выполнен корректно
+        Portal --> Requester: 200 StudentsListResponse\nОтобразить список найденных учеников
+    else Некорректные параметры поиска
+        Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке поиска
+        deactivate Portal
+    end
 
     Requester -> Portal: Выбрать ученика из списка
     activate Portal
@@ -93,25 +117,29 @@ loop Повторяется необходимое количество раз
     end
 
     opt Скачать шаблон Excel-файла
-        Requester -> Portal: Нажать «Скачать шаблон»
+        Requester -> Portal: Нажать «Скачать шаблон»\nGET /api/v1/applications/downloads
         activate Portal
-        Portal --> Requester: Передать шаблон Excel-файла
-        deactivate Portal
+        alt Шаблон успешно сформирован
+            Portal --> Requester: 200 DownloadApplicationStudentsTemplate200Response\nПередать шаблон Excel-файла
+        else Ошибка запроса
+            Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке скачивания
+            deactivate Portal
+        end
     end
 
     opt Загрузка списка учеников через Excel
         loop Загрузка Excel-файла до успешной проверки данных
-            Requester -> Portal: Загрузить Excel-файл\nсо списком учеников
+            Requester -> Portal: Загрузить Excel-файл\nсо списком учеников\nPOST /api/v1/students
             activate Portal
 
             Portal -> Portal: Проверить загруженный файл\nи содержащиеся в нём данные
             Portal --> Portal: Результат проверки файла
 
             alt В загруженном файле обнаружены ошибки
-                Portal --> Requester: Вернуть ошибку с деталями,\nкоторые требуют доработки
+                Portal --> Requester: 400 ErrorResponse\nВернуть ошибку с деталями,\nкоторые требуют доработки
                 Portal --> Requester: Вернуть к выбору файла\nдля повторной загрузки
             else Загруженный файл прошёл проверку
-                Portal --> Requester: Отобразить загруженный список учеников
+                Portal --> Requester: 200 UploadStudentsExcelResponse\nОтобразить загруженный список учеников
                 deactivate Portal
             end
         end
@@ -120,69 +148,23 @@ end
 
 == Операции со списком учеников ==
 
-opt Поиск по списку учеников
-    Requester -> Portal: Ввести поисковый запрос\nпо списку учеников
-    activate Portal
-    Portal -> Portal: Выполнить поиск\nпо списку учеников
-    Portal --> Portal: Результат поиска\nпо списку учеников
-    alt Ученики по поисковому запросу не найдены
-        Portal --> Requester: Отобразить пустой список учеников
-        Requester -> Portal: Изменить поисковый запрос\nили сбросить поиск
-        Portal -> Portal: Выполнить повторный поиск\nпо списку учеников
-        Portal --> Portal: Результат повторного поиска
-        Portal --> Requester: Отобразить актуальный список учеников
-    else Ученики по поисковому запросу найдены
-        Portal --> Requester: Отобразить найденных учеников
-        deactivate Portal
-    end
-end
-
-opt Фильтрация списка учеников
-    Requester -> Portal: Выбрать параметры фильтрации\nсписка учеников
-    activate Portal
-    Portal -> Portal: Применить выбранные фильтры\nк списку учеников
-    Portal --> Portal: Результат применения фильтров
-    alt Ученики по выбранным фильтрам не найдены
-        Portal --> Requester: Отобразить пустой список учеников
-        Requester -> Portal: Изменить параметры фильтрации\nили сбросить фильтры
-        Portal -> Portal: Применить обновлённые фильтры\nк списку учеников
-        Portal --> Portal: Результат применения обновлённых фильтров
-    else Ученики по выбранным фильтрам найдены
-        Portal --> Requester: Отобразить отфильтрованный список учеников
-        deactivate Portal
-    end
-end
-
-opt Сортировка списка учеников
-    Requester -> Portal: Выбрать параметр сортировки\nсписка учеников
-    activate Portal
-    Portal -> Portal: Отсортировать список учеников\nпо выбранному параметру
-    Portal --> Portal: Список учеников отсортирован
-    Portal --> Requester: Отобразить отсортированный список учеников
-    deactivate Portal
-end
-
-opt Пагинация списка учеников
-    Requester -> Portal: Выбрать страницу списка учеников\nили количество учеников на странице
-    activate Portal
-    Portal -> Portal: Применить параметры пагинации
-    Portal --> Portal: Параметры пагинации применены
-    Portal --> Requester: Отобразить выбранную страницу\nсписка учеников
-    deactivate Portal
-end
+ref over Requester, Portal
+    Операции со списком учеников
+    см. students-list-operations.plantuml
+end ref
 
 == Отправка заявки на рассмотрение ==
 
-Requester -> Portal: Инициировать отправку заявки\nна рассмотрение
+Requester -> Portal: Инициировать отправку заявки\nна рассмотрение\nPOST /api/v1/applications
 activate Portal
 Portal -> Portal: Проверить обязательные поля,\nформат данных и дубли учеников
 Portal --> Portal: Результат проверки заявки
 
 alt Обнаружены незаполненные обязательные поля
-    Portal --> Requester: Сформировать сообщение\nс перечнем незаполненных полей
+    Portal --> Requester: 400 ErrorResponse\nСформировать сообщение\nс перечнем незаполненных полей
     Portal --> Requester: Визуально выделить\nнезаполненные обязательные поля
 else Обнаружены дубли в списке учеников
-    Portal --> Requester: Сформировать сообщение\nо найденных дублях
+    Portal --> Requester: 400 ErrorResponse\nСформировать сообщение\nо найденных дублях
     Portal --> Requester: Визуально выделить\nдублирующиеся записи
 else Заявка валидна
     Portal -> DB: Сохранить заявку\nс соответствующим статусом
@@ -190,30 +172,33 @@ else Заявка валидна
     DB --> Portal: Заявка сохранена
     deactivate DB
 
-
     Portal -> Mail: Передать email-уведомление\nдля Согласующего
     activate Mail
     Mail --> Approver: Email о новой заявке
     deactivate Mail
 
-    Portal --> Requester: Сообщение «Заявка успешно отправлена»
+    Portal --> Requester: 200 CreateApplicationResponse\nСообщение «Заявка успешно отправлена»
     deactivate Portal
 end
 
 opt Сохранение заявки как черновика
-    Requester -> Portal: Инициировать сохранение заявки\nв качестве черновика
+    Requester -> Portal: Инициировать сохранение заявки\nв качестве черновика\nPOST /api/v1/applications
     activate Portal
 
     Portal -> Portal: Проверить доступные данные заявки
     Portal --> Portal: Доступные данные заявки проверены
 
-    Portal -> DB: Сохранить заявку\nс соответствующим статусом
-    activate DB
-    DB --> Portal: Черновик сохранён
-    deactivate DB
+    alt Данные черновика не соответствуют допустимой модели
+        Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке сохранения черновика
+    else Черновик может быть сохранён
+        Portal -> DB: Сохранить заявку\nс соответствующим статусом
+        activate DB
+        DB --> Portal: Черновик сохранён
+        deactivate DB
 
-    Portal --> Requester: Сообщение «Черновик сохранён»
-    deactivate Portal
+        Portal --> Requester: 200 CreateApplicationResponse\nСообщение «Черновик сохранён»
+        deactivate Portal
+    end
 end
 
 @enduml

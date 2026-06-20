@@ -1,0 +1,63 @@
+@startuml StudentsListOperations
+title Ref: Операции со списком учеников
+
+actor "Заявитель" as Requester
+participant "Портал" as Portal
+
+autonumber
+
+== Операции со списком учеников ==
+
+opt Поиск по списку учеников
+    Requester -> Portal: Ввести поисковый запрос\nпо списку учеников
+    activate Portal
+    Portal -> Portal: Выполнить поиск\nпо списку учеников
+    Portal --> Portal: Результат поиска\nпо списку учеников
+    alt Ученики по поисковому запросу не найдены
+        Portal --> Requester: Отобразить пустой список учеников
+        Requester -> Portal: Изменить поисковый запрос\nили сбросить поиск
+        Portal -> Portal: Выполнить повторный поиск\nпо списку учеников
+        Portal --> Portal: Результат повторного поиска
+        Portal --> Requester: Отобразить актуальный список учеников
+    else Ученики по поисковому запросу найдены
+        Portal --> Requester: Отобразить найденных учеников
+        deactivate Portal
+    end
+end
+
+opt Фильтрация списка учеников
+    Requester -> Portal: Выбрать параметры фильтрации\nсписка учеников
+    activate Portal
+    Portal -> Portal: Применить выбранные фильтры\nк списку учеников
+    Portal --> Portal: Результат применения фильтров
+    alt Ученики по выбранным фильтрам не найдены
+        Portal --> Requester: Отобразить пустой список учеников
+        Requester -> Portal: Изменить параметры фильтрации\nили сбросить фильтры
+        Portal -> Portal: Применить обновлённые фильтры\nк списку учеников
+        Portal --> Portal: Результат применения обновлённых фильтров
+        Portal --> Requester: Отобразить актуальный список учеников
+    else Ученики по выбранным фильтрам найдены
+        Portal --> Requester: Отобразить отфильтрованный список учеников
+        deactivate Portal
+    end
+end
+
+opt Сортировка списка учеников
+    Requester -> Portal: Выбрать параметр сортировки\nсписка учеников
+    activate Portal
+    Portal -> Portal: Отсортировать список учеников\nпо выбранному параметру
+    Portal --> Portal: Список учеников отсортирован
+    Portal --> Requester: Отобразить отсортированный список учеников
+    deactivate Portal
+end
+
+opt Пагинация списка учеников
+    Requester -> Portal: Выбрать страницу списка учеников\nили количество учеников на странице
+    activate Portal
+    Portal -> Portal: Применить параметры пагинации
+    Portal --> Portal: Параметры пагинации применены
+    Portal --> Requester: Отобразить выбранную страницу\nсписка учеников
+    deactivate Portal
+end
+
+@enduml
