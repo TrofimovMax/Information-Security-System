@@ -23,9 +23,13 @@ UpdateApplicationRequestBody:
       schema:
         $ref: '../schemas/applications.yaml#/UpdateApplicationRequest'
       example:
+        number_application: "APP-2026-0001"
         course_id: 5
-        start_date: '2026-07-01'
-        end_date: '2026-07-10'
+        start_date: "2026-07-01"
+        end_date: "2026-07-10"
+        approver_id: null
+        created_by: 10
+        application_state_id: 1
         student_ids:
           - 10
           - 11
@@ -38,9 +42,15 @@ ChangeApplicationStateRequestBody:
     application/json:
       schema:
         $ref: '../schemas/applications.yaml#/ChangeApplicationStateRequest'
-      example:
-        application_state_id: 3
-        comment: Необходимо скорректировать список учеников
+      examples:
+        approve:
+          value:
+            application_state_id: 2
+
+        reject:
+          value:
+            application_state_id: 3
+            comment: Необходимо скорректировать список учеников
 
 DownloadApplicationsRequestBody:
   description: Список заявок для скачивания

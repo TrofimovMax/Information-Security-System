@@ -30,21 +30,28 @@ get:
     '500':
       $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'
 
-patch:
+put:
   tags:
     - Applications
-  summary: Обновление заявки
+  summary: Полное обновление заявки
   description: |
-    Обновляет данные заявки.
+    Полное обновление заявки по указанному ID.
 
-    Редактирование доступно только создателю заявки для заявок
-    в статусах «Черновик» или «На корректировке».
+    Запрос содержит полную репрезентацию ресурса заявки:
+    все поля заявки должны быть переданы, включая идентификаторы курса,
+    сотрудников, заявителя и согласующего.
 
-    Если пользователь не является создателем заявки, API возвращает ошибку 403 Forbidden.
-    Если заявка находится в другом статусе, API возвращает ошибку 400 Bad Request.
-  operationId: updateApplication
+    Обновление заменяет текущее состояние заявки значениями из запроса.
+
+    Валидация выполняется после применения данных и зависит от текущего статуса заявки.
+
+    Возможные ошибки:
+    - 400 — заявка не может быть обновлена в текущем статусе или нарушены бизнес-правила
+    - 403 — пользователь не является создателем заявки
+  operationId: replaceApplication
   security:
     - BearerAuth: []
+
   parameters:
     - name: id
       in: path
@@ -53,11 +60,14 @@ patch:
       schema:
         type: integer
       example: 1
+
   requestBody:
     $ref: '../components/requestBodies/applications.yaml#/UpdateApplicationRequestBody'
+
   responses:
     '200':
       $ref: '../components/responses/applications.yaml#/UpdateApplication200Response'
+
     '400':
       description: Некорректный запрос
       content:
@@ -67,8 +77,10 @@ patch:
           examples:
             applicationCannotBeUpdatedByState:
               $ref: '../components/examples/applications.yaml#/ApplicationCannotBeUpdatedByStateExample'
+
     '401':
       $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+
     '403':
       description: Доступ запрещен
       content:
@@ -78,10 +90,89 @@ patch:
           examples:
             applicationUpdateForbiddenNotCreator:
               $ref: '../components/examples/applications.yaml#/ApplicationUpdateForbiddenNotCreatorExample'
+
     '404':
       $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+
     '429':
       $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'
+
+patch:
+  tags:
+    - Applications
+  summary: Изменение заявки (статуса)
+  description: |
+    Частичное обновление заявки.
+
+    Используется для изменения статуса заявки в процессе согласования:
+
+    - согласование заявки
+    - отклонение заявки
+    - отправка на корректировку
+
+    В запросе передается новый статус через `application_state_id`.
+
+    Комментарий:
+    - обязателен для некоторых переходов статуса (например: отклонение, корректировка)
+    - для согласования может быть не передан
+
+    Остальные поля заявки не изменяются.
+  operationId: patchApplicationState
+  security:
+    - BearerAuth: []
+
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID заявки
+      schema:
+        type: integer
+      example: 1
+
+  requestBody:
+    $ref: '../components/requestBodies/applications.yaml#/ChangeApplicationStateRequestBody'
+
+  responses:
+    '200':
+      $ref: '../components/responses/applications.yaml#/ChangeApplicationState200Response'
+
+    '400':
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/common.yaml'
+          examples:
+            invalidApplicationStateTransition:
+              $ref: '../components/examples/applications.yaml#/InvalidApplicationStateTransitionExample'
+            commentRequired:
+              $ref: '../components/examples/applications.yaml#/ApplicationStateCommentRequiredExample'
+
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+
+    '403':
+      description: Доступ запрещен
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/common.yaml'
+          examples:
+            approverIsCreator:
+              $ref: '../components/examples/applications.yaml#/ApplicationApproverIsCreatorExample'
+            noApplicationAccess:
+              $ref: '../components/examples/applications.yaml#/ApplicationStateChangeForbiddenExample'
+
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+
     '500':
       $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'
 

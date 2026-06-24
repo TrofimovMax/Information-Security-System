@@ -33,8 +33,6 @@ paths:
     $ref: './paths/applications.yaml'
   /api/v1/applications/{id}:
     $ref: './paths/applications-id.yaml'
-  /api/v1/applications/{id}/state:
-    $ref: './paths/applications-id-state.yaml'
   /api/v1/applications/downloads:
     $ref: './paths/applications-downloads.yaml'
   /api/v1/applications/downloads/excel:

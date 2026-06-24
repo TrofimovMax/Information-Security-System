@@ -560,34 +560,59 @@ ApplicationDetailsResponse:
 
 UpdateApplicationRequest:
   type: object
+  required:
+    - number_application
+    - start_date
+    - end_date
+    - approver_id
+    - created_by
+    - course_id
+    - application_state_id
+    - student_ids
+
   properties:
-    course_id:
-      type: integer
-      nullable: true
-      description: ID курса
-      example: 5
+    number_application:
+      type: string
+      description: Номер заявки
+      example: APP-2026-0001
+
     start_date:
       type: string
       format: date
       nullable: true
       description: Дата начала обучения
-      example: '2026-07-01'
+
     end_date:
       type: string
       format: date
       nullable: true
       description: Дата окончания обучения
-      example: '2026-07-10'
+
+    approver_id:
+      type: integer
+      nullable: true
+      description: ID согласующего (users.id)
+
+    created_by:
+      type: integer
+      description: ID заявителя (employees.id)
+
+    course_id:
+      type: integer
+      nullable: true
+      description: ID курса
+
+    application_state_id:
+      type: integer
+      description: Статус заявки
+
     student_ids:
       type: array
       nullable: true
-      description: Список ID сотрудников, добавленных в заявку как ученики
+      description: Список сотрудников в заявке (employees.id)
       items:
         type: integer
-      example:
-        - 10
-        - 11
-        - 12
+
 
 DeleteApplicationDraftResponse:
   type: object
@@ -600,6 +625,11 @@ DeleteApplicationDraftResponse:
       example: Черновик заявки успешно удален
 
 ChangeApplicationStateRequest:
+  oneOf:
+    - $ref: '#/ChangeApplicationStateApproveRequest'
+    - $ref: '#/ChangeApplicationStateWithCommentRequest'
+
+ChangeApplicationStateApproveRequest:
   type: object
   required:
     - application_state_id
@@ -607,10 +637,21 @@ ChangeApplicationStateRequest:
     application_state_id:
       type: integer
       description: ID нового статуса заявки
+      example: 2
+
+ChangeApplicationStateWithCommentRequest:
+  type: object
+  required:
+    - application_state_id
+    - comment
+  properties:
+    application_state_id:
+      type: integer
+      description: ID нового статуса заявки
       example: 3
+
     comment:
       type: string
-      nullable: true
       description: Комментарий Согласующего
       example: Необходимо скорректировать список учеников
 
