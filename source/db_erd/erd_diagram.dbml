@@ -141,7 +141,7 @@ Table applications {
 
 Table courses {
   id bigserial [pk, not null]
-  external_couse_id varchar(255) [not null, unique]
+  external_course_id varchar(255) [not null, unique]
   name varchar(255) [not null]
   created_at timestamp [not null]
 }
