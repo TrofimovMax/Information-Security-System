@@ -137,11 +137,6 @@ alt Согласующий согласует заявку
         Portal --> LMS: 200 OK
         deactivate LMS
         deactivate Portal
-
-        ref over Approver, Requester, Portal, DB, Mail
-            Контрольная проверка заявки, сохранение статуса и уведомление участников
-            см. REF_UpdateStatusAndNotify
-        end ref
     else СДО отложило заявку
         LMS -> Portal: Передать решение по заявке\nPOST /api/v1/lms/webhooks/applications/{id}/state\nevent_type = postponed
         activate Portal
@@ -149,16 +144,12 @@ alt Согласующий согласует заявку
         Portal --> LMS: 200 OK
         deactivate LMS
         deactivate Portal
-        ref over Approver, Requester, Portal, DB, Mail
-            Контрольная проверка заявки, сохранение статуса и уведомление участников
-            см. REF_UpdateStatusAndNotify
-        end ref
     else #LightYellow Обработка ошибок ответа от СДО
         loop #LightPink 5 попыток
             LMS -> Portal: Передать некорректное событие по заявке\nPOST /api/v1/lms/webhooks/applications/{id}/state
             activate Portal
             activate LMS
-            Portal --> LMS: 500 Internal Server Error\nСобытие СДО не принято
+            Portal --> LMS: 500 Internal Server Error / 4xx: Client Error\nСобытие СДО не принято
             deactivate Portal
             deactivate LMS
         end
@@ -170,12 +161,12 @@ alt Согласующий согласует заявку
         LMS  --> Portal: 200 OK
         deactivate Portal
         deactivate LMS
-
-        ref over Approver, Requester, Portal, DB, Mail
-            Контрольная проверка заявки, сохранение статуса и уведомление участников
-            см. REF_UpdateStatusAndNotify
-        end ref
     end
+    ... Вне зависимости от решения СДО, заявка будет сохранена в соответствующем статусе...
+    ref over Approver, Requester, Portal, DB, Mail
+        Контрольная проверка заявки, сохранение статуса и уведомление участников
+        см. REF_UpdateStatusAndNotify
+    end ref
 else Согласующий отклоняет заявку
     Approver -> Portal: Инициировать отклонение заявки
     activate Portal
