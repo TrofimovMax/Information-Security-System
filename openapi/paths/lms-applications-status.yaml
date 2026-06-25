@@ -1,0 +1,28 @@
+post:
+  tags:
+    - LMS
+  summary: Получение статусов заявок в СДО
+  description: Передача номеров заявок в СДО и получение внешних идентификаторов и статусов
+  operationId: getLmsApplicationsStatus
+
+  security:
+    - LmsApiAuth: []
+
+  requestBody:
+    $ref: '../components/requestBodies/lms.yaml#/GetLmsApplicationsStatusRequestBody'
+
+  responses:
+    '200':
+      $ref: '../components/responses/lms.yaml#/GetLmsApplicationsStatus200Response'
+    '400':
+      $ref: '../components/responses/common.yaml#/BadRequestErrorResponse'
+    '401':
+      $ref: '../components/responses/common.yaml#/UnauthorizedErrorResponse'
+    '403':
+      $ref: '../components/responses/common.yaml#/ForbiddenErrorResponse'
+    '404':
+      $ref: '../components/responses/common.yaml#/NotFoundErrorResponse'
+    '429':
+      $ref: '../components/responses/common.yaml#/TooManyRequestsErrorResponse'
+    '500':
+      $ref: '../components/responses/common.yaml#/InternalServerErrorResponse'

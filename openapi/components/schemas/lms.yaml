@@ -354,3 +354,50 @@ CreateLmsApplicationAcceptedResponse:
       format: date-time
       description: Дата и время принятия заявки СДО
       example: '2026-06-17T10:00:05Z'
+
+GetLmsApplicationsStatusRequest:
+  type: object
+  required:
+    - application_numbers
+  properties:
+    application_numbers:
+      type: array
+      description: Номера заявок в портале
+      items:
+        type: string
+      example:
+        - APP-000001
+        - APP-000002
+
+GetLmsApplicationsStatusResponse:
+  type: object
+  required:
+    - applications
+  properties:
+    applications:
+      type: array
+      items:
+        $ref: '#/LmsApplicationStatus'
+
+LmsApplicationStatus:
+  type: object
+  required:
+    - application_number
+    - external_id
+    - status
+  properties:
+    application_number:
+      type: string
+      description: Номер заявки в портале
+      example: APP-000001
+
+    external_id:
+      type: string
+      nullable: true
+      description: Внешний идентификатор заявки в СДО
+      example: LMS-123456
+
+    status:
+      type: string
+      description: Статус заявки в СДО
+      example: IN_PROGRESS

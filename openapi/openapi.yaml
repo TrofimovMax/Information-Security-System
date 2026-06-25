@@ -47,6 +47,8 @@ paths:
     $ref: './paths/lms-courses.yaml'
   /api/v1/lms/applications:
     $ref: './paths/lms-applications.yaml'
+  /api/v1/lms/applications/status:
+    $ref: './paths/lms-applications-status.yaml'
 components:
   securitySchemes:
     BearerAuth:
@@ -262,6 +264,15 @@ components:
 
     LmsApplicationStateWebhookAcceptedResponse:
       $ref: './components/schemas/lms-webhooks.yaml#/LmsApplicationStateWebhookAcceptedResponse'
+
+    GetLmsApplicationsStatusRequest:
+      $ref: './components/schemas/lms.yaml#/GetLmsApplicationsStatusRequest'
+
+    GetLmsApplicationsStatusResponse:
+      $ref: './components/schemas/lms.yaml#/GetLmsApplicationsStatusResponse'
+
+    LmsApplicationStatus:
+      $ref: './components/schemas/lms.yaml#/LmsApplicationStatus'
 
     ErrorResponse:
       $ref: './components/schemas/common.yaml'

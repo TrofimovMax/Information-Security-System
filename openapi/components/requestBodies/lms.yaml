@@ -44,3 +44,11 @@ CreateLmsApplicationRequestBody:
               id: 1
               name: ООО Ромашка
         sent_at: '2026-06-17T10:00:00Z'
+
+GetLmsApplicationsStatusRequestBody:
+  description: Номера заявок для получения статусов в СДО
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../schemas/lms.yaml#/GetLmsApplicationsStatusRequest'
