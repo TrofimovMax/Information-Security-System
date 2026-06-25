@@ -20,7 +20,7 @@ activate DB
 DB --> Portal: Сведения о Заявителе\nи его организации
 deactivate DB
 
-Portal --> Requester: 200 CurrentUserResponse\nОтобразить форму создания заявки\nсо всеми полями и заполненными сведениями
+Portal --> Requester: 200 OK\nОтобразить форму создания заявки\nсо всеми полями и заполненными сведениями
 deactivate Portal
 
 opt Загрузка ранее сохранённого черновика
@@ -31,7 +31,7 @@ opt Загрузка ранее сохранённого черновика
     DB --> Portal: Данные черновиков
     deactivate DB
 
-    Portal --> Requester: 200 ApplicationsListResponse\nОтобразить список черновиков\nв виде списка
+    Portal --> Requester: 200 OK\nОтобразить список черновиков\nв виде списка
 
     Requester -> Portal: Выбрать черновик из списка\nGET /api/v1/applications/{id}
 
@@ -40,7 +40,7 @@ opt Загрузка ранее сохранённого черновика
     DB --> Portal: Данные выбранного черновика
     deactivate DB
 
-    Portal --> Requester: 200 ApplicationDetailsResponse\nЗагрузить данные черновика
+    Portal --> Requester: 200 OK\nЗагрузить данные черновика
     deactivate Portal
 end
 
@@ -54,18 +54,18 @@ activate LMS
 deactivate Portal
 deactivate LMS
 alt Запрос выполнен корректно
-    LMS --> Portal: 200 LmsCoursesListResponse\nНайденные актуальные курсы
+    LMS --> Portal: 200 OK\nНайденные актуальные курсы
     activate LMS
     activate Portal
     deactivate LMS
-    Portal --> Requester: 200 LmsCoursesListResponse\nОтобразить найденные курсы
+    Portal --> Requester: 200 OK\nОтобразить найденные курсы
     deactivate Portal
 else #LightPink Некорректные параметры запроса
-    LMS --> Portal: 400 ErrorResponse\nОшибка получения списка курсов
+    LMS --> Portal: 400 Bad Request\nОшибка получения списка курсов
     activate LMS
     activate Portal
     deactivate LMS
-    Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке
+    Portal --> Requester: 400 Bad Request\nОтобразить сообщение об ошибке
     deactivate Portal
 end
 
@@ -93,9 +93,9 @@ loop Повторяется необходимое количество раз
     deactivate DB
 
     alt Запрос выполнен корректно
-        Portal --> Requester: 200 StudentsListResponse\nОтобразить список найденных учеников
+        Portal --> Requester: 200 OK\nОтобразить список найденных учеников
     else #LightPink Некорректные параметры поиска
-        Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке поиска
+        Portal --> Requester: 400 Bad Request\nОтобразить сообщение об ошибке поиска
         deactivate Portal
     end
 
@@ -120,9 +120,9 @@ loop Повторяется необходимое количество раз
         Requester -> Portal: Нажать «Скачать шаблон»\nGET /api/v1/applications/downloads
         activate Portal
         alt Шаблон успешно сформирован
-            Portal --> Requester: 200 DownloadApplicationStudentsTemplate200Response\nПередать шаблон Excel-файла
+            Portal --> Requester: 200 OK\nПередать шаблон Excel-файла
         else #LightPink Ошибка запроса
-            Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке скачивания
+            Portal --> Requester: 400 Bad Request\nОтобразить сообщение об ошибке скачивания
             deactivate Portal
         end
     end
@@ -136,10 +136,10 @@ loop Повторяется необходимое количество раз
             Portal --> Portal: Результат проверки файла
 
             alt #LightPink В загруженном файле обнаружены ошибки
-                Portal --> Requester: 400 ErrorResponse\nВернуть ошибку с деталями,\nкоторые требуют доработки
+                Portal --> Requester: 400 Bad Request\nВернуть ошибку с деталями,\nкоторые требуют доработки
                 Portal --> Requester: Вернуть к выбору файла\nдля повторной загрузки
             else #White Загруженный файл прошёл проверку
-                Portal --> Requester: 200 UploadStudentsExcelResponse\nОтобразить загруженный список учеников
+                Portal --> Requester: 200 OK\nОтобразить загруженный список учеников
                 deactivate Portal
             end
         end
@@ -161,10 +161,10 @@ Portal -> Portal: Проверить обязательные поля,\nфор�
 Portal --> Portal: Результат проверки заявки
 
 alt #LightPink Обнаружены незаполненные обязательные поля
-    Portal --> Requester: 400 ErrorResponse\nСформировать сообщение\nс перечнем незаполненных полей
+    Portal --> Requester: 400 Bad Request\nСформировать сообщение\nс перечнем незаполненных полей
     Portal --> Requester: Визуально выделить\nнезаполненные обязательные поля
 else #LightPink Обнаружены дубли в списке учеников
-    Portal --> Requester: 400 ErrorResponse\nСформировать сообщение\nо найденных дублях
+    Portal --> Requester: 400 Bad Request\nСформировать сообщение\nо найденных дублях
     Portal --> Requester: Визуально выделить\nдублирующиеся записи
 else #White Заявка валидна
     Portal -> DB: Сохранить заявку\nс соответствующим статусом
@@ -177,7 +177,7 @@ else #White Заявка валидна
     Mail --> Approver: Email о новой заявке
     deactivate Mail
 
-    Portal --> Requester: 200 CreateApplicationResponse\nСообщение «Заявка успешно отправлена»
+    Portal --> Requester: 200 OK\nСообщение «Заявка успешно отправлена»
     deactivate Portal
 end
 
@@ -189,14 +189,14 @@ opt Сохранение заявки как черновика
     Portal --> Portal: Доступные данные заявки проверены
 
     alt #LightPink Данные черновика не соответствуют допустимой модели
-        Portal --> Requester: 400 ErrorResponse\nОтобразить сообщение об ошибке сохранения черновика
+        Portal --> Requester: 400 Bad Request\nОтобразить сообщение об ошибке сохранения черновика
     else #White Черновик может быть сохранён
         Portal -> DB: Сохранить заявку\nс соответствующим статусом
         activate DB
         DB --> Portal: Черновик сохранён
         deactivate DB
 
-        Portal --> Requester: 200 CreateApplicationResponse\nСообщение «Черновик сохранён»
+        Portal --> Requester: 200 OK\nСообщение «Черновик сохранён»
         deactivate Portal
     end
 end

@@ -9,7 +9,7 @@ autonumber
 
 == Открытие списка заявок ==
 
-User -> Portal: Перейти в модуль\n«Заявки на обучение»\nGET /api/v1/users/current\nGET /api/v1/applications?page={page}&size={size}
+User -> Portal: Перейти в модуль «Заявки на обучение»\nGET /api/v1/users/current\nGET /api/v1/applications?page={page}&size={size}
 activate Portal
 
 Portal -> DB: Запросить роль пользователя,\nправа доступа и доступные заявки
@@ -18,13 +18,12 @@ DB --> Portal: Роль пользователя,\nправа доступа и 
 deactivate DB
 
 alt Запрос выполнен корректно
-    Portal --> User: 200 CurrentUserResponse\n200 ApplicationsListResponse\nОтобразить заявки\nв табличной форме и доступные действия
+    Portal --> User: 200 OK\nОтобразить заявки\nв табличной форме и доступные действия
     Portal --> User: Отобразить выбор количества заявок\nна странице и пагинацию
 else #LightPink Некорректные параметры запроса
-    Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке загрузки списка заявок
+    Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке загрузки списка заявок
+    deactivate Portal
 end
-
-deactivate Portal
 
 == Работа со списком заявок ==
 
@@ -37,14 +36,14 @@ opt Поиск по списку заявок
         DB --> Portal: Найденные заявки
         deactivate DB
         alt Запрос выполнен корректно и заявки найдены
-            Portal --> User: 200 ApplicationsListResponse\nОтобразить результат поиска
+            Portal --> User: 200 OK\nОтобразить результат поиска
         else #LightYellow Запрос выполнен корректно, но заявки не найдены
-            Portal --> User: 200 ApplicationsListResponse\nОтобразить пустой результат поиска
+            Portal --> User: 200 OK\nОтобразить пустой результат поиска
             Portal --> User: Сообщение «Заявки по запросу не найдены»
             User -> Portal: Изменить поисковый запрос\nили сбросить поиск
             Portal --> User: Принять обновлённые параметры поиска
         else #LightPink Некорректные параметры поиска
-            Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке поиска
+            Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке поиска
             deactivate Portal
         end
     end
@@ -59,14 +58,14 @@ opt Фильтрация списка заявок
         DB --> Portal: Отфильтрованный список заявок
         deactivate DB
         alt Запрос выполнен корректно и заявки найдены
-            Portal --> User: 200 ApplicationsListResponse\nОтобразить отфильтрованный список
+            Portal --> User: 200 OK\nОтобразить отфильтрованный список
         else #LightYellow Запрос выполнен корректно, но заявки не найдены
-            Portal --> User: 200 ApplicationsListResponse\nОтобразить пустой список
+            Portal --> User: 200 OK\nОтобразить пустой список
             Portal --> User: Сообщение «Заявки по выбранным фильтрам не найдены»
             User -> Portal: Изменить параметры фильтрации\nили сбросить фильтры
             Portal --> User: Принять обновлённые параметры фильтрации
         else #LightPink Некорректные параметры фильтрации
-            Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке фильтрации
+            Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке фильтрации
             deactivate Portal
         end
     end
@@ -80,9 +79,9 @@ opt Сортировка списка заявок
     DB --> Portal: Отсортированный список заявок
     deactivate DB
     alt Параметры сортировки корректны
-        Portal --> User: 200 ApplicationsListResponse\nОбновить табличное представление
+        Portal --> User: 200 OK\nОбновить табличное представление
     else #LightPink Некорректные параметры сортировки
-        Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке сортировки
+        Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке сортировки
         deactivate Portal
     end
 end
@@ -95,9 +94,9 @@ opt Пагинация списка заявок
     DB --> Portal: Страница списка заявок
     deactivate DB
     alt Параметры пагинации корректны
-        Portal --> User: 200 ApplicationsListResponse\nОтобразить выбранную страницу\nсписка заявок
+        Portal --> User: 200 OK\nОтобразить выбранную страницу\nсписка заявок
     else #LightPink Некорректные параметры пагинации
-        Portal --> User: 400 ErrorResponse\nОтобразить сообщение об ошибке пагинации
+        Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке пагинации
         deactivate Portal
     end
 end
@@ -125,10 +124,10 @@ opt Скачивание списка
     Portal -> Portal: Сформировать файл выгрузки
     alt Файл сформирован
         Portal --> Portal: Файл выгрузки сформирован
-        Portal --> User: 200 DownloadApplicationsExcel200Response\nПередать файл для скачивания
+        Portal --> User: 200 OK\nПередать файл для скачивания
     else #LightPink Ошибка формирования файла или некорректные параметры
         Portal --> Portal: Файл выгрузки не сформирован
-        Portal --> User: 400 ErrorResponse\nСообщение об ошибке формирования файла
+        Portal --> User: 400 Bad Request\nСообщение об ошибке формирования файла
         deactivate Portal
     end
 end
@@ -143,9 +142,9 @@ opt Скачивание выбранных заявок
         activate DB
         DB --> Portal: Данные выбранных заявок
         deactivate DB
-        Portal --> User: 200 DownloadApplications200Response\nПередать файл или архив
+        Portal --> User: 200 OK\nПередать файл или архив
     else #LightPink Одна или несколько заявок недоступны
-        Portal --> User: 400 ErrorResponse\nСообщение об ограничении доступа
+        Portal --> User: 403 Forbidden\nСообщение об ограничении доступа
         deactivate Portal
     end
 end
@@ -163,11 +162,11 @@ alt Доступ к заявке есть
     activate DB
     DB --> Portal: Данные заявки
     deactivate DB
-    Portal --> User: 200 ApplicationDetailsResponse\nОткрыть карточку заявки
+    Portal --> User: 200 OK\nОткрыть карточку заявки
 else #LightPink Доступа к заявке нет
     Portal -> Portal: Подготовить отказ\nв открытии карточки заявки
     Portal --> Portal: Отказ подготовлен
-    Portal --> User: 400 ErrorResponse\nЗапретить открытие карточки\nи отобразить сообщение\nоб отсутствии прав доступа
+    Portal --> User: 403 Forbidden\nЗапретить открытие карточки\nи отобразить сообщение\nоб отсутствии прав доступа
     deactivate Portal
 end
 
@@ -186,14 +185,14 @@ opt Удаление черновика из списка заявок
         activate DB
         DB --> Portal: Черновик удалён
         deactivate DB
-        Portal --> User: 200 DeleteApplicationDraftResponse\nСообщение «Черновик удалён»
+        Portal --> User: 200 OK\nСообщение «Черновик удалён»
         Portal -> DB: Запросить обновлённый список заявок\nGET /api/v1/applications?page={page}&size={size}
         activate DB
         DB --> Portal: Обновлённый список заявок
         deactivate DB
-        Portal --> User: 200 ApplicationsListResponse\nОбновить список заявок
+        Portal --> User: 200 OK\nОбновить список заявок
     else #LightPink Заявка не является черновиком
-        Portal --> User: 400 ErrorResponse\nСообщение «Удалить можно только заявку\nв статусе Черновик»
+        Portal --> User: 400 Bad Request\nСообщение «Удалить можно только заявку\nв статусе Черновик»
         deactivate Portal
     end
 end

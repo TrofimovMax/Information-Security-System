@@ -28,17 +28,17 @@ alt Заявка найдена и доступна для просмотра
     Portal --> Portal: Результат проверки статуса заявки
 
     alt #LightPink Согласующий является создателем заявки
-        Portal --> Approver: 200 ApplicationDetailsResponse\nОткрыть карточку заявки
+        Portal --> Approver: 200 OK\nОткрыть карточку заявки
         Portal --> Approver: Не отображать действия\nдля рассмотрения заявки
     else #LightPink Заявка находится в статусе,\nнедоступном для рассмотрения
-        Portal --> Approver: 200 ApplicationDetailsResponse\nОткрыть карточку заявки\nтолько для просмотра
+        Portal --> Approver: 200 OK\nОткрыть карточку заявки\nтолько для просмотра
         Portal --> Approver: Не отображать действия\nдля рассмотрения заявки
     else #White Заявка доступна для рассмотрения
-        Portal --> Approver: 200 ApplicationDetailsResponse\nОткрыть карточку заявки
+        Portal --> Approver: 200 OK\nОткрыть карточку заявки
         Portal --> Approver: Отобразить действия\nдля рассмотрения заявки
     end
 else #LightPink Некорректный запрос или заявка недоступна
-    Portal --> Approver: 400 ErrorResponse\nОтобразить сообщение об ошибке\nоткрытия карточки заявки
+    Portal --> Approver: 404 Not Found
     deactivate Portal
 end
 
@@ -58,13 +58,13 @@ opt Скачать заявку
         Portal -> Portal: Сформировать файл заявки
 
         alt Файл сформирован
-            Portal --> Approver: 200 DownloadApplications200Response\nПередать файл заявки
+            Portal --> Approver: 200 OK\nПередать файл заявки
         else #LightPink Ошибка формирования файла
-            Portal --> Approver: 400 ErrorResponse\nСообщение об ошибке скачивания
+            Portal --> Approver: 500 Internal Server Error\nСообщение об ошибке скачивания
         end
 
     else #LightPink Заявка недоступна для скачивания
-        Portal --> Approver: 400 ErrorResponse\nСообщение об отсутствии доступа\nк скачиванию заявки
+        Portal --> Approver: 403 Forbidden\nСообщение об отсутствии доступа\nк скачиванию заявки
         deactivate Portal
     end
 end
@@ -79,169 +79,149 @@ end ref
 == Принятие решения по заявке ==
 
 alt Согласующий согласует заявку
-    Approver -> Portal++: Инициировать согласование заявки\nPOST /api/v1/applications/{id}/state\nChangeApplicationStateRequest\napplication_state_id = «Согласована»
+    Approver -> Portal: Инициировать согласование заявки\nPATCH /api/v1/applications/{id}/state\napplication_state_id = «Согласована»
+    activate Portal
     deactivate Portal
     ref over Approver, Requester, Portal, DB, Mail
         Контрольная проверка заявки, сохранение статуса и уведомление участников
         см. REF_UpdateStatusAndNotify
     end ref
 
-    == Передача согласованной заявки в СДО ==
-    Portal -> LMS: Передать согласованную заявку\nPOST /api/v1/lms/applications\nCreateLmsApplicationRequest
+    Portal --> Approver: 200 OK Отобразить заявку\nс соответствующим статусом
     activate Portal
-    activate LMS
-
-    alt СДО приняло заявку на обработку
-        LMS --> Portal: CreateLmsApplicationAcceptedResponse
-        deactivate LMS
-
-        Portal -> DB: Зафиксировать успешную\nпередачу заявки в СДО
-        activate DB
-        DB --> Portal: Передача заявки в СДО зафиксирована
-        deactivate DB
-
-        Portal --> Approver: Отобразить заявку\nс соответствующим статусом\nи признаком передачи в СДО
-    else #LightPink Нет доступа к СДО или ошибка СДО
-        LMS --> Portal: ErrorResponse
-        deactivate LMS
-        deactivate Portal
-
-        ref over Approver, Requester, Portal, DB, Mail
-            Контрольная проверка заявки, сохранение статуса и уведомление участников
-            см. REF_UpdateStatusAndNotify
-        end ref
-
-        Portal --> Approver: Отобразить заявку\nс соответствующим статусом
+    deactivate Portal
+    == Передача согласованной заявки в СДО ==
+    loop 5 попыток
+        Portal -> LMS: Передать согласованную заявку\nPOST /api/v1/lms/applications\nCreateLmsApplicationRequest
         activate Portal
+        activate LMS
         deactivate Portal
-        break Процесс рассмотрения заявки прерван\nиз-за ошибки передачи в СДО
+        alt СДО приняло заявку на обработку
+            LMS --> Portal: 202 Accepted
+            activate Portal
+            deactivate Portal
+        else #LightPink Нет доступа к СДО или ошибка СДО
+            LMS --> Portal: 500 Internal Server Error / 4xx: Client Error
+            activate Portal
+            deactivate LMS
+            deactivate Portal
         end
     end
 
-    ... В течение 5 рабочих дней\nс момента создания заявки\nСДО проверяет заявку ...
+    ... Вне зависимости от того, передалась заявка или нет, она обновиться на соответствующий статус и об этом узнает Согласующий ...
+    ref over Approver, Requester, Portal, DB, Mail
+        Контрольная проверка заявки, сохранение статуса и уведомление участников
+        см. REF_UpdateStatusAndNotify
+    end ref
 
     == Получение решения от СДО ==
 
+    ... В течение 5 рабочих дней\nс момента создания заявки\nСДО проверяет заявку ...
     alt СДО приняло заявку
-        LMS -> Portal: Передать решение по заявке\nPOST /api/v1/lms/webhooks/applications/{id}/state\nLmsApplicationStateWebhookRequest\nevent_type = accepted
+        LMS -> Portal: Передать решение по заявке\nPOST /api/v1/lms/webhooks/applications/{id}/state\nevent_type = accepted
         activate LMS
         activate Portal
+        Portal --> LMS: 202 Accepted
         deactivate LMS
         deactivate Portal
         ref over Approver, Requester, Portal, DB, Mail
             Контрольная проверка заявки, сохранение статуса и уведомление участников
             см. REF_UpdateStatusAndNotify
         end ref
-        Portal --> LMS++: LmsApplicationStateWebhookAcceptedResponse
-        activate Portal
-        deactivate LMS
-        Portal --> Approver: Отобразить заявку\nс соответствующим статусом
-        deactivate Portal
 
         ... Проходит обучение по заявке ...
         
-        LMS -> Portal: Передать событие о завершении обучения\nPOST /api/v1/lms/webhooks/applications/{id}/state\nLmsApplicationStateWebhookRequest\nevent_type = completed
+        LMS -> Portal: Передать событие о завершении обучения\nPOST /api/v1/lms/webhooks/applications/{id}/state\nevent_type = completed
         activate Portal
         activate LMS
+        Portal --> LMS: 200 OK
         deactivate LMS
         deactivate Portal
-        ref over Approver, Requester, Portal, DB, Mail
-            Контрольная проверка заявки, сохранение статуса и уведомление участников
-            см. REF_UpdateStatusAndNotify
-        end ref
-
-        Portal --> LMS: LmsApplicationStateWebhookAcceptedResponse
-        activate LMS
-        activate Portal
-        deactivate LMS
-        Portal --> Approver: Отобразить заявку\nс соответствующим статусом
-        deactivate Portal
-        == Архивирование заявки ==
-
-        ... Через 3 года после завершения заявки ...
 
         ref over Approver, Requester, Portal, DB, Mail
             Контрольная проверка заявки, сохранение статуса и уведомление участников
             см. REF_UpdateStatusAndNotify
         end ref
-
     else СДО отложило заявку
-        LMS -> Portal: Передать решение по заявке\nPOST /api/v1/lms/webhooks/applications/{id}/state\nLmsApplicationStateWebhookRequest\nevent_type = postponed
+        LMS -> Portal: Передать решение по заявке\nPOST /api/v1/lms/webhooks/applications/{id}/state\nevent_type = postponed
         activate Portal
         activate LMS
+        Portal --> LMS: 200 OK
         deactivate LMS
         deactivate Portal
         ref over Approver, Requester, Portal, DB, Mail
             Контрольная проверка заявки, сохранение статуса и уведомление участников
             см. REF_UpdateStatusAndNotify
         end ref
+    else #LightYellow Обработка ошибок ответа от СДО
+        loop #LightPink 5 попыток
+            LMS -> Portal: Передать некорректное событие по заявке\nPOST /api/v1/lms/webhooks/applications/{id}/state
+            activate Portal
+            activate LMS
+            Portal --> LMS: 500 Internal Server Error\nСобытие СДО не принято
+            deactivate Portal
+            deactivate LMS
+        end
 
-        Portal --> LMS: LmsApplicationStateWebhookAcceptedResponse
-        activate LMS
-        activate Portal
-        deactivate LMS
-        Portal --> Approver: Отобразить заявку\nс соответствующим статусом
-        deactivate Portal
-    else #LightPink СДО передало некорректное событие
-        LMS -> Portal: Передать некорректное событие по заявке\nPOST /api/v1/lms/webhooks/applications/{id}/state\nLmsApplicationStateWebhookRequest
+        ...Прошло 2 недели...
+        Portal -> LMS: GET Состояние заявок и application_ids
         activate Portal
         activate LMS
-        Portal --> LMS: ErrorResponse\nСобытие СДО не принято
+        LMS  --> Portal: 200 OK
         deactivate Portal
         deactivate LMS
+
+        ref over Approver, Requester, Portal, DB, Mail
+            Контрольная проверка заявки, сохранение статуса и уведомление участников
+            см. REF_UpdateStatusAndNotify
+        end ref
     end
 else Согласующий отклоняет заявку
-
     Approver -> Portal: Инициировать отклонение заявки
     activate Portal
-    Portal --> Approver: Запросить комментарий\nс причиной отклонения
-    Approver -> Portal: Ввести комментарий\nPOST /api/v1/applications/{id}/state\nChangeApplicationStateRequest\napplication_state_id = «Отклонена»
-    Portal -> Portal: Проверить наличие комментария
-    Portal --> Portal: Результат проверки комментария
+    Portal --> Approver: Отобразить поле ввода комментария\nи заблокировать кнопку отправки
+    Approver -> Portal: Ввести комментарий\nс причиной отклонения
+    Portal -> Portal: Проверить заполнение комментария
+    Portal --> Portal: Комментарий заполнен
+    Portal --> Approver: Разблокировать кнопку отправки
+    Approver -> Portal: Подтвердить отклонение заявки\nPOST /api/v1/applications/{id}/state\napplication_state_id = «Отклонена»
+    deactivate Portal
 
-    alt #LightPink Комментарий не указан
-        Portal --> Approver: 400 ErrorResponse\nСообщение «Необходимо указать\nпричину отклонения»
-        deactivate Portal
-    else #White Комментарий указан
-        ref over Approver, Requester, Portal, DB, Mail
-            Контрольная проверка заявки, сохранение статуса и уведомление участников
-            см. REF_UpdateStatusAndNotify
-        end ref
+    ref over Approver, Requester, Portal, DB, Mail
+        Контрольная проверка заявки, сохранение статуса и уведомление участников
+        см. REF_UpdateStatusAndNotify
+    end ref
 
-        Portal --> Approver: Отобразить заявку\nс соответствующим статусом
-        activate Portal
-        deactivate Portal
-
-        == Архивирование отклонённой заявки ==
-
-        ... Через 3 года после отклонения заявки ...
-
-        ref over Approver, Requester, Portal, DB, Mail
-            Контрольная проверка заявки, сохранение статуса и уведомление участников
-            см. REF_UpdateStatusAndNotify
-        end ref
-    end
+    Portal --> Approver: 200 OK Отобразить заявку\nс соответствующим статусом
+    activate Portal
+    deactivate Portal
 else Согласующий отправляет заявку на корректировку
     Approver -> Portal: Инициировать отправку заявки\nна корректировку
     activate Portal
-    Portal --> Approver: Запросить комментарий\nс деталями корректировки
-    Approver -> Portal: Ввести комментарий\nPOST /api/v1/applications/{id}/state\nChangeApplicationStateRequest\napplication_state_id = «На корректировке»
-    Portal -> Portal: Проверить наличие комментария
-    Portal --> Portal: Результат проверки комментария
-
-    alt #LightPink Комментарий не указан
-        Portal --> Approver: 400 ErrorResponse\nСообщение «Необходимо указать\nдетали корректировки»
-        deactivate Portal
-    else #White Комментарий указан
-        ref over Approver, Requester, Portal, DB, Mail
-            Контрольная проверка заявки, сохранение статуса и уведомление участников
-            см. REF_UpdateStatusAndNotify
-        end ref
-        
-        Portal --> Approver: Отобразить заявку\nс соответствующим статусом
-        activate Portal
-        deactivate Portal
-    end
+    Portal --> Approver: Отобразить поле ввода комментария\nи заблокировать кнопку отправки
+    Approver -> Portal: Ввести комментарий
+    Portal -> Portal: Проверить заполнение комментария
+    Portal --> Portal: Комментарий заполнен
+    Portal --> Approver: Разблокировать кнопку отправки
+    Approver -> Portal: Подтвердить отправку заявки\nна корректировку\nPOST /api/v1/applications/{id}/state\napplication_state_id = «На корректировке»
+    deactivate Portal
+    ref over Approver, Requester, Portal, DB, Mail
+        Контрольная проверка заявки, сохранение статуса и уведомление участников
+        см. REF_UpdateStatusAndNotify
+    end ref
+    
+    Portal --> Approver: 200 OK Отобразить заявку\nс соответствующим статусом
+    activate Portal
+    deactivate Portal
 end
+
+== Архивирование заявки ==
+
+... Через 3 года после завершения заявки ...
+
+ref over Approver, Requester, Portal, DB, Mail
+    Контрольная проверка заявки, сохранение статуса и уведомление участников
+    см. REF_UpdateStatusAndNotify
+end ref
 
 @enduml

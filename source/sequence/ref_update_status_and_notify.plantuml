@@ -12,7 +12,7 @@ Portal -> Portal: Выполнить контрольную проверку з�
 Portal --> Portal: Результат контрольной проверки
 
 alt #LightPink Контрольная проверка не пройдена
-    Portal --> Approver: 400 ErrorResponse\nИзменение статуса заявки отклонено
+    Portal --> Approver: 400 Bad Request\nИзменение статуса заявки отклонено
     deactivate Portal
 else #White Контрольная проверка пройдена
     Portal -> DB: Сохранить заявку\nс новым статусом
@@ -33,7 +33,7 @@ else #White Контрольная проверка пройдена
 
     Portal --> Requester: Уведомление об изменении\nстатуса заявки
     activate Portal
-    Portal --> Approver: 200 ChangeApplicationState200Response\nУведомление об успешном\nизменении статуса заявки
+    Portal --> Approver: 200 OK\nУведомление об успешном\nизменении статуса заявки
     deactivate Portal
 end
 
