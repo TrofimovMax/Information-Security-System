@@ -1,0 +1,40 @@
+DuplicateStudentsInApplicationExample:
+  summary: Обнаружены дубли студентов
+  value:
+    code: APPLICATION_VALIDATION_FAILED
+    message: Ошибка бизнес-валидации
+    errors:
+      - field: students
+        message: Обнаружены дубли
+        rows: [3, 8]
+
+StudentsNotFoundInApplicationExample:
+  summary: Студенты не найдены
+  value:
+    code: APPLICATION_VALIDATION_FAILED
+    message: Ошибка бизнес-валидации
+    errors:
+      - field: student_ids
+        message: Указанные сотрудники не найдены
+        rows: [1, 2]
+
+CourseNotFoundInApplicationExample:
+  summary: Курс не найден
+  value:
+    code: APPLICATION_VALIDATION_FAILED
+    message: Ошибка бизнес-валидации
+    errors:
+      - field: course_id
+        message: Курс с указанным ID не существует
+
+ValidationErrorExample:
+  summary: Общая ошибка валидации
+  value:
+    code: APPLICATION_VALIDATION_FAILED
+    message: Ошибка бизнес-валидации
+    errors:
+      - field: courseName
+        message: Обязательное поле не заполнено
+      - field: students
+        rows: [3, 8]
+        message: Обнаружены дубли

@@ -83,3 +83,84 @@ paths:
 
         '500':
           $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
+
+    post:
+      tags:
+        - Applications
+      summary: Создать заявку (черновик или на рассмотрение)
+      description: >
+        Создаёт заявку на обучение.
+        Поддерживает создание черновика и отправку на рассмотрение.
+      operationId: createApplication
+      security:
+        - bearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "./models.yaml#/components/schemas/CreateApplicationRequest"
+
+      responses:
+        '200':
+          description: Заявка успешно создана или сохранена как черновик
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - message
+                properties:
+                  number_application:
+                    type: string
+                    description: Номер заявки
+                    example: APP-2026-0001
+
+                  message:
+                    type: string
+                    description: Результат операции
+                    example: Заявка успешно создана
+              examples:
+                created:
+                  summary: Заявка отправлена на рассмотрение
+                  value:
+                    number_application: APP-2026-0001
+                    message: Заявка успешно создана
+
+                draft:
+                  summary: Черновик создан
+                  value:
+                    number_application: APP-2026-0002
+                    message: Черновик создан
+
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: "./errors.yaml#/components/schemas/ApplicationErrorResponse"
+              examples:
+                duplicateStudents:
+                  $ref: "./examples.yaml#/DuplicateStudentsInApplicationExample"
+                studentsNotFound:
+                  $ref: "./examples.yaml#/StudentsNotFoundInApplicationExample"
+                courseNotFound:
+                  $ref: "./examples.yaml#/CourseNotFoundInApplicationExample"
+                validationError:
+                  $ref: "./examples.yaml#/ValidationErrorExample"
+
+        '401':
+          $ref: "../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+
+        '404':
+          $ref: "../common/responses.yaml#/components/responses/NotFoundErrorResponse"
+
+        '429':
+          $ref: "../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
+
+        '500':
+          $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"

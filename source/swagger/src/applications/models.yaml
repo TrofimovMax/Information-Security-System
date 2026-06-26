@@ -96,3 +96,73 @@ components:
             $ref: "#/components/schemas/Application"
         pagination:
           $ref: "../common/models.yaml#/components/schemas/PaginationMeta"
+
+    # =========================
+    # REQUEST BODIES
+    # =========================
+
+    CreateApplicationRequest:
+      oneOf:
+        - $ref: "#/components/schemas/CreateApplicationSubmitRequest"
+        - $ref: "#/components/schemas/CreateApplicationDraftRequest"
+
+    CreateApplicationSubmitRequest:
+      type: object
+      required:
+        - course_id
+        - start_date
+        - end_date
+        - application_state_id
+        - student_ids
+
+      properties:
+
+        course_id:
+          $ref: "../courses/models.yaml#/components/schemas/CourseId"
+
+        start_date:
+          type: string
+          format: date
+
+        end_date:
+          type: string
+          format: date
+
+        application_state_id:
+          $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
+
+        student_ids:
+          type: array
+          items:
+            type: integer
+          minItems: 1
+
+    CreateApplicationDraftRequest:
+      type: object
+      required:
+        - application_state_id
+
+      properties:
+
+        course_id:
+          $ref: "../courses/models.yaml#/components/schemas/CourseId"
+          nullable: true
+
+        start_date:
+          type: string
+          format: date
+          nullable: true
+
+        end_date:
+          type: string
+          format: date
+          nullable: true
+
+        application_state_id:
+          $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
+
+        student_ids:
+          type: array
+          items:
+            type: integer
+          nullable: true
