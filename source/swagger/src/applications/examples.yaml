@@ -28,16 +28,21 @@ CourseNotFoundInApplicationExample:
         message: Курс с указанным ID не существует
 
 ValidationErrorExample:
-  summary: Общая ошибка валидации
+  summary: Ошибка валидации обязательных полей
   value:
     code: APPLICATION_VALIDATION_FAILED
     message: Ошибка бизнес-валидации
     errors:
-      - field: courseName
+      - field: course_id
         message: Обязательное поле не заполнено
-      - field: students
-        rows: [3, 8]
-        message: Обнаружены дубли
+      - field: start_date
+        message: Обязательное поле не заполнено
+      - field: end_date
+        message: Обязательное поле не заполнено
+      - field: application_state_id
+        message: Обязательное поле не заполнено
+      - field: student_emails
+        message: Обязательное поле не заполнено
 
 ApplicationUpdateForbiddenNotCreator:
   summary: Редактирование недоступно — пользователь не является создателем заявки

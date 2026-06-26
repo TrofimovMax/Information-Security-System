@@ -211,26 +211,12 @@ paths:
                   phone: "+79000000000"
                 approver:
                   id: 2
-                  first_name: Пётр
-                  last_name: Петров
+                  full_name: Петров Петр Петрович
+                  email: petrov@example.com
+                  phone: "+79000000000"
                 organization:
                   id: 1
                   name: ООО Ромашка
-                students:
-                  - id: 10
-                    first_name: Иван
-                    last_name: Иванов
-                    email: ivanov@example.com
-                    phone: "+79000000000"
-                    position:
-                      id: 1
-                      name: Backend-разработчик
-                    departament:
-                      id: 1
-                      name: Отдел разработки
-                    organization:
-                      id: 1
-                      name: ООО Ромашка
                 comments:
                   - content: Заявка требует корректировки
                     created_by:

@@ -130,7 +130,7 @@ components:
         - start_date
         - end_date
         - application_state_id
-        - student_ids
+        - student_emails
 
       properties:
 
@@ -148,11 +148,11 @@ components:
         application_state_id:
           $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
 
-        student_ids:
+        student_emails:
           type: array
           items:
-            type: integer
-          minItems: 1
+            $ref: "../employees/models.yaml#/components/schemas/EmployeeEmail"
+          nullable: true
 
     CreateApplicationDraftRequest:
       type: object
@@ -178,10 +178,10 @@ components:
         application_state_id:
           $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
 
-        student_ids:
+        student_emails:
           type: array
           items:
-            type: integer
+            $ref: "../employees/models.yaml#/components/schemas/EmployeeEmail"
           nullable: true
 
     UpdateApplicationRequest:
@@ -221,10 +221,10 @@ components:
         application_state_id:
           $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
 
-        student_ids:
+        student_emails:
           type: array
           items:
-            type: integer
+            $ref: "../employees/models.yaml#/components/schemas/EmployeeEmail"
           nullable: true
 
     UpdateApplicationStrictRequest:
@@ -235,7 +235,7 @@ components:
         - start_date
         - end_date
         - application_state_id
-        - student_ids
+        - student_emails
 
       properties:
 
@@ -260,8 +260,8 @@ components:
         application_state_id:
           $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
 
-        student_ids:
+        student_emails:
           type: array
           items:
-            type: integer
-          minItems: 1
+            $ref: "../employees/models.yaml#/components/schemas/EmployeeEmail"
+          nullable: true
