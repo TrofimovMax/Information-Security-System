@@ -114,8 +114,24 @@ components:
               items:
                 $ref: "../comments/models.yaml#/components/schemas/CommentResponse"
 
+    PatchApplicationStateResponse:
+      type: object
+      description: Результат изменения статуса заявки
+      required:
+        - message
+      properties:
+
+        message:
+          type: string
+          description: Сообщение результата операции
+          example: Решение по заявке принято
+
     # =========================
     # REQUEST BODIES
+    # =========================
+
+    # =========================
+    # POST REQUESTS
     # =========================
 
     CreateApplicationRequest:
@@ -183,6 +199,10 @@ components:
           items:
             $ref: "../employees/models.yaml#/components/schemas/EmployeeEmail"
           nullable: true
+
+    # =========================
+    # PUT REQUESTS
+    # =========================
 
     UpdateApplicationRequest:
       oneOf:
@@ -265,3 +285,40 @@ components:
           items:
             $ref: "../employees/models.yaml#/components/schemas/EmployeeEmail"
           nullable: true
+
+    # =========================
+    # PATCH REQUESTS
+    # =========================
+
+    PatchApplicationStateRequest:
+      oneOf:
+        - $ref: "#/components/schemas/ApproveApplicationRequest"
+        - $ref: "#/components/schemas/RejectApplicationRequest"
+
+
+    ApproveApplicationRequest:
+      type: object
+      description: Согласование заявки
+      required:
+        - application_state_id
+      properties:
+
+        application_state_id:
+          $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
+
+
+    RejectApplicationRequest:
+      type: object
+      description: Отклонение заявки или отправка на корректировку
+      required:
+        - application_state_id
+        - comment
+      properties:
+
+        application_state_id:
+          $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
+
+        comment:
+          type: string
+          description: Комментарий согласующего
+          example: Необходимо скорректировать список сотрудников
