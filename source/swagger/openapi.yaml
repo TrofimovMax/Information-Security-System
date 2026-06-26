@@ -17,6 +17,9 @@ paths:
   /applications/{id}:
     $ref: "./src/applications/api.yaml#/paths/~1applications~1{id}"
 
+  /applications/downloads:
+    $ref: "./src/applications/api.yaml#/paths/~1applications~1downloads"
+
 components:
   securitySchemes:
     bearerAuth:

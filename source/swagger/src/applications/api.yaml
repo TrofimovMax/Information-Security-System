@@ -457,3 +457,47 @@ paths:
 
         '500':
           $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
+
+  /applications/downloads:
+    get:
+      tags:
+        - Applications
+      summary: Скачивание шаблона Excel для загрузки учеников
+      description: |
+        Возвращает Excel-шаблон установленного формата для заполнения списка учеников.
+
+        Пользователь обязан заполнить колонку **student_email** — именно по email система идентифицирует сотрудников при загрузке.
+        Колонка **student_email** должна содержать корректные email-адреса сотрудников.
+        Каждая строка соответствует одному ученику. Email используется как ключ идентификации.
+
+        Файл используется для массового добавления сотрудников в заявку.
+      operationId: downloadApplicationStudentsTemplate
+      security:
+        - BearerAuth: []
+
+      responses:
+        '200':
+          description: Excel-шаблон успешно сформирован
+          headers:
+            Content-Disposition:
+              description: Имя файла для скачивания
+              schema:
+                type: string
+                example: attachment; filename="application_students_template.xlsx"
+          content:
+            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+              schema:
+                type: string
+                format: binary
+
+        '401':
+          $ref: "../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+
+        '429':
+          $ref: "../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
+
+        '500':
+          $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
