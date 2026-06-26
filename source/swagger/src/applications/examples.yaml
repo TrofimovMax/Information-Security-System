@@ -38,3 +38,12 @@ ValidationErrorExample:
       - field: students
         rows: [3, 8]
         message: Обнаружены дубли
+
+ApplicationUpdateForbiddenNotCreator:
+  summary: Редактирование недоступно — пользователь не является создателем заявки
+  value:
+    code: FORBIDDEN
+    message: Редактирование заявки недоступно
+    details:
+      - field: created_by
+        message: Редактирование доступно только создателю заявки

@@ -255,3 +255,72 @@ paths:
 
         '500':
           $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
+
+    put:
+      tags:
+        - Applications
+      summary: Полное обновление заявки
+      description: |
+        Полное обновление заявки по ID.
+
+      operationId: replaceApplication
+
+      security:
+        - BearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "./models.yaml#/components/schemas/UpdateApplicationRequest"
+
+      responses:
+        '200':
+          description: Заявка успешно обновлена
+          content:
+            application/json:
+              schema:
+                $ref: "./models.yaml#/components/schemas/ApplicationDetailsResponse"
+
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: "./errors.yaml#/components/schemas/ApplicationErrorResponse"
+              examples:
+                duplicateStudents:
+                  $ref: "./examples.yaml#/DuplicateStudentsInApplicationExample"
+                studentsNotFound:
+                  $ref: "./examples.yaml#/StudentsNotFoundInApplicationExample"
+                courseNotFound:
+                  $ref: "./examples.yaml#/CourseNotFoundInApplicationExample"
+                validationError:
+                  $ref: "./examples.yaml#/ValidationErrorExample"
+
+        '401':
+          $ref: "../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+          content:
+            application/json:
+              examples:
+                applicationUpdateForbiddenNotCreator:
+                  $ref: "./examples.yaml#/ApplicationUpdateForbiddenNotCreator"
+
+        '404':
+          $ref: "../common/responses.yaml#/components/responses/NotFoundErrorResponse"
+
+        '429':
+          $ref: "../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
+
+        '500':
+          $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
