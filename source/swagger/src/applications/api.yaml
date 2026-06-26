@@ -501,3 +501,76 @@ paths:
 
         '500':
           $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
+
+    post:
+      tags:
+        - Applications
+      summary: Скачивание выбранных заявок
+      description: |
+        Формирует файл для скачивания выбранных заявок.
+
+        Поведение:
+        - если передан 1 application_id → возвращается PDF файл
+        - если передано >1 application_id → возвращается ZIP архив с PDF файлами заявок
+
+      operationId: downloadApplications
+      security:
+        - BearerAuth: []
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - application_ids
+              properties:
+                application_ids:
+                  type: array
+                  description: Список ID заявок для скачивания
+                  minItems: 1
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+            example:
+              application_ids: [1, 2, 3]
+
+      responses:
+        '200':
+          description: Файл с заявками успешно сформирован
+          headers:
+            Content-Disposition:
+              description: Имя файла
+              schema:
+                type: string
+                example: attachment; filename="applications.zip"
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+              example: <binary pdf data>
+            application/zip:
+              schema:
+                type: string
+                format: binary
+              example: <binary zip archive>
+
+        '400':
+          $ref: "../common/responses.yaml#/components/responses/BadRequestErrorResponse"
+
+        '401':
+          $ref: "../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+
+        '404':
+          $ref: "../common/responses.yaml#/components/responses/NotFoundErrorResponse"
+
+        '429':
+          $ref: "../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
+
+        '500':
+          $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
