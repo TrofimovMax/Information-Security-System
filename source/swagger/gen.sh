@@ -1,16 +1,6 @@
-openapi: 3.0.2
-info:
-  title: "API"
-  version: "1.0.0"
+#!/bin/bash
 
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT 
+mkdir -p "$1"
 
-security:
-  - bearerAuth: []
-
-paths:
+cat .api_template > "${1}/api.yaml"
+cat .models_template > "${1}/models.yaml"

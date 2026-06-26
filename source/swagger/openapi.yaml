@@ -11,6 +11,9 @@ paths:
   /users/current:
     $ref: "./src/users/api.yaml#/paths/~1users~1current"
 
+  /applications:
+    $ref: "./src/applications/api.yaml#/paths/~1applications"
+
 components:
   securitySchemes:
     bearerAuth:

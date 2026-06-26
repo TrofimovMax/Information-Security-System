@@ -3,43 +3,83 @@ components:
 
     User:
       type: object
-      description: Данные пользователя
+      description: Базовая сущность пользователя (внутренняя модель)
       required:
         - id
-        - full_name
-        - phone
-        - email
-        - organization_name
-        - role_code
-
+        - active
+        - employee_id
+        - created_at
+        - updated_at
       properties:
+
         id:
           type: integer
+          format: int64
           description: ID пользователя
           example: 1
 
-        full_name:
-          type: string
-          description: ФИО пользователя
-          example: Иванов Иван Иванович
+        active:
+          type: boolean
+          description: Активен ли пользователь
+          example: true
 
-        phone:
-          type: string
-          description: Телефон пользователя
-          example: '+79000000000'
+        employee_id:
+          type: integer
+          format: int64
+          description: ID сотрудника
+          example: 10
 
-        email:
+        created_at:
           type: string
-          format: email
-          description: Email пользователя
-          example: ivanov@example.com
+          format: date-time
+          description: Дата создания пользователя
+          example: "2026-06-15T10:00:00Z"
 
-        organization_name:
+        updated_at:
           type: string
-          description: Название организации пользователя
-          example: ООО Ромашка
+          format: date-time
+          description: Дата обновления пользователя
+          example: "2026-06-15T10:30:00Z"
+
+
+    CurrentUser:
+      type: object
+      description: Публичное представление текущего пользователя (без auth/security данных)
+      required:
+        - id
+        - active
+        - role_code
+        - organization
+        - contacts
+      properties:
+
+        id:
+          $ref: "#/components/schemas/User/properties/id"
+
+        active:
+          $ref: "#/components/schemas/User/properties/active"
 
         role_code:
           type: string
-          description: Код роли пользователя
+          description: Код роли пользователя (вычисляется на основе employee/permissions)
           example: APPLICANT
+
+        organization:
+          $ref: "../organizations/models.yaml#/components/schemas/OrganizationShort"
+
+        contacts:
+          $ref: "../employees/models.yaml#/components/schemas/EmployeeContacts"
+
+    UserShort:
+      type: object
+      description: Краткое представление пользователя (ID + контакты сотрудника)
+      required:
+        - id
+        - contacts
+      properties:
+
+        id:
+          $ref: "#/components/schemas/User/properties/id"
+
+        contacts:
+          $ref: "../employees/models.yaml#/components/schemas/EmployeeContacts"

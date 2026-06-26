@@ -1,0 +1,76 @@
+components:
+  schemas:
+
+    ApplicationStateId:
+      type: integer
+      format: int64
+      description: ID статуса заявки
+      example: 1
+
+    ApplicationStateCode:
+      type: string
+      description: Код статуса заявки
+      maxLength: 255
+      example: WAITING_REVIEW
+
+    ApplicationStateName:
+      type: string
+      description: Название статуса заявки
+      maxLength: 255
+      example: Ожидает рассмотрения
+
+    ApplicationState:
+      type: object
+      description: Сущность статуса заявки
+      required:
+        - id
+        - code
+        - name
+        - priority
+        - created_at
+        - updated_at
+      properties:
+
+        id:
+          $ref: "#/components/schemas/ApplicationStateId"
+
+        code:
+          $ref: "#/components/schemas/ApplicationStateCode"
+
+        name:
+          $ref: "#/components/schemas/ApplicationStateName"
+
+        priority:
+          type: integer
+          description: Приоритет статуса (используется для сортировки и бизнес-логики)
+          example: 10
+
+        created_at:
+          type: string
+          format: date-time
+          description: Дата создания статуса
+          example: "2026-06-15T10:30:00Z"
+
+        updated_at:
+          type: string
+          format: date-time
+          description: Дата последнего обновления статуса
+          example: "2026-06-15T12:00:00Z"
+
+    ApplicationStateShort:
+      type: object
+      description: Краткое представление статуса заявки
+      required:
+        - id
+        - code
+        - name
+      properties:
+
+        id:
+          $ref: "#/components/schemas/ApplicationStateId"
+
+        code:
+          $ref: "#/components/schemas/ApplicationStateCode"
+
+        name:
+          $ref: "#/components/schemas/ApplicationStateName"

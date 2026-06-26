@@ -1,0 +1,62 @@
+components:
+  schemas:
+
+    CourseId:
+      type: integer
+      format: int64
+      description: Внутренний ID курса
+      example: 5
+
+    CourseExternalId:
+      type: string
+      description: Внешний идентификатор курса в сторонней системе
+      maxLength: 255
+      example: EXT-COURSE-001
+
+    CourseName:
+      type: string
+      description: Название курса
+      maxLength: 255
+      example: Основы информационной безопасности
+
+    CourseCreatedAt:
+      type: string
+      format: date-time
+      description: Дата и время создания курса
+      example: "2026-06-15T10:30:00Z"
+
+    Course:
+      type: object
+      description: Базовая сущность курса обучения
+      required:
+        - id
+        - external_course_id
+        - name
+        - created_at
+      properties:
+
+        id:
+          $ref: "#/components/schemas/CourseId"
+
+        external_course_id:
+          $ref: "#/components/schemas/CourseExternalId"
+
+        name:
+          $ref: "#/components/schemas/CourseName"
+
+        created_at:
+          $ref: "#/components/schemas/CourseCreatedAt"
+
+    CourseShort:
+      type: object
+      description: Краткое представление курса
+      required:
+        - id
+        - name
+      properties:
+
+        id:
+          $ref: "#/components/schemas/CourseId"
+
+        name:
+          $ref: "#/components/schemas/CourseName"

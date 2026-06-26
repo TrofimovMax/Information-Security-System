@@ -1,0 +1,96 @@
+paths:
+  /applications:
+    get:
+      tags:
+        - Applications
+      summary: Получить список заявок на обучение
+      description: >
+        Возвращает список заявок с учётом роли текущего пользователя.
+        Заявитель видит свои заявки, Согласующий — доступные ему заявки.
+        Если список пустой, возвращается 200 с пустым массивом applications.
+      operationId: getApplications
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+
+        - name: size
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+
+        - name: search
+          in: query
+          schema:
+            type: string
+
+        - name: application_state_id
+          in: query
+          schema:
+            type: integer
+
+        - name: organization_id
+          in: query
+          schema:
+            type: integer
+
+        - name: created_by
+          in: query
+          schema:
+            type: integer
+
+        - name: approver_id
+          in: query
+          schema:
+            type: integer
+
+        - name: sort_by
+          in: query
+          schema:
+            type: string
+            enum:
+              - number_application
+              - updated_at
+              - course_name
+              - organization_name
+              - created_by_full_name
+              - approver_full_name
+
+        - name: sort_order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+
+      responses:
+        '200':
+          description: Список заявок успешно получен
+          content:
+            application/json:
+              schema:
+                $ref: "./models.yaml#/components/schemas/ApplicationsListResponse"
+
+        '400':
+          $ref: "../common/responses.yaml#/components/responses/BadRequestErrorResponse"
+
+        '401':
+          $ref: "../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+
+        '429':
+          $ref: "../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
+
+        '500':
+          $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"

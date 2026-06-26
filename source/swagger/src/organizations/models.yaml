@@ -1,0 +1,84 @@
+components:
+  schemas:
+
+    OrganizationId:
+      type: integer
+      format: int64
+      description: ID организации
+      example: 1
+
+    OrganizationName:
+      type: string
+      description: Название организации
+      maxLength: 255
+      example: "Рога и Копыта"
+
+    Organization:
+      type: object
+      description: Сущность организации
+      required:
+        - id
+        - name
+        - slug
+        - inn
+        - created_at
+        - updated_at
+      properties:
+
+        id:
+          $ref: "#/components/schemas/OrganizationId"
+
+        name:
+          $ref: "#/components/schemas/OrganizationName"
+
+        slug:
+          type: string
+          description: Уникальный slug организации
+          maxLength: 255
+          example: romashka-ooo
+
+        description:
+          type: string
+          nullable: true
+          description: Описание организации
+          maxLength: 255
+          example: Компания-разработчик ПО
+
+        inn:
+          type: string
+          description: ИНН организации
+          maxLength: 255
+          example: "7701234567"
+
+        kpp:
+          type: string
+          nullable: true
+          description: КПП организации
+          maxLength: 255
+          example: "770101001"
+
+        created_at:
+          type: string
+          format: date-time
+          description: Дата создания организации
+          example: "2026-06-15T10:30:00Z"
+
+        updated_at:
+          type: string
+          format: date-time
+          description: Дата последнего обновления организации
+          example: "2026-06-15T12:00:00Z"
+
+    OrganizationShort:
+      type: object
+      description: Краткое представление организации
+      required:
+        - id
+        - name
+      properties:
+
+        id:
+          $ref: "#/components/schemas/OrganizationId"
+
+        name:
+          $ref: "#/components/schemas/OrganizationName"

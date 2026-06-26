@@ -1,0 +1,96 @@
+components:
+  schemas:
+
+    # =========================
+    # CORE DOMAIN ENTITY
+    # =========================
+
+    Application:
+      type: object
+      description: Базовая сущность заявки на обучение
+      required:
+        - id
+        - number_application
+        - course
+        - start_date
+        - end_date
+        - application_state
+        - created_by
+        - organization
+        - created_at
+        - updated_at
+      properties:
+
+        id:
+          type: integer
+          description: ID заявки
+          example: 1
+
+        number_application:
+          type: string
+          description: Номер заявки
+          example: APP-2026-0001
+
+        course:
+          $ref: "../courses/models.yaml#/components/schemas/CourseShort"
+
+        start_date:
+          type: string
+          format: date
+          description: Дата начала обучения
+          example: "2026-06-15"
+
+        end_date:
+          type: string
+          format: date
+          description: Дата окончания обучения
+          example: "2026-06-20"
+
+        application_state:
+          $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateShort"
+
+        created_by:
+          $ref: "../users/models.yaml#/components/schemas/UserShort"
+
+        approver:
+          allOf:
+            - $ref: "../employees/models.yaml#/components/schemas/EmployeeShort"
+          nullable: true
+          description: Согласующий заявки
+
+        organization:
+          $ref: "../organizations/models.yaml#/components/schemas/OrganizationShort"
+
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-06-15T10:30:00Z"
+
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-06-15T12:00:00Z"
+
+    # =========================
+    # LIST ITEM
+    # =========================
+
+    ApplicationListItem:
+      type: object
+      description: Элемент списка заявок
+      allOf:
+        - $ref: "#/components/schemas/Application"
+
+    # =========================
+    # LIST RESPONSE
+    # =========================
+
+    ApplicationsListResponse:
+      type: object
+      required:
+        - applications
+      properties:
+        applications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Application"

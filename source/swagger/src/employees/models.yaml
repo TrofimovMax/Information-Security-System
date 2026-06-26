@@ -1,0 +1,135 @@
+components:
+  schemas:
+
+    EmployeeId:
+      type: integer
+      format: int64
+      description: ID сотрудника
+      example: 10
+
+    EmployeeFullName:
+      type: string
+      description: Полное имя сотрудника
+      example: Иванов Иван Иванович
+
+    EmployeeEmail:
+      type: string
+      format: email
+      description: Email сотрудника
+      example: ivanov@example.com
+
+    EmployeePhone:
+      type: string
+      description: Телефон сотрудника
+      maxLength: 15
+      example: "+79000000000"
+
+    Employee:
+      type: object
+      description: Сущность сотрудника
+      required:
+        - id
+        - firstname
+        - middle_name
+        - last_name
+        - full_name
+        - email
+        - phone
+        - position_id
+        - departament_id
+        - organization_id
+        - created_at
+        - updated_at
+      properties:
+
+        id:
+          $ref: "#/components/schemas/EmployeeId"
+
+        firstname:
+          type: string
+          description: Имя сотрудника
+          maxLength: 255
+          example: Иван
+
+        middle_name:
+          type: string
+          description: Отчество сотрудника
+          maxLength: 255
+          example: Иванович
+
+        last_name:
+          type: string
+          description: Фамилия сотрудника
+          maxLength: 255
+          example: Иванов
+
+        full_name:
+          $ref: "#/components/schemas/EmployeeFullName"
+
+        email:
+          $ref: "#/components/schemas/EmployeeEmail"
+
+        phone:
+          $ref: "#/components/schemas/EmployeePhone"
+
+        position_id:
+          type: integer
+          format: int64
+          description: ID должности
+          example: 1
+
+        departament_id:
+          type: integer
+          format: int64
+          description: ID подразделения
+          example: 2
+
+        organization_id:
+          type: integer
+          format: int64
+          description: ID организации
+          example: 3
+
+        created_at:
+          type: string
+          format: date-time
+          description: Дата создания сотрудника
+          example: "2026-06-15T10:30:00Z"
+
+        updated_at:
+          type: string
+          format: date-time
+          description: Дата последнего обновления сотрудника
+          example: "2026-06-15T12:00:00Z"
+
+    EmployeeShort:
+      type: object
+      description: Краткое представление сотрудника (идентификатор)
+      required:
+        - id
+      properties:
+
+        id:
+          $ref: "#/components/schemas/EmployeeId"
+
+        contacts:
+          $ref: "#/components/schemas/EmployeeContacts"
+
+
+    EmployeeContacts:
+      type: object
+      description: Контактные данные сотрудника
+      required:
+        - full_name
+        - email
+        - phone
+      properties:
+
+        full_name:
+          $ref: "#/components/schemas/EmployeeFullName"
+
+        email:
+          $ref: "#/components/schemas/EmployeeEmail"
+
+        phone:
+          $ref: "#/components/schemas/EmployeePhone"
