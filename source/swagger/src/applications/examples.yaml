@@ -62,7 +62,6 @@ InvalidApplicationStateTransitionExample:
       - field: application_state_id
         message: Заявка не может быть переведена в указанный статус из текущего состояния
 
-
 ApplicationAuthorCannotApproveExample:
   summary: Автор заявки не может принимать решение
   value:
@@ -71,3 +70,12 @@ ApplicationAuthorCannotApproveExample:
     errors:
       - field: approver
         message: Пользователь, создавший заявку, не может рассматривать её как согласующий
+
+ApplicationDeleteForbiddenByState:
+  summary: Заявка не может быть удалена из-за текущего статуса
+  value:
+    code: APPLICATION_INVALID_STATE
+    message: Заявка не может быть удалена
+    errors:
+      - field: application_state_id
+        message: Удаление доступно только для заявок в статусе «Черновик»

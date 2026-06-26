@@ -392,3 +392,68 @@ paths:
 
         '500':
           $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
+
+    delete:
+      tags:
+        - Applications
+      summary: Удаление черновика заявки
+      description: |
+        Удаляет заявку только в статусе «Черновик».
+
+        Если заявка находится в другом статусе, удаление невозможно.
+
+        Удаление доступно только создателю заявки.
+      operationId: deleteApplicationDraft
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID заявки
+          schema:
+            type: integer
+            format: int64
+          example: 1
+
+      responses:
+        '200':
+          description: Черновик заявки успешно удален
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - message
+                properties:
+                  message:
+                    type: string
+                    description: Сообщение о результате удаления
+                    example: Черновик заявки успешно удален
+              example:
+                message: Черновик заявки успешно удален
+
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: "../common/models.yaml#/components/schemas/ErrorResponse"
+              examples:
+                applicationDeleteForbiddenByState:
+                  $ref: "./examples.yaml#/ApplicationDeleteForbiddenByState"
+
+        '401':
+          $ref: "../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+
+        '404':
+          $ref: "../common/responses.yaml#/components/responses/NotFoundErrorResponse"
+
+        '429':
+          $ref: "../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
+
+        '500':
+          $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
