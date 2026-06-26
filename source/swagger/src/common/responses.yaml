@@ -1,0 +1,68 @@
+components:
+  responses:
+
+    BadRequestErrorResponse:
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: "./models.yaml#/components/schemas/ErrorResponse"
+          example:
+            code: BAD_REQUEST
+            message: Некорректный запрос
+
+    UnauthorizedErrorResponse:
+      description: Пользователь не авторизован или токен недействителен
+      content:
+        application/json:
+          schema:
+            $ref: "./models.yaml#/components/schemas/ErrorResponse"
+          example:
+            code: UNAUTHORIZED
+            message: Пользователь не авторизован
+
+    ForbiddenErrorResponse:
+      description: Доступ запрещен
+      content:
+        application/json:
+          schema:
+            $ref: "./models.yaml#/components/schemas/ErrorResponse"
+          example:
+            code: FORBIDDEN
+            message: Доступ запрещен
+
+    NotFoundErrorResponse:
+      description: Ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: "./models.yaml#/components/schemas/ErrorResponse"
+          example:
+            code: NOT_FOUND
+            message: Ресурс не найден
+
+    TooManyRequestsErrorResponse:
+      description: Превышен лимит запросов
+      headers:
+        Retry-After:
+          description: Количество секунд до повторной попытки
+          schema:
+            type: integer
+            example: 60
+      content:
+        application/json:
+          schema:
+            $ref: "./models.yaml#/components/schemas/ErrorResponse"
+          example:
+            code: TOO_MANY_REQUESTS
+            message: Превышен лимит запросов
+
+    InternalServerErrorResponse:
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: "./models.yaml#/components/schemas/ErrorResponse"
+          example:
+            code: INTERNAL_SERVER_ERROR
+            message: Внутренняя ошибка сервера

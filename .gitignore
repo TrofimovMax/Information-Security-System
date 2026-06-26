@@ -4,4 +4,6 @@ materials/
 *.drawio.bkp
 *.bkp
 tmp/
+node_modules/
 openapi/dist/
+source/swagger/dist/
