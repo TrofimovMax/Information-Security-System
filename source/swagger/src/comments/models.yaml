@@ -1,0 +1,83 @@
+components:
+  schemas:
+
+    # =========================
+    # PRIMITIVE SCHEMAS
+    # =========================
+
+    CommentId:
+      type: integer
+      format: int64
+      description: ID комментария
+      example: 1
+
+    CommentContent:
+      type: string
+      description: Текст комментария
+      maxLength: 255
+      example: Заявка требует уточнения списка сотрудников
+
+    CommentCreatedAt:
+      type: string
+      format: date-time
+      description: Дата создания комментария
+      example: "2026-06-15T10:30:00Z"
+
+    # =========================
+    # ENTITY
+    # =========================
+
+    Comment:
+      type: object
+      description: Сущность комментария к заявке
+      required:
+        - id
+        - content
+        - created_by
+        - application_id
+        - created_at
+      properties:
+
+        id:
+          $ref: "#/components/schemas/CommentId"
+
+        content:
+          $ref: "#/components/schemas/CommentContent"
+
+        created_by:
+          $ref: "../users/models.yaml#/components/schemas/UserShort"
+
+        application_id:
+          type: integer
+          format: int64
+          description: ID заявки
+          example: 10
+
+        created_at:
+          $ref: "#/components/schemas/CommentCreatedAt"
+
+    # =========================
+    # API RESPONSE MODEL
+    # =========================
+
+    CommentResponse:
+      type: object
+      description: Комментарий в ответе API
+      required:
+        - id
+        - content
+        - created_by
+        - created_at
+      properties:
+
+        id:
+          $ref: "#/components/schemas/CommentId"
+
+        content:
+          $ref: "#/components/schemas/CommentContent"
+
+        created_by:
+          $ref: "../users/models.yaml#/components/schemas/UserShort"
+
+        created_at:
+          $ref: "#/components/schemas/CommentCreatedAt"

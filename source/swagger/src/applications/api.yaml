@@ -164,3 +164,94 @@ paths:
 
         '500':
           $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
+
+  /applications/{id}:
+    get:
+      tags:
+        - Applications
+      summary: Получить заявку по ID
+      description: >
+        Возвращает полную карточку заявки на обучение.
+      operationId: getApplicationById
+      security:
+        - bearerAuth: []
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID заявки
+
+      responses:
+        '200':
+          description: Заявка успешно получена
+          content:
+            application/json:
+              schema:
+                $ref: "./models.yaml#/components/schemas/ApplicationDetailsResponse"
+
+              example:
+                id: 1
+                number_application: APP-2026-0001
+                course:
+                  id: 5
+                  name: Основы информационной безопасности
+                start_date: 2026-06-15
+                end_date: 2026-06-20
+                application_state:
+                  id: 1
+                  code: WAITING_REVIEW
+                  name: Ожидает рассмотрения
+                created_by:
+                  id: 10
+                  full_name: Иванов Иван Иванович
+                  email: ivanov@example.com
+                  phone: "+79000000000"
+                approver:
+                  id: 2
+                  first_name: Пётр
+                  last_name: Петров
+                organization:
+                  id: 1
+                  name: ООО Ромашка
+                students:
+                  - id: 10
+                    first_name: Иван
+                    last_name: Иванов
+                    email: ivanov@example.com
+                    phone: "+79000000000"
+                    position:
+                      id: 1
+                      name: Backend-разработчик
+                    departament:
+                      id: 1
+                      name: Отдел разработки
+                    organization:
+                      id: 1
+                      name: ООО Ромашка
+                comments:
+                  - content: Заявка требует корректировки
+                    created_by:
+                      id: 2
+                      full_name: Петров Петр Петрович
+                      email: petrov@example.com
+                      phone: "+79000000000"
+                created_at: 2026-06-15T10:30:00Z
+                updated_at: 2026-06-15T12:00:00Z
+
+        '401':
+          $ref: "../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+
+        '404':
+          $ref: "../common/responses.yaml#/components/responses/NotFoundErrorResponse"
+
+        '429':
+          $ref: "../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
+
+        '500':
+          $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"

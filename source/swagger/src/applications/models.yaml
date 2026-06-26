@@ -98,6 +98,23 @@ components:
           $ref: "../common/models.yaml#/components/schemas/PaginationMeta"
 
     # =========================
+    # MAIN RESPONSE
+    # =========================
+    ApplicationDetailsResponse:
+      allOf:
+        - $ref: "#/components/schemas/Application"
+        - type: object
+          properties:
+            students:
+              type: array
+              items:
+                $ref: "../employees/models.yaml#/components/schemas/EmployeeShort"
+            comments:
+              type: array
+              items:
+                $ref: "../comments/models.yaml#/components/schemas/CommentResponse"
+
+    # =========================
     # REQUEST BODIES
     # =========================
 
