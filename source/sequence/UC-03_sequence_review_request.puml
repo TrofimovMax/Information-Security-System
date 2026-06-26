@@ -3,6 +3,7 @@ title Sequence-диаграмма UC-03: Рассмотрение заявки
 
 actor "Согласующий" as Approver
 actor "Заявитель" as Requester
+boundary "Frontend" as Frontend
 participant "Портал" as Portal
 database "БД Портала" as DB
 participant "СДО" as LMS
@@ -12,7 +13,10 @@ autonumber
 
 == Открытие заявки для рассмотрения ==
 
-Approver -> Portal: Выбрать заявку для рассмотрения\nGET /api/v1/applications/{id}
+Approver -> Frontend: Выбрать заявку для рассмотрения
+activate Frontend
+
+Frontend -> Portal: GET /api/v1/applications/{id}
 activate Portal
 
 Portal -> DB: Запросить данные выбранной заявки,\nроль пользователя и права доступа
@@ -21,29 +25,42 @@ DB --> Portal: Данные заявки,\nроль пользователя и 
 deactivate DB
 
 alt Заявка найдена и доступна для просмотра
+
     Portal -> Portal: Проверить, что Согласующий\nне является создателем заявки
     Portal --> Portal: Результат проверки автора заявки
 
     Portal -> Portal: Проверить статус заявки\nна доступность для рассмотрения
     Portal --> Portal: Результат проверки статуса заявки
 
-    alt #LightPink Согласующий является создателем заявки
-        Portal --> Approver: 200 OK\nОткрыть карточку заявки
-        Portal --> Approver: Не отображать действия\nдля рассмотрения заявки
-    else #LightPink Заявка находится в статусе,\nнедоступном для рассмотрения
-        Portal --> Approver: 200 OK\nОткрыть карточку заявки\nтолько для просмотра
-        Portal --> Approver: Не отображать действия\nдля рассмотрения заявки
-    else #White Заявка доступна для рассмотрения
-        Portal --> Approver: 200 OK\nОткрыть карточку заявки
-        Portal --> Approver: Отобразить действия\nдля рассмотрения заявки
-    end
+    break #LightPink Согласующий является создателем заявки
+        Portal --> Frontend: 200 OK\nОткрыть карточку заявки
+        Frontend --> Approver: Открыть карточку заявки
+        Frontend --> Approver: Не отображать действия\nдля рассмотрения заявки
+    end break
+
+    break #LightPink Заявка находится в статусе,\nнедоступном для рассмотрения
+        Portal --> Frontend: 200 OK\nОткрыть карточку заявки (только просмотр)
+        Frontend --> Approver: Открыть карточку заявки\nтолько для просмотра
+        Frontend --> Approver: Не отображать действия\nдля рассмотрения заявки
+    end break
+
+    Portal --> Frontend: 200 OK\nОткрыть карточку заявки
+    Frontend --> Approver: Открыть карточку заявки
+    Frontend --> Approver: Отобразить действия\nдля рассмотрения заявки
+
 else #LightPink Некорректный запрос или заявка недоступна
-    Portal --> Approver: 404 Not Found
+    Portal --> Frontend: 404 Not Found
     deactivate Portal
+
+    Frontend --> Approver: Отобразить ошибку 404
+    deactivate Frontend
 end
 
 opt Скачать заявку
-    Approver -> Portal: Инициировать скачивание заявки\nPOST /api/v1/applications/downloads\nDownloadApplicationsRequest
+    Approver -> Frontend: Инициировать скачивание заявки\nDownloadApplicationsRequest
+    activate Frontend
+
+    Frontend -> Portal: POST /api/v1/applications/downloads
     activate Portal
 
     Portal -> Portal: Проверить доступ\nк выбранной заявке
@@ -58,14 +75,18 @@ opt Скачать заявку
         Portal -> Portal: Сформировать файл заявки
 
         alt Файл сформирован
-            Portal --> Approver: 200 OK\nПередать файл заявки
+            Portal --> Frontend: 200 OK\nПередать файл заявки
+            Frontend --> Approver: Скачать файл заявки
         else #LightPink Ошибка формирования файла
-            Portal --> Approver: 500 Internal Server Error\nСообщение об ошибке скачивания
+            Portal --> Frontend: 500 Internal Server Error\nСообщение об ошибке скачивания
+            Frontend --> Approver: Отобразить ошибку скачивания
         end
 
     else #LightPink Заявка недоступна для скачивания
-        Portal --> Approver: 403 Forbidden\nСообщение об отсутствии доступа\nк скачиванию заявки
+        Portal --> Frontend: 403 Forbidden\nСообщение об отсутствии доступа\nк скачиванию заявки
         deactivate Portal
+        Frontend --> Approver: Отобразить сообщение об отсутствии доступа
+        deactivate Frontend
     end
 end
 
@@ -79,52 +100,61 @@ end ref
 == Принятие решения по заявке ==
 
 alt Согласующий согласует заявку
-    Approver -> Portal: Инициировать согласование заявки\nPATCH /api/v1/applications/{id}/state\napplication_state_id = «Согласована»
-    activate Portal
-    deactivate Portal
-    ref over Approver, Requester, Portal, DB, Mail
+    Approver -> Frontend: Инициировать согласование заявки\napplication_state_id = «Согласована»
+    activate Frontend
+
+    Frontend -> Portal: PATCH /api/v1/applications/{id}/state
+    deactivate Frontend
+
+    ref over Approver, Requester, Frontend, Portal, DB, Mail
         Контрольная проверка заявки, сохранение статуса и уведомление участников
         см. REF_UpdateStatusAndNotify
     end ref
 
-    Portal --> Approver: 200 OK Отобразить заявку\nс соответствующим статусом
-    activate Portal
-    deactivate Portal
-    == Передача согласованной заявки в СДО ==
-    loop 5 попыток
+    Portal --> Frontend: 200 OK Отобразить заявку\nс соответствующим статусом
+    activate Frontend
+    Frontend --> Approver: Отобразить заявку\nс соответствующим статусом
+    deactivate Frontend
+    ... Передача согласованной заявки в СДО ...
+    alt СДО приняло заявку на обработку
         Portal -> LMS: Передать согласованную заявку\nPOST /api/v1/lms/applications\nCreateLmsApplicationRequest
         activate Portal
         activate LMS
+        LMS --> Portal: 202 Accepted
         deactivate Portal
-        alt СДО приняло заявку на обработку
-            LMS --> Portal: 202 Accepted
-            activate Portal
-            deactivate Portal
-        else #LightPink Нет доступа к СДО или ошибка СДО
-            LMS --> Portal: 500 Internal Server Error / 4xx: Client Error
-            activate Portal
-            deactivate LMS
-            deactivate Portal
+        deactivate LMS
+    else #LightPink Нет доступа к СДО или ошибка СДО
+        break
+            loop 5 попыток
+                Portal -> LMS: Передать согласованную заявку\nPOST /api/v1/lms/applications\nCreateLmsApplicationRequest
+                activate Portal
+                activate LMS
+                LMS --> Portal: 500 Internal Server Error / 4xx: Client Error   
+                deactivate Portal
+                deactivate LMS
+            end
+
+            ref over Approver, Requester, Frontend, Portal, DB, Mail
+                Контрольная проверка заявки, сохранение статуса и уведомление участников
+                см. REF_UpdateStatusAndNotify
+            end ref
         end
     end
 
-    ... Вне зависимости от того, передалась заявка или нет, она обновиться на соответствующий статус и об этом узнает Согласующий ...
-    ref over Approver, Requester, Portal, DB, Mail
+    ref over Approver, Requester, Frontend, Portal, DB, Mail
         Контрольная проверка заявки, сохранение статуса и уведомление участников
         см. REF_UpdateStatusAndNotify
     end ref
 
-    == Получение решения от СДО ==
-
-    ... В течение 5 рабочих дней\nс момента создания заявки\nСДО проверяет заявку ...
+    ... Получение решения от СДО, в течении 5 рабочих дней\nс момента создания заявки\nСДО проверяет заявку ...
     alt СДО приняло заявку
         LMS -> Portal: Передать решение по заявке\nPOST /api/v1/lms/webhooks/applications/{id}/state\nevent_type = accepted
         activate LMS
         activate Portal
-        Portal --> LMS: 202 Accepted
+        Portal --> LMS: 200 OK
         deactivate LMS
         deactivate Portal
-        ref over Approver, Requester, Portal, DB, Mail
+        ref over Approver, Requester, Frontend, Portal, DB, Mail
             Контрольная проверка заявки, сохранение статуса и уведомление участников
             см. REF_UpdateStatusAndNotify
         end ref
@@ -155,7 +185,7 @@ alt Согласующий согласует заявку
         end
 
         ...Прошло 2 недели...
-        Portal -> LMS: GET Состояние заявок и application_ids
+        Portal -> LMS: GET /api/v1/lms/applications/status\napplication_ids: [APP-000001, APP-000002, APP-000003]
         activate Portal
         activate LMS
         LMS  --> Portal: 200 OK
@@ -163,54 +193,58 @@ alt Согласующий согласует заявку
         deactivate LMS
     end
     ... Вне зависимости от решения СДО, заявка будет сохранена в соответствующем статусе...
-    ref over Approver, Requester, Portal, DB, Mail
+    ref over Approver, Requester, Frontend, Portal, DB, Mail
         Контрольная проверка заявки, сохранение статуса и уведомление участников
         см. REF_UpdateStatusAndNotify
     end ref
 else Согласующий отклоняет заявку
-    Approver -> Portal: Инициировать отклонение заявки
-    activate Portal
-    Portal --> Approver: Отобразить поле ввода комментария\nи заблокировать кнопку отправки
-    Approver -> Portal: Ввести комментарий\nс причиной отклонения
-    Portal -> Portal: Проверить заполнение комментария
-    Portal --> Portal: Комментарий заполнен
-    Portal --> Approver: Разблокировать кнопку отправки
-    Approver -> Portal: Подтвердить отклонение заявки\nPOST /api/v1/applications/{id}/state\napplication_state_id = «Отклонена»
-    deactivate Portal
+    Approver -> Frontend: Инициировать отклонение заявки
+    activate Frontend
+    Frontend -> Approver: Инициировать отклонение заявки
+    Frontend --> Approver: Отобразить поле ввода комментария\nи заблокировать кнопку отправки
+    Approver -> Frontend: Ввести комментарий\nс причиной отклонения
+    Frontend -> Frontend: Проверить заполнение комментария
+    Frontend --> Frontend: Комментарий заполнен
+    Frontend --> Approver: Разблокировать кнопку отправки
+    Approver -> Frontend: Подтвердить отклонение заявки
+    Frontend -> Portal: POST /api/v1/applications/{id}/state\napplication_state_id = «Отклонена»
+    deactivate Frontend
 
-    ref over Approver, Requester, Portal, DB, Mail
+    ref over Approver, Requester, Frontend, Portal, DB, Mail
         Контрольная проверка заявки, сохранение статуса и уведомление участников
         см. REF_UpdateStatusAndNotify
     end ref
 
-    Portal --> Approver: 200 OK Отобразить заявку\nс соответствующим статусом
-    activate Portal
-    deactivate Portal
+    Portal --> Frontend: 200 OK
+    Frontend --> Approver: Отобразить заявку\nс соответствующим статусом
 else Согласующий отправляет заявку на корректировку
-    Approver -> Portal: Инициировать отправку заявки\nна корректировку
-    activate Portal
-    Portal --> Approver: Отобразить поле ввода комментария\nи заблокировать кнопку отправки
-    Approver -> Portal: Ввести комментарий
-    Portal -> Portal: Проверить заполнение комментария
-    Portal --> Portal: Комментарий заполнен
-    Portal --> Approver: Разблокировать кнопку отправки
-    Approver -> Portal: Подтвердить отправку заявки\nна корректировку\nPOST /api/v1/applications/{id}/state\napplication_state_id = «На корректировке»
-    deactivate Portal
-    ref over Approver, Requester, Portal, DB, Mail
+    Approver -> Frontend: Инициировать отправку заявки\nна корректировку
+    activate Frontend
+
+    Frontend --> Approver: Отобразить поле ввода комментария\nи заблокировать кнопку отправки
+    Approver -> Frontend: Ввести комментарий
+    Frontend -> Frontend: Проверить заполнение комментария
+    Frontend --> Frontend: Комментарий заполнен
+    Frontend --> Approver: Разблокировать кнопку отправки
+
+    Approver -> Frontend: Подтвердить отправку заявки\nна корректировку
+    Frontend -> Portal: POST /api/v1/applications/{id}/state\napplication_state_id = «На корректировке»
+    deactivate Frontend
+
+    ref over Approver, Requester, Frontend, Portal, DB, Mail
         Контрольная проверка заявки, сохранение статуса и уведомление участников
         см. REF_UpdateStatusAndNotify
     end ref
-    
-    Portal --> Approver: 200 OK Отобразить заявку\nс соответствующим статусом
-    activate Portal
-    deactivate Portal
+
+    Portal --> Frontend: 200 OK
+    Frontend --> Approver: Отобразить заявку\nс соответствующим статусом
 end
 
 == Архивирование заявки ==
 
-... Через 3 года после завершения заявки ...
+... Через 3 года после последнего изменения заявки ...
 
-ref over Approver, Requester, Portal, DB, Mail
+ref over Approver, Requester, Frontend, Portal, DB, Mail
     Контрольная проверка заявки, сохранение статуса и уведомление участников
     см. REF_UpdateStatusAndNotify
 end ref

@@ -3,38 +3,50 @@ title REF: Контрольная проверка заявки, сохране�
 
 actor "Согласующий" as Approver
 actor "Заявитель" as Requester
+boundary "Frontend" as Frontend
 participant "Портал" as Portal
 database "БД Портала" as DB
 participant "Почтовая служба" as Mail
 
-activate Portal
 Portal -> Portal: Выполнить контрольную проверку заявки:\nправа доступа, автор заявки,\nтекущий статус и допустимость перехода
+activate Portal
 Portal --> Portal: Результат контрольной проверки
 
 alt #LightPink Контрольная проверка не пройдена
-    Portal --> Approver: 400 Bad Request\nИзменение статуса заявки отклонено
+    Portal --> Frontend: 400 Bad Request\nИзменение статуса заявки отклонено
+    activate Frontend
     deactivate Portal
+    Frontend --> Approver: Отобразить сообщение\nоб ошибке изменения статуса заявки
+    deactivate Frontend
 else #White Контрольная проверка пройдена
     Portal -> DB: Сохранить заявку\nс новым статусом
     activate Portal
     activate DB
     DB --> Portal: Статус заявки обновлён
+
     Portal -> DB: Сохранить комментарий Согласующего\nпри его наличии
     DB --> Portal: Комментарий сохранён
+
     Portal -> DB: Создать уведомление для Заявителя
     DB --> Portal: Уведомление создано
     deactivate DB
 
     Portal -> Mail: Передать email-уведомление\nЗаявителю об изменении статуса заявки
     activate Mail
+    Mail --> Portal: 200 OK
     deactivate Portal
     Mail --> Requester: Email об изменении статуса заявки
     deactivate Mail
 
-    Portal --> Requester: Уведомление об изменении\nстатуса заявки
+    Portal --> Frontend: Уведомление об изменении\nстатуса заявки
     activate Portal
-    Portal --> Approver: 200 OK\nУведомление об успешном\nизменении статуса заявки
+    activate Frontend
+    Portal --> Frontend: 200 OK\nУведомление об успешном\nизменении статуса заявки
     deactivate Portal
+
+    Frontend --> Requester: Уведомление об изменении\nстатуса заявки
+    Frontend --> Approver: Уведомление об успешном\nизменении статуса заявки
+    deactivate Frontend
 end
 
 @enduml

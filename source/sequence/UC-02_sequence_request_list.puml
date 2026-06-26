@@ -2,6 +2,7 @@
 title Sequence-диаграмма UC-02: Просмотр списка заявок
 
 actor "Пользователь" as User
+boundary "Frontend" as Frontend
 participant "Портал" as Portal
 database "БД Портала" as DB
 
@@ -9,7 +10,9 @@ autonumber
 
 == Открытие списка заявок ==
 
-User -> Portal: Перейти в модуль «Заявки на обучение»\nGET /api/v1/users/current\nGET /api/v1/applications?page={page}&size={size}
+User -> Frontend: Перейти в модуль «Заявки на обучение»
+activate Frontend
+Frontend -> Portal: GET /api/v1/users/current\nGET /api/v1/applications?page={page}&size={size}
 activate Portal
 
 Portal -> DB: Запросить роль пользователя,\nправа доступа и доступные заявки
@@ -18,104 +21,139 @@ DB --> Portal: Роль пользователя,\nправа доступа и 
 deactivate DB
 
 alt Запрос выполнен корректно
-    Portal --> User: 200 OK\nОтобразить заявки\nв табличной форме и доступные действия
-    Portal --> User: Отобразить выбор количества заявок\nна странице и пагинацию
+    Portal --> Frontend: 200 OK\nРоль пользователя,\nправа доступа и список заявок
+    Frontend --> User: Отобразить заявки\nв табличной форме и доступные действия
+    Frontend --> User: Отобразить выбор количества заявок\nна странице и пагинацию
 else #LightPink Некорректные параметры запроса
-    Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке загрузки списка заявок
+    Portal --> Frontend: 400 Bad Request\nОшибка загрузки списка заявок
     deactivate Portal
+    Frontend --> User: Отобразить сообщение\nоб ошибке загрузки списка заявок
+    deactivate Frontend
 end
 
 == Работа со списком заявок ==
 
 opt Поиск по списку заявок
     loop Поиск заявки до получения результата или сброса поиска
-        User -> Portal: Ввести поисковый запрос\nGET /api/v1/applications?search={search}&page={page}&size={size}
+        User -> Frontend: Ввести поисковый запрос
+        activate Frontend
+        Frontend -> Portal: GET /api/v1/applications?search={search}&page={page}&size={size}
         activate Portal
         Portal -> DB: Выполнить поиск среди заявок,\nдоступных пользователю
         activate DB
         DB --> Portal: Найденные заявки
         deactivate DB
         alt Запрос выполнен корректно и заявки найдены
-            Portal --> User: 200 OK\nОтобразить результат поиска
+            Portal --> Frontend: 200 OK\nНайденные заявки
+            Frontend --> User: Отобразить результат поиска
         else #LightYellow Запрос выполнен корректно, но заявки не найдены
-            Portal --> User: 200 OK\nОтобразить пустой результат поиска
-            Portal --> User: Сообщение «Заявки по запросу не найдены»
-            User -> Portal: Изменить поисковый запрос\nили сбросить поиск
-            Portal --> User: Принять обновлённые параметры поиска
+            Portal --> Frontend: 200 OK\nПустой результат поиска
+            Frontend --> User: Отобразить пустой результат поиска
+            Frontend --> User: Сообщение\n«Заявки по запросу не найдены»
+            User -> Frontend: Изменить поисковый запрос\nили сбросить поиск
+            Frontend -> Portal: Передать обновлённые параметры поиска
+            Portal --> Frontend: Параметры поиска приняты
+            Frontend --> User: Обновить результаты поиска
         else #LightPink Некорректные параметры поиска
-            Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке поиска
+            Portal --> Frontend: 400 Bad Request\nОшибка поиска
             deactivate Portal
+            Frontend --> User: Отобразить сообщение\nоб ошибке поиска
+            deactivate Frontend
         end
     end
 end
 
 opt Фильтрация списка заявок
     loop Фильтрация заявок до получения результата или сброса фильтров
-        User -> Portal: Выбрать параметры фильтрации\nGET /api/v1/applications?application_state_id={state_id}\n&organization_id={organization_id}\n&created_by={created_by}\n&approver_id={approver_id}\n&start_date={start_date}\n&end_date={end_date}\n&page={page}\n&size={size}
+        User -> Frontend: Выбрать параметры фильтрации
+        activate Frontend
+        Frontend -> Portal: GET /api/v1/applications?application_state_id={state_id}\n&organization_id={organization_id}\n&created_by={created_by}\n&approver_id={approver_id}\n&start_date={start_date}\n&end_date={end_date}\n&page={page}\n&size={size}
         activate Portal
         Portal -> DB: Применить фильтры к заявкам,\nдоступным пользователю
         activate DB
         DB --> Portal: Отфильтрованный список заявок
         deactivate DB
         alt Запрос выполнен корректно и заявки найдены
-            Portal --> User: 200 OK\nОтобразить отфильтрованный список
+            Portal --> Frontend: 200 OK\nОтфильтрованный список заявок
+            Frontend --> User: Отобразить отфильтрованный список
         else #LightYellow Запрос выполнен корректно, но заявки не найдены
-            Portal --> User: 200 OK\nОтобразить пустой список
-            Portal --> User: Сообщение «Заявки по выбранным фильтрам не найдены»
-            User -> Portal: Изменить параметры фильтрации\nили сбросить фильтры
-            Portal --> User: Принять обновлённые параметры фильтрации
+            Portal --> Frontend: 200 OK\nПустой список
+            Frontend --> User: Отобразить пустой список
+            Frontend --> User: Сообщение «Заявки по выбранным фильтрам не найдены»
+            User -> Frontend: Изменить параметры фильтрации\nили сбросить фильтры
+            Frontend -> Portal: Передать обновлённые параметры фильтрации
+            Portal --> Frontend: Параметры фильтрации приняты
+            Frontend --> User: Обновить результаты фильтрации
         else #LightPink Некорректные параметры фильтрации
-            Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке фильтрации
+            Portal --> Frontend: 400 Bad Request\nОшибка фильтрации
             deactivate Portal
+            Frontend --> User: Отобразить сообщение\nоб ошибке фильтрации
+            deactivate Frontend
         end
     end
 end
 
 opt Сортировка списка заявок
-    User -> Portal: Выбрать столбец или параметр сортировки\nGET /api/v1/applications?sort_by={sort_by}\n&sort_order={sort_order}\n&page={page}\n&size={size}
+    User -> Frontend: Выбрать столбец или параметр сортировки
+    activate Frontend
+    Frontend -> Portal: GET /api/v1/applications?sort_by={sort_by}\n&sort_order={sort_order}\n&page={page}\n&size={size}
     activate Portal
     Portal -> DB: Запросить заявки\nс выбранной сортировкой
     activate DB
     DB --> Portal: Отсортированный список заявок
     deactivate DB
     alt Параметры сортировки корректны
-        Portal --> User: 200 OK\nОбновить табличное представление
+        Portal --> Frontend: 200 OK\nОтсортированный список заявок
+        Frontend --> User: Обновить табличное представление
     else #LightPink Некорректные параметры сортировки
-        Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке сортировки
+        Portal --> Frontend: 400 Bad Request\nОшибка сортировки
         deactivate Portal
+        Frontend --> User: Отобразить сообщение об ошибке сортировки
+        deactivate Frontend
     end
 end
 
 opt Пагинация списка заявок
-    User -> Portal: Выбрать страницу списка заявок\nили количество заявок на странице\nGET /api/v1/applications?page={page}&size={size}
+    User -> Frontend: Выбрать страницу списка заявок\nили количество заявок на странице
+    activate Frontend
+    Frontend -> Portal: GET /api/v1/applications?page={page}&size={size}
     activate Portal
     Portal -> DB: Запросить заявки\nс учётом параметров пагинации
     activate DB
     DB --> Portal: Страница списка заявок
     deactivate DB
     alt Параметры пагинации корректны
-        Portal --> User: 200 OK\nОтобразить выбранную страницу\nсписка заявок
+        Portal --> Frontend: 200 OK\nСтраница списка заявок
+        Frontend --> User: Отобразить выбранную страницу\nсписка заявок
     else #LightPink Некорректные параметры пагинации
-        Portal --> User: 400 Bad Request\nОтобразить сообщение об ошибке пагинации
+        Portal --> Frontend: 400 Bad Request\nОшибка пагинации
         deactivate Portal
+        Frontend --> User: Отобразить сообщение об ошибке пагинации
+        deactivate Frontend
     end
 end
 
 == Выбор заявок и действия со списком ==
 
 opt Выбор нескольких заявок
-    User -> Portal: Выбрать одну или несколько заявок
+    User -> Frontend: Выбрать одну или несколько заявок
+    activate Frontend
+    Frontend -> Portal: Передать выбранные заявки
     activate Portal
     Portal -> Portal: Зафиксировать выбранные заявки
     Portal --> Portal: Выбранные заявки зафиксированы
     Portal -> Portal: Определить действия,\nдоступные для выбранных заявок
     Portal --> Portal: Доступные действия определены
-    Portal --> User: Отобразить доступные групповые действия
+    Portal --> Frontend: Отобразить доступные групповые действия
     deactivate Portal
+    Frontend --> User: Отобразить доступные групповые действия
+    deactivate Frontend
 end
 
 opt Скачивание списка
-    User -> Portal: Инициировать скачивание списка\nPOST /api/v1/applications/downloads/excel
+    User -> Frontend: Инициировать скачивание списка
+    activate Frontend
+    Frontend -> Portal: POST /api/v1/applications/downloads/excel
     activate Portal
     Portal -> DB: Запросить данные с учётом\nтекущих фильтров и прав доступа
     activate DB
@@ -124,16 +162,21 @@ opt Скачивание списка
     Portal -> Portal: Сформировать файл выгрузки
     alt Файл сформирован
         Portal --> Portal: Файл выгрузки сформирован
-        Portal --> User: 200 OK\nПередать файл для скачивания
+        Portal --> Frontend: 200 OK\nПередать файл для скачивания
+        Frontend --> User: Скачать файл
     else #LightPink Ошибка формирования файла или некорректные параметры
         Portal --> Portal: Файл выгрузки не сформирован
-        Portal --> User: 400 Bad Request\nСообщение об ошибке формирования файла
+        Portal --> Frontend: 400 Bad Request\nСообщение об ошибке формирования файла
         deactivate Portal
+        Frontend --> User: Отобразить сообщение об ошибке
+        deactivate Frontend
     end
 end
 
 opt Скачивание выбранных заявок
-    User -> Portal: Инициировать скачивание выбранных заявок\nPOST /api/v1/applications/downloads
+    User -> Frontend: Инициировать скачивание выбранных заявок
+    activate Frontend
+    Frontend -> Portal: POST /api/v1/applications/downloads
     activate Portal
     Portal -> Portal: Проверить доступ\nк выбранным заявкам
     Portal --> Portal: Результат проверки доступа
@@ -142,41 +185,58 @@ opt Скачивание выбранных заявок
         activate DB
         DB --> Portal: Данные выбранных заявок
         deactivate DB
-        Portal --> User: 200 OK\nПередать файл или архив
+        Portal --> Frontend: 200 OK\nПередать файл или архив
+        Frontend --> User: Скачать файл/архив
     else #LightPink Одна или несколько заявок недоступны
-        Portal --> User: 403 Forbidden\nСообщение об ограничении доступа
+        Portal --> Frontend: 403 Forbidden\nСообщение об ограничении доступа
         deactivate Portal
+        Frontend --> User: Отобразить сообщение об ограничении доступа
+        deactivate Frontend
     end
 end
 
 == Переход в карточку заявки ==
 
-User -> Portal: Выбрать заявку из списка\nGET /api/v1/applications/{id}
-activate Portal
+opt Переход в карточку заявки
+    User -> Frontend: Выбрать заявку из списка
+    activate Frontend
 
-Portal -> Portal: Проверить доступ пользователя\nк выбранной заявке
-Portal --> Portal: Результат проверки доступа
+    Frontend -> Portal: GET /api/v1/applications/{id}
+    activate Portal
 
-alt Доступ к заявке есть
-    Portal -> DB: Запросить полные данные заявки
-    activate DB
-    DB --> Portal: Данные заявки
-    deactivate DB
-    Portal --> User: 200 OK\nОткрыть карточку заявки
-else #LightPink Доступа к заявке нет
-    Portal -> Portal: Подготовить отказ\nв открытии карточки заявки
-    Portal --> Portal: Отказ подготовлен
-    Portal --> User: 403 Forbidden\nЗапретить открытие карточки\nи отобразить сообщение\nоб отсутствии прав доступа
-    deactivate Portal
+    Portal -> Portal: Проверить доступ пользователя\nк выбранной заявке
+    Portal --> Portal: Результат проверки доступа
+
+    alt Доступ к заявке есть
+        Portal -> DB: Запросить полные данные заявки
+        activate DB
+        DB --> Portal: Данные заявки
+        deactivate DB
+
+        Portal --> Frontend: 200 OK\nДанные заявки
+        Frontend --> User: Открыть карточку заявки
+
+    else #LightPink Доступа к заявке нет
+        Portal -> Portal: Подготовить отказ\nв открытии карточки заявки
+        Portal --> Portal: Отказ подготовлен
+
+        Portal --> Frontend: 403 Forbidden\nОтсутствие прав доступа
+        deactivate Portal
+
+        Frontend --> User: Отобразить сообщение\nоб отсутствии прав доступа
+        deactivate Frontend
+    end
 end
 
 == Удаление черновика ==
 
 opt Удаление черновика из списка заявок
-    User -> Portal: Выбрать заявку в статусе «Черновик»\nв списке заявок
+    User -> Frontend: Выбрать заявку в статусе «Черновик»
+    activate Frontend
+
+    Frontend -> Portal: DELETE /api/v1/applications/{id}
     activate Portal
-    Portal --> User: Отметить выбранную заявку
-    User -> Portal: Инициировать удаление черновика\nDELETE /api/v1/applications/{id}
+
     Portal -> Portal: Проверить статус заявки\nи право пользователя на удаление
     Portal --> Portal: Результат проверки удаления
 
@@ -185,15 +245,23 @@ opt Удаление черновика из списка заявок
         activate DB
         DB --> Portal: Черновик удалён
         deactivate DB
-        Portal --> User: 200 OK\nСообщение «Черновик удалён»
+
+        Portal --> Frontend: 200 OK\nЧерновик удалён
+
         Portal -> DB: Запросить обновлённый список заявок\nGET /api/v1/applications?page={page}&size={size}
         activate DB
         DB --> Portal: Обновлённый список заявок
         deactivate DB
-        Portal --> User: 200 OK\nОбновить список заявок
+
+        Portal --> Frontend: 200 OK\nОбновлённый список заявок
+        Frontend --> User: Обновить список заявок
+
     else #LightPink Заявка не является черновиком
-        Portal --> User: 400 Bad Request\nСообщение «Удалить можно только заявку\nв статусе Черновик»
+        Portal --> Frontend: 400 Bad Request\nУдалить можно только черновик
         deactivate Portal
+
+        Frontend --> User: Отобразить сообщение\n«Удалить можно только заявку в статусе Черновик»
+        deactivate Frontend
     end
 end
 

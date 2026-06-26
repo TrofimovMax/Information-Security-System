@@ -2,6 +2,7 @@
 title Sequence-диаграмма UC-01: Создание заявки на обучение
 
 actor "Заявитель" as Requester
+boundary "Frontend" as Frontend
 participant "Портал" as Portal
 database "БД Портала" as DB
 participant "СДО" as LMS
@@ -12,7 +13,10 @@ autonumber
 
 == Открытие формы создания заявки ==
 
-Requester -> Portal: Инициировать создание заявки\nGET /api/v1/users/current
+Requester -> Frontend: Инициировать создание заявки
+activate Frontend
+
+Frontend -> Portal: GET /api/v1/users/current
 activate Portal
 
 Portal -> DB: Запросить сведения о Заявителе\nи его организации
@@ -20,71 +24,93 @@ activate DB
 DB --> Portal: Сведения о Заявителе\nи его организации
 deactivate DB
 
-Portal --> Requester: 200 OK\nОтобразить форму создания заявки\nсо всеми полями и заполненными сведениями
+Portal --> Frontend: 200 OK\nДанные пользователя и организации
 deactivate Portal
 
+Frontend --> Requester: Отобразить форму создания заявки\nсо всеми полями и заполненными сведениями
+deactivate Frontend
+
 opt Загрузка ранее сохранённого черновика
-    Requester -> Portal: Инициировать загрузку черновика\nGET /api/v1/applications?application_state_id={draft}
+
+    Requester -> Frontend: Инициировать загрузку черновика
+    activate Frontend
+
+    Frontend -> Portal: GET /api/v1/applications?application_state_id={draft}
     activate Portal
+
     Portal -> DB: Запросить черновики Заявителя
     activate DB
     DB --> Portal: Данные черновиков
     deactivate DB
 
-    Portal --> Requester: 200 OK\nОтобразить список черновиков\nв виде списка
+    Portal --> Frontend: 200 OK\nДанные черновиков
+    deactivate Portal
 
-    Requester -> Portal: Выбрать черновик из списка\nGET /api/v1/applications/{id}
+    Frontend --> Requester: Отобразить список черновиков\nв виде списка
+
+    Requester -> Frontend: Выбрать черновик из списка
+
+    Frontend -> Portal: GET /api/v1/applications/{id}
+    activate Portal
 
     Portal -> DB: Запросить данные выбранного черновика
     activate DB
     DB --> Portal: Данные выбранного черновика
     deactivate DB
 
-    Portal --> Requester: 200 OK\nЗагрузить данные черновика
+    Portal --> Frontend: 200 OK\nДанные выбранного черновика
     deactivate Portal
+
+    Frontend --> Requester: Загрузить данные черновика
+    deactivate Frontend
+
 end
 
 == Выбор курса ==
 
-Requester -> Portal: Ввести часть названия курса\nGET /api/v1/lms/courses?search={course_name}
+Requester -> Frontend: Ввести часть названия курса
+activate Frontend
+
+Frontend -> Portal: GET /api/v1/lms/courses?search={course_name}
 activate Portal
 
 Portal -> LMS: Запросить список актуальных курсов\nпо введённому значению\nGET /api/v1/lms/courses
 activate LMS
-deactivate Portal
-deactivate LMS
 alt Запрос выполнен корректно
     LMS --> Portal: 200 OK\nНайденные актуальные курсы
-    activate LMS
-    activate Portal
-    deactivate LMS
-    Portal --> Requester: 200 OK\nОтобразить найденные курсы
-    deactivate Portal
+    Portal --> Frontend: 200 OK\nНайденные актуальные курсы
+    Frontend --> Requester: Отобразить найденные курсы
 else #LightPink Некорректные параметры запроса
     LMS --> Portal: 400 Bad Request\nОшибка получения списка курсов
-    activate LMS
-    activate Portal
     deactivate LMS
-    Portal --> Requester: 400 Bad Request\nОтобразить сообщение об ошибке
+    Portal --> Frontend: 400 Bad Request\nОшибка получения списка курсов
     deactivate Portal
+    Frontend --> Requester: Отобразить сообщение об ошибке
+    deactivate Frontend
 end
 
-Requester -> Portal: Выбрать курс\nиз списка найденных курсов
+Requester -> Frontend: Выбрать курс\nиз списка найденных курсов
+activate Frontend
+
+Frontend -> Portal: Передать выбранный курс
 activate Portal
-Portal --> Requester: Заполнить данные курса\nи даты обучения в форме заявки
+
+Portal --> Frontend: Заполнить данные курса\nи даты обучения в форме заявки
 deactivate Portal
+
+Frontend --> Requester: Отобразить данные курса\nи даты обучения в форме заявки
+deactivate Frontend
 
 == Формирование списка учеников ==
 
 loop Повторяется необходимое количество раз
     ... Добавление учеников вручную ...
+    Requester -> Frontend: Инициировать добавление ученика
+    activate Frontend
+    Frontend --> Requester: Отобразить строку для ввода ученика
 
-    Requester -> Portal: Инициировать добавление ученика
-    activate Portal
-    Portal --> Requester: Отобразить строку для ввода ученика
-    deactivate Portal
-
-    Requester -> Portal: Ввести часть ФИО ученика\nGET /api/v1/students?search={full_name}
+    Requester -> Frontend: Ввести часть ФИО ученика
+    Frontend -> Portal: GET /api/v1/students?search={full_name}
     activate Portal
 
     Portal -> DB: Выполнить поиск ученика по ФИО
@@ -93,54 +119,59 @@ loop Повторяется необходимое количество раз
     deactivate DB
 
     alt Запрос выполнен корректно
-        Portal --> Requester: 200 OK\nОтобразить список найденных учеников
+        Portal --> Frontend: 200 OK\nНайденные ученики
+        Frontend --> Requester: Отобразить список найденных учеников
     else #LightPink Некорректные параметры поиска
-        Portal --> Requester: 400 Bad Request\nОтобразить сообщение об ошибке поиска
-        deactivate Portal
+        Portal --> Frontend: 400 Bad Request\nОшибка поиска ученика
+        Frontend --> Requester: Отобразить сообщение об ошибке поиска
     end
 
-    Requester -> Portal: Выбрать ученика из списка
-    activate Portal
-    Portal --> Requester: Автоматически заполнить данные ученика
-    deactivate Portal
+    Requester -> Frontend: Выбрать ученика из списка
+    Frontend -> Portal: Передать выбранного ученика
+    Portal --> Frontend: Данные выбранного ученика
+    Frontend --> Requester: Автоматически заполнить данные ученика
 
     opt Удаление ученика из списка
-        Requester -> Portal: Выбрать ученика
-        activate Portal
-        Portal --> Requester: Отметить выбранного ученика
-        deactivate Portal
-
-        Requester -> Portal: Инициировать удаление ученика\nиз списка учеников
-        activate Portal
-        Portal --> Requester: Удалить ученика из списка
+        Requester -> Frontend: Выбрать ученика
+        Frontend --> Requester: Отметить выбранного ученика
+        Requester -> Frontend: Инициировать удаление ученика\nиз списка учеников
+        Frontend -> Portal: Удалить ученика из списка
+        Portal --> Frontend: Ученик удалён из списка
+        Frontend --> Requester: Обновить список учеников
         deactivate Portal
     end
 
     opt Скачать шаблон Excel-файла
-        Requester -> Portal: Нажать «Скачать шаблон»\nGET /api/v1/applications/downloads
+        Requester -> Frontend: Нажать «Скачать шаблон»
+        Frontend -> Portal: GET /api/v1/applications/downloads
         activate Portal
         alt Шаблон успешно сформирован
-            Portal --> Requester: 200 OK\nПередать шаблон Excel-файла
+            Portal --> Frontend: 200 OK\nШаблон Excel-файла
+            Frontend --> Requester: Передать шаблон Excel-файла
         else #LightPink Ошибка запроса
-            Portal --> Requester: 400 Bad Request\nОтобразить сообщение об ошибке скачивания
+            Portal --> Frontend: 400 Bad Request\nОшибка формирования шаблона
             deactivate Portal
+            Frontend --> Requester: Отобразить сообщение\nоб ошибке скачивания
+            deactivate Frontend
         end
     end
 
     opt Загрузка списка учеников через Excel
         loop Загрузка Excel-файла до успешной проверки данных
-            Requester -> Portal: Загрузить Excel-файл\nсо списком учеников\nPOST /api/v1/students
+            Requester -> Frontend: Загрузить Excel-файл\nсо списком учеников
+            activate Frontend
+            Frontend -> Portal: POST /api/v1/students
             activate Portal
-
             Portal -> Portal: Проверить загруженный файл\nи содержащиеся в нём данные
             Portal --> Portal: Результат проверки файла
-
             alt #LightPink В загруженном файле обнаружены ошибки
-                Portal --> Requester: 400 Bad Request\nВернуть ошибку с деталями,\nкоторые требуют доработки
-                Portal --> Requester: Вернуть к выбору файла\nдля повторной загрузки
+                Portal --> Frontend: 400 Bad Request\nВернуть ошибку с деталями,\nкоторые требуют доработки
+                Frontend --> Requester: Отобразить ошибки файла\nи вернуть к выбору файла
             else #White Загруженный файл прошёл проверку
-                Portal --> Requester: 200 OK\nОтобразить загруженный список учеников
+                Portal --> Frontend: 200 OK\nЗагруженный список учеников
                 deactivate Portal
+                Frontend --> Requester: Отобразить загруженный список учеников
+                deactivate Frontend
             end
         end
     end
@@ -155,17 +186,19 @@ end ref
 
 == Отправка заявки на рассмотрение ==
 
-Requester -> Portal: Инициировать отправку заявки\nна рассмотрение\nPOST /api/v1/applications
+Requester -> Frontend: Инициировать отправку заявки\nна рассмотрение
+activate Frontend
+Frontend -> Portal: POST /api/v1/applications
 activate Portal
 Portal -> Portal: Проверить обязательные поля,\nформат данных и дубли учеников
 Portal --> Portal: Результат проверки заявки
 
 alt #LightPink Обнаружены незаполненные обязательные поля
-    Portal --> Requester: 400 Bad Request\nСформировать сообщение\nс перечнем незаполненных полей
-    Portal --> Requester: Визуально выделить\nнезаполненные обязательные поля
+    Portal --> Frontend: 400 Bad Request\nСформировать сообщение\nс перечнем незаполненных полей
+    Frontend --> Requester: Визуально выделить\nнезаполненные обязательные поля
 else #LightPink Обнаружены дубли в списке учеников
-    Portal --> Requester: 400 Bad Request\nСформировать сообщение\nо найденных дублях
-    Portal --> Requester: Визуально выделить\nдублирующиеся записи
+    Portal --> Frontend: 400 Bad Request\nСформировать сообщение\nо найденных дублях
+    Frontend --> Requester: Визуально выделить\nдублирующиеся записи
 else #White Заявка валидна
     Portal -> DB: Сохранить заявку\nс соответствующим статусом
     activate DB
@@ -174,30 +207,37 @@ else #White Заявка валидна
 
     Portal -> Mail: Передать email-уведомление\nдля Согласующего
     activate Mail
-    Mail --> Approver: Email о новой заявке
+    Mail --> Portal: 200 OK
+    Mail -> Approver: Email о новой заявке
     deactivate Mail
-
-    Portal --> Requester: 200 OK\nСообщение «Заявка успешно отправлена»
+    Portal --> Frontend: 200 OK\nЗаявка успешно отправлена
     deactivate Portal
+    Frontend --> Requester: Сообщение\n«Заявка успешно отправлена»
+    deactivate Frontend
 end
 
+
 opt Сохранение заявки как черновика
-    Requester -> Portal: Инициировать сохранение заявки\nв качестве черновика\nPOST /api/v1/applications
+    Requester -> Frontend: Инициировать сохранение заявки\nв качестве черновика
+    activate Frontend
+    Frontend -> Portal: POST /api/v1/applications
     activate Portal
 
     Portal -> Portal: Проверить доступные данные заявки
     Portal --> Portal: Доступные данные заявки проверены
 
     alt #LightPink Данные черновика не соответствуют допустимой модели
-        Portal --> Requester: 400 Bad Request\nОтобразить сообщение об ошибке сохранения черновика
+        Portal --> Frontend: 400 Bad Request\nСообщение об ошибке сохранения черновика
+        Frontend --> Requester: Отобразить сообщение\nоб ошибке сохранения черновика
     else #White Черновик может быть сохранён
         Portal -> DB: Сохранить заявку\nс соответствующим статусом
         activate DB
         DB --> Portal: Черновик сохранён
         deactivate DB
-
-        Portal --> Requester: 200 OK\nСообщение «Черновик сохранён»
+        Portal --> Frontend: 200 OK\nЧерновик сохранён
         deactivate Portal
+        Frontend --> Requester: Сообщение\n«Черновик сохранён»
+        deactivate Frontend
     end
 end
 
