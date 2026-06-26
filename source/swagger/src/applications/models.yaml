@@ -94,3 +94,5 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Application"
+        pagination:
+          $ref: "../common/models.yaml#/components/schemas/PaginationMeta"

@@ -15,3 +15,51 @@ components:
           type: string
           description: Человекочитаемое описание ошибки
           example: Некорректный запрос
+
+    PaginationMetaPage:
+      type: integer
+      description: Текущая страница
+      minimum: 1
+      example: 1
+
+    PaginationMetaSize:
+      type: integer
+      description: Размер страницы
+      minimum: 1
+      maximum: 100
+      example: 20
+
+    PaginationMetaTotal:
+      type: integer
+      description: Общее количество записей
+      minimum: 0
+      example: 125
+
+    PaginationMetaTotalPages:
+      type: integer
+      description: Общее количество страниц
+      minimum: 0
+      example: 7
+
+
+    PaginationMeta:
+      type: object
+      description: Метаданные пагинации
+      required:
+        - page
+        - size
+        - total
+        - total_pages
+      properties:
+
+        page:
+          $ref: "#/components/schemas/PaginationMetaPage"
+
+        size:
+          $ref: "#/components/schemas/PaginationMetaSize"
+
+        total:
+          $ref: "#/components/schemas/PaginationMetaTotal"
+
+        total_pages:
+          $ref: "#/components/schemas/PaginationMetaTotalPages"
