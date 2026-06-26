@@ -20,6 +20,9 @@ paths:
   /applications/downloads:
     $ref: "./src/applications/api.yaml#/paths/~1applications~1downloads"
 
+  /applications/downloads/excel:
+    $ref: "./src/applications/api.yaml#/paths/~1applications~1downloads~1excel"
+
 components:
   securitySchemes:
     bearerAuth:

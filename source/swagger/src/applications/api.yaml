@@ -574,3 +574,135 @@ paths:
 
         '500':
           $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
+
+  /applications/downloads/excel:
+      post:
+        tags:
+          - Applications
+        summary: Скачивание списка заявок в Excel
+        description: |
+          Формирует Excel-файл со списком заявок по переданным фильтрам.
+
+          Фильтры идентичны фильтрам метода получения списка заявок.
+
+          Если фильтры не переданы, возвращаются все заявки,
+          доступные пользователю с учетом его роли и прав доступа.
+
+        operationId: downloadApplicationsExcel
+        security:
+          - BearerAuth: []
+
+        requestBody:
+          required: false
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  search:
+                    type: string
+                    description: Поиск по номеру заявки, названию курса или ФИО заявителя
+                    example: Java
+
+                  application_state_id:
+                    type: integer
+                    description: ID статуса заявки
+                    example: 1
+
+                  organization_id:
+                    type: integer
+                    description: ID организации
+                    example: 2
+
+                  course_id:
+                    type: integer
+                    description: ID курса
+                    example: 5
+
+                  start_date_from:
+                    type: string
+                    format: date
+                    example: "2026-06-01"
+
+                  start_date_to:
+                    type: string
+                    format: date
+                    example: "2026-06-30"
+
+                  end_date_from:
+                    type: string
+                    format: date
+                    example: "2026-06-01"
+
+                  end_date_to:
+                    type: string
+                    format: date
+                    example: "2026-06-30"
+
+                  created_at_from:
+                    type: string
+                    format: date
+                    example: "2026-06-01"
+
+                  created_at_to:
+                    type: string
+                    format: date
+                    example: "2026-06-30"
+
+                  sort_by:
+                    type: string
+                    enum:
+                      - number_application
+                      - course_name
+                      - application_state
+                      - organization
+                      - start_date
+                      - end_date
+                      - created_at
+                    example: created_at
+
+                  sort_direction:
+                    type: string
+                    enum:
+                      - asc
+                      - desc
+                    example: desc
+
+              example:
+                search: Java
+                application_state_id: 1
+                organization_id: 2
+                course_id: 5
+                start_date_from: "2026-06-01"
+                start_date_to: "2026-06-30"
+                sort_by: created_at
+                sort_direction: desc
+
+        responses:
+          '200':
+            description: Excel-файл со списком заявок успешно сформирован
+            headers:
+              Content-Disposition:
+                schema:
+                  type: string
+                  example: attachment; filename="applications.xlsx"
+            content:
+              application/vnd.openxmlformats-officedocument.spreadsheetml.sheet:
+                schema:
+                  type: string
+                  format: binary
+
+          '400':
+            $ref: "../common/responses.yaml#/components/responses/BadRequestErrorResponse"
+
+          '401':
+            $ref: "../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+          '403':
+            $ref: "../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+
+          '429':
+            $ref: "../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
+
+          '500':
+            $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"
