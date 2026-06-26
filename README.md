@@ -3,6 +3,7 @@
 # Swagger
 ## Install Redocly CLI
 
+cd ./source/swagger
 npm install @redocly/cli@latest
 
 ## Build OpenAPI specification
