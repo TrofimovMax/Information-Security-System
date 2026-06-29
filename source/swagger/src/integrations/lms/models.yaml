@@ -1,6 +1,28 @@
 components:
   schemas:
 
+    LmsExternalCourseId:
+      type: string
+      description: Внешний идентификатор курса в СДО
+      example: LMS-COURSE-12345
+
+    LmsCourseName:
+      type: string
+      description: Название курса
+      example: Основы информационной безопасности
+
+    LmsCourseStartDate:
+      type: string
+      format: date
+      description: Дата начала обучения
+      example: "2026-07-01"
+
+    LmsCourseEndDate:
+      type: string
+      format: date
+      description: Дата окончания обучения
+      example: "2026-07-10"
+
     LmsCourse:
       type: object
       description: Курс, полученный из СДО
@@ -14,23 +36,86 @@ components:
       properties:
 
         external_course_id:
-          type: string
-          description: Внешний идентификатор курса в СДО
-          example: LMS-COURSE-12345
+          $ref: "#/components/schemas/LmsExternalCourseId"
 
         name:
-          type: string
-          description: Название курса
-          example: Основы информационной безопасности
+          $ref: "#/components/schemas/LmsCourseName"
 
         start_date:
-          type: string
-          format: date
-          description: Дата начала курса
-          example: "2026-07-01"
+          $ref: "#/components/schemas/LmsCourseStartDate"
 
         end_date:
+          $ref: "#/components/schemas/LmsCourseEndDate"
+
+
+    LmsApplicationRequest:
+      type: object
+      description: Данные согласованной заявки для передачи в СДО
+
+      required:
+        - external_course_id
+        - start_date
+        - end_date
+        - number_application
+        - webhook_url
+        - students
+
+      properties:
+
+        external_course_id:
+          $ref: "#/components/schemas/LmsExternalCourseId"
+
+        start_date:
+          $ref: "#/components/schemas/LmsCourseStartDate"
+
+        end_date:
+          $ref: "#/components/schemas/LmsCourseEndDate"
+
+        number_application:
+          $ref: "../../applications/models.yaml#/components/schemas/ApplicationNumber"
+
+        webhook_url:
           type: string
-          format: date
-          description: Дата окончания курса
-          example: "2026-07-10"
+          format: uri
+          description: URL webhook Портала для уведомлений о состоянии заявки
+          example: https://portal.example.com/api/v1/lms/webhooks/applications/state
+
+        students:
+          type: array
+          minItems: 1
+          description: Контакты учеников для записи на курс
+          items:
+            $ref: "#/components/schemas/LmsStudentContact"
+
+    LmsStudentContact:
+      type: object
+      description: Контакт ученика для передачи в СДО
+
+      required:
+        - contacts
+        - position
+        - departament
+
+      properties:
+
+        contacts:
+          $ref: "../../employees/models.yaml#/components/schemas/EmployeeContacts"
+
+        position:
+          $ref: "../../positions/models.yaml#/components/schemas/PositionName"
+
+        departament:
+          $ref: "../../departaments/models.yaml#/components/schemas/DepartamentName"
+
+
+    LmsApplicationAcceptedResponse:
+      type: object
+      required:
+        - message
+
+      properties:
+
+        message:
+          type: string
+          description: Сообщение о результате принятия заявки
+          example: Заявка принята СДО на рассмотрение

@@ -5,7 +5,11 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:3000/api/v1
+  - url: https://portal.example.com/api/v1
+
+tags:
+  - name: LMS Integration
+    description: Интеграция с системой дистанционного обучения
 
 paths:
   /users/current:
@@ -31,6 +35,9 @@ paths:
 
   /lms/courses:
     $ref: "./src/integrations/lms/api.yaml#/paths/~1lms~1courses"
+
+  /lms/applications:
+    $ref: "./src/integrations/lms/api.yaml#/paths/~1lms~1applications"
 
 components:
   securitySchemes:

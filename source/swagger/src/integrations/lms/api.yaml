@@ -53,3 +53,123 @@ paths:
 
         '500':
           $ref: "../../common/responses.yaml#/components/responses/InternalServerErrorResponse"
+
+  /lms/applications:
+    post:
+      tags:
+        - LMS Integration
+
+      summary: Передача согласованной заявки в СДО
+
+      description: |
+        Передает согласованную заявку на обучение в СДО.
+
+        СДО получает:
+        - идентификатор курса в СДО;
+        - даты начала и окончания обучения;
+        - URL webhook для обратных уведомлений;
+        - список учеников с контактными данными.
+
+        После получения заявки СДО принимает её на рассмотрение
+        и возвращает HTTP 202 Accepted.
+
+      operationId: sendApplicationToLms
+
+      security:
+        - LmsApiAuth: []
+
+      requestBody:
+        required: true
+        description: Данные заявки для передачи в СДО
+        content:
+          application/json:
+            schema:
+              $ref: "./models.yaml#/components/schemas/LmsApplicationRequest"
+            example:
+              external_course_id: "LMS-COURSE-1005"
+              start_date: "2026-06-15"
+              end_date: "2026-06-20"
+              number_application: "APP-2026-0001"
+              webhook_url: "https://portal.example.com/api/v1/lms/webhooks/applications/state"
+              students:
+                - full_name: "Иванов Иван Иванович"
+                  email: "ivanov@example.com"
+                  phone: "+79000000000"
+                  departament: "Отдел разработки"
+                  position: "Backend-разработчик"
+
+      responses:
+
+        '202':
+          description: Заявка принята СДО на рассмотрение
+          content:
+            application/json:
+              schema:
+                $ref: "./models.yaml#/components/schemas/LmsApplicationAcceptedResponse"
+              example:
+                message: Заявка принята СДО на рассмотрение
+
+        '400':
+          description: Некорректные данные заявки
+          content:
+            application/json:
+              schema:
+                $ref: "../../common/models.yaml#/components/schemas/ErrorResponse"
+              example:
+                code: VALIDATION_ERROR
+                message: Некорректные данные заявки
+                details:
+                  - field: external_course_id
+                    message: Поле external_course_id обязательно для заполнения
+
+                  - field: start_date
+                    message: Поле start_date обязательно для заполнения
+
+                  - field: end_date
+                    message: Поле end_date обязательно для заполнения
+
+                  - field: webhook_url
+                    message: Поле webhook_url обязательно для заполнения
+
+                  - field: students
+                    message: Список учеников не может быть пустым
+
+                  - field: students[0].contacts
+                    message: Поле contacts обязательно для заполнения
+
+                  - field: students[0].contacts.full_name
+                    message: Поле full_name обязательно для заполнения
+
+                  - field: students[0].contacts.email
+                    message: Поле email обязательно для заполнения
+
+                  - field: students[0].contacts.phone
+                    message: Поле phone обязательно для заполнения
+
+                  - field: students[0].position
+                    message: Поле position обязательно для заполнения
+
+                  - field: students[0].departament
+                    message: Поле departament обязательно для заполнения
+
+        '401':
+          $ref: "../../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+        
+        '404':
+          description: Курс в СДО не найден
+          content:
+            application/json:
+              schema:
+                $ref: "../../common//models.yaml#/components/schemas/ErrorResponse"
+              example:
+                code: COURSE_NOT_FOUND
+                message: Курс с указанным external_course_id не найден в СДО
+                details:
+                  - field: external_course_id
+                    message: Курс LMS-COURSE-1005 не найден
+
+        '500':
+          $ref: "../../common/responses.yaml#/components/responses/InternalServerErrorResponse"

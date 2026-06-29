@@ -137,11 +137,7 @@ components:
       type: object
       description: Детальная информация о сотруднике для выбора ученика
       required:
-        - firstname
-        - middle_name
-        - last_name
-        - email
-        - phone
+        - contacts
         - position
         - departament
 
