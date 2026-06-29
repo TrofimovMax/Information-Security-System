@@ -39,6 +39,9 @@ paths:
   /lms/applications:
     $ref: "./src/integrations/lms/api.yaml#/paths/~1lms~1applications"
 
+  /lms/applications/status:
+    $ref: "./src/integrations/lms/api.yaml#/paths/~1lms~1applications~1status"
+
 components:
   securitySchemes:
     bearerAuth:

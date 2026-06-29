@@ -119,3 +119,70 @@ components:
           type: string
           description: Сообщение о результате принятия заявки
           example: Заявка принята СДО на рассмотрение
+
+    LmsApplicationStatusRequest:
+      type: object
+      description: Запрос статусов заявок в СДО
+
+      required:
+        - application_numbers
+
+      properties:
+
+        application_numbers:
+          type: array
+          description: Номера заявок Портала
+          minItems: 1
+          items:
+            type: string
+          example:
+            - APP-2026-0001
+            - APP-2026-0002
+
+    LmsApplicationStatusResponse:
+      type: object
+      description: Статусы заявок в СДО
+
+      required:
+        - applications
+
+      properties:
+
+        applications:
+          type: array
+          items:
+            $ref: "#/components/schemas/LmsApplicationStatus"
+
+    LmsApplicationStatus:
+      type: object
+      description: Статус заявки в СДО
+
+      required:
+        - number_application
+        - status
+        - message
+
+      properties:
+
+        number_application:
+          type: string
+          description: Номер заявки в Портале
+          example: APP-2026-0001
+
+        status:
+          type: string
+          description: Текущий статус заявки в СДО
+
+          enum:
+            - pending
+            - accepted
+            - completed
+            - postponed
+            - not_found
+
+          example: accepted
+
+        message:
+          type: string
+          description: Описание статуса заявки
+          example: Заявка принята СДО
