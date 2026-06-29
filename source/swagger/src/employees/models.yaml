@@ -115,7 +115,6 @@ components:
         contacts:
           $ref: "#/components/schemas/EmployeeContacts"
 
-
     EmployeeContacts:
       type: object
       description: Контактные данные сотрудника
@@ -133,3 +132,26 @@ components:
 
         phone:
           $ref: "#/components/schemas/EmployeePhone"
+
+    StudentDetails:
+      type: object
+      description: Детальная информация о сотруднике для выбора ученика
+      required:
+        - firstname
+        - middle_name
+        - last_name
+        - email
+        - phone
+        - position
+        - departament
+
+      properties:
+
+        contacts:
+          $ref: "#/components/schemas/EmployeeContacts"
+
+        position:
+          $ref: "../positions/models.yaml#/components/schemas/PositionShort"
+
+        departament:
+          $ref: "../departaments/models.yaml#/components/schemas/DepartamentShort"

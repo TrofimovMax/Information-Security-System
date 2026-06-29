@@ -1,0 +1,72 @@
+components:
+  schemas:
+
+    StudentListResponse:
+      type: object
+      description: Список учеников с пагинацией
+      required:
+        - items
+        - meta
+
+      properties:
+
+        items:
+          type: array
+          description: Список учеников
+          items:
+            $ref: "../employees/models.yaml#/components/schemas/StudentDetails"
+
+        meta:
+          $ref: "../common/models.yaml#/components/schemas/PaginationMeta"
+
+    StudentSearchFilters:
+      type: object
+      description: Фильтры поиска учеников для добавления в заявку
+      properties:
+
+        application_id:
+          type: integer
+          format: int64
+          description: ID заявки. Если указан, возвращаются только ученики заявки
+          example: 1
+
+        search:
+          type: string
+          minLength: 2
+          description: Поиск ученика по ФИО
+          example: Иванов
+
+        organization_id:
+          type: integer
+          format: int64
+          description: ID организации
+          example: 3
+
+        position_id:
+          type: integer
+          format: int64
+          description: ID должности
+          example: 1
+
+        departament_id:
+          type: integer
+          format: int64
+          description: ID подразделения
+          example: 2
+
+        sort_by:
+          type: string
+          description: Поле сортировки
+          enum:
+            - full_name
+            - position
+            - departament
+          example: full_name
+
+        sort_direction:
+          type: string
+          description: Направление сортировки
+          enum:
+            - asc
+            - desc
+          example: asc

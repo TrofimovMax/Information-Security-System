@@ -1,0 +1,63 @@
+paths:
+  /students/search:
+    post:
+      tags:
+        - Students
+
+      summary: Получение учеников по фильтрам
+
+      description: |
+        Возвращает список учеников.
+
+        Если указан application_id,
+        возвращаются ученики, добавленные в указанную заявку.
+
+        Если application_id отсутствует,
+        выполняется поиск учеников из общей базы.
+
+        Используется для выбора учеников при создании
+        и редактировании заявки.
+
+      operationId: getStudents
+
+      security:
+        - bearerAuth: []
+
+      parameters:
+
+        - $ref: "../common/parameters.yaml#/components/parameters/PageParam"
+
+        - $ref: "../common/parameters.yaml#/components/parameters/SizeParam"
+
+
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "./models.yaml#/components/schemas/StudentSearchFilters"
+
+
+      responses:
+
+        '200':
+          description: Список учеников успешно получен
+          content:
+            application/json:
+              schema:
+                $ref: "./models.yaml#/components/schemas/StudentListResponse"
+
+        '400':
+          $ref: "../common/responses.yaml#/components/responses/BadRequestErrorResponse"
+
+        '401':
+          $ref: "../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+
+        '429':
+          $ref: "../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
+
+        '500':
+          $ref: "../common/responses.yaml#/components/responses/InternalServerErrorResponse"

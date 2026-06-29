@@ -1,0 +1,71 @@
+components:
+  schemas:
+
+    DepartamentId:
+      type: integer
+      format: int64
+      description: ID подразделения
+      example: 2
+
+    DepartamentName:
+      type: string
+      description: Название подразделения
+      maxLength: 255
+      example: Отдел разработки
+
+    Departament:
+      type: object
+      description: Сущность подразделения
+      required:
+        - id
+        - name
+        - organization_id
+        - created_at
+        - updated_at
+      properties:
+
+        id:
+          $ref: "#/components/schemas/DepartamentId"
+
+        name:
+          $ref: "#/components/schemas/DepartamentName"
+
+        description:
+          type: string
+          nullable: true
+          description: Описание подразделения
+          maxLength: 255
+          example: Отдел разработки программного обеспечения
+
+        organization_id:
+          type: integer
+          format: int64
+          description: ID организации
+          example: 1
+
+        created_at:
+          type: string
+          format: date-time
+          description: Дата создания подразделения
+          example: "2026-06-15T10:30:00Z"
+
+        updated_at:
+          type: string
+          format: date-time
+          description: Дата последнего обновления подразделения
+          example: "2026-06-15T12:00:00Z"
+
+
+    DepartamentShort:
+      type: object
+      description: Краткое представление подразделения
+      required:
+        - id
+        - name
+      properties:
+
+        id:
+          $ref: "#/components/schemas/DepartamentId"
+
+        name:
+          $ref: "#/components/schemas/DepartamentName"

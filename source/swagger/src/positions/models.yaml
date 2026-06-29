@@ -1,0 +1,71 @@
+components:
+  schemas:
+
+    PositionId:
+      type: integer
+      format: int64
+      description: ID должности
+      example: 1
+
+    PositionName:
+      type: string
+      description: Название должности
+      maxLength: 255
+      example: Backend-разработчик
+
+    Position:
+      type: object
+      description: Сущность должности
+      required:
+        - id
+        - name
+        - departament_id
+        - created_at
+        - updated_at
+      properties:
+
+        id:
+          $ref: "#/components/schemas/PositionId"
+
+        name:
+          $ref: "#/components/schemas/PositionName"
+
+        description:
+          type: string
+          nullable: true
+          description: Описание должности
+          maxLength: 255
+          example: Разработка и сопровождение программного обеспечения
+
+        departament_id:
+          type: integer
+          format: int64
+          description: ID подразделения
+          example: 2
+
+        created_at:
+          type: string
+          format: date-time
+          description: Дата создания должности
+          example: "2026-06-15T10:30:00Z"
+
+        updated_at:
+          type: string
+          format: date-time
+          description: Дата последнего обновления должности
+          example: "2026-06-15T12:00:00Z"
+
+
+    PositionShort:
+      type: object
+      description: Краткое представление должности
+      required:
+        - id
+        - name
+      properties:
+
+        id:
+          $ref: "#/components/schemas/PositionId"
+
+        name:
+          $ref: "#/components/schemas/PositionName"
