@@ -1,0 +1,55 @@
+paths:
+  /lms/courses:
+    get:
+      tags:
+        - LMS Integration
+
+      summary: Получение списка курсов из СДО
+
+      description: |
+        Возвращает список доступных курсов из СДО.
+
+        Полученные данные используются для синхронизации
+        с локальной таблицей courses.
+
+        В локальной базе сохраняются:
+        - внешний идентификатор курса СДО;
+        - название курса;
+        - дата создания записи.
+
+      operationId: getLmsCourses
+
+      security:
+        - bearerAuth: []
+
+      responses:
+
+        '200':
+          description: Список курсов успешно получен
+
+          content:
+            application/json:
+              schema:
+                type: object
+
+                required:
+                  - items
+
+                properties:
+
+                  items:
+                    type: array
+                    description: Список курсов из СДО
+
+                    items:
+                      $ref: "./models.yaml#/components/schemas/LmsCourse"
+
+
+        '401':
+          $ref: "../../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
+
+        '403':
+          $ref: "../../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
+
+        '500':
+          $ref: "../../common/responses.yaml#/components/responses/InternalServerErrorResponse"

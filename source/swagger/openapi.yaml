@@ -29,6 +29,9 @@ paths:
   /students/search:
     $ref: "./src/students/api.yaml#/paths/~1students~1search"
 
+  /lms/courses:
+    $ref: "./src/integrations/lms/api.yaml#/paths/~1lms~1courses"
+
 components:
   securitySchemes:
     bearerAuth:

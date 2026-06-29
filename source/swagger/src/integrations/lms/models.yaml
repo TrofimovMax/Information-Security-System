@@ -1,0 +1,36 @@
+components:
+  schemas:
+
+    LmsCourse:
+      type: object
+      description: Курс, полученный из СДО
+
+      required:
+        - external_course_id
+        - name
+        - start_date
+        - end_date
+
+      properties:
+
+        external_course_id:
+          type: string
+          description: Внешний идентификатор курса в СДО
+          example: LMS-COURSE-12345
+
+        name:
+          type: string
+          description: Название курса
+          example: Основы информационной безопасности
+
+        start_date:
+          type: string
+          format: date
+          description: Дата начала курса
+          example: "2026-07-01"
+
+        end_date:
+          type: string
+          format: date
+          description: Дата окончания курса
+          example: "2026-07-10"
