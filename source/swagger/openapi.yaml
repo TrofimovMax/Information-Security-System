@@ -74,3 +74,15 @@ components:
       in: header
       name: X-Service-Token
       description: Служебный токен для взаимодействия с почтовой службой
+
+    LmsWebhookAuth:
+      type: apiKey
+      in: header
+      name: X-Service-Token
+      description: Служебный токен для проверки webhook-запросов от СДО
+
+    LmsServiceAuth:
+      type: apiKey
+      in: header
+      name: X-Service-Token
+      description: Служебный токен для взаимодействия Портала с СДО

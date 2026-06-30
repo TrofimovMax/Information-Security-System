@@ -20,7 +20,7 @@ paths:
       operationId: getLmsCourses
 
       security:
-        - bearerAuth: []
+        - LmsServiceAuth: []
 
       responses:
 
@@ -79,7 +79,7 @@ paths:
       operationId: sendApplicationToLms
 
       security:
-        - LmsApiAuth: []
+        - LmsServiceAuth: []
 
       requestBody:
         required: true
@@ -202,7 +202,7 @@ paths:
       operationId: getLmsApplicationsStatus
 
       security:
-        - LmsApiAuth: []
+        - LmsServiceAuth: []
 
       requestBody:
         required: true
