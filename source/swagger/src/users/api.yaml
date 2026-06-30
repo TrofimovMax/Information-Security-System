@@ -7,7 +7,7 @@ paths:
       description: Возвращает данные текущего авторизованного пользователя по Bearer JWT токену.
       operationId: getCurrentUser
       security:
-        - bearerAuth: []
+        - BearerAuth: []
       responses:
         '200':
           description: Данные текущего пользователя успешно получены

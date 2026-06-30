@@ -6,7 +6,7 @@ paths:
       summary: Получить список заявок на обучение (с фильтрами)
       operationId: searchApplications
       security:
-        - bearerAuth: []
+        - BearerAuth: []
 
       parameters:
         - $ref: "../common/parameters.yaml#/components/parameters/PageParam"
@@ -52,7 +52,7 @@ paths:
         Поддерживает создание черновика и отправку на рассмотрение.
       operationId: createApplication
       security:
-        - bearerAuth: []
+        - BearerAuth: []
 
       requestBody:
         required: true
@@ -133,7 +133,7 @@ paths:
         Возвращает полную карточку заявки на обучение.
       operationId: getApplicationById
       security:
-        - bearerAuth: []
+        - BearerAuth: []
 
       parameters:
         - name: id

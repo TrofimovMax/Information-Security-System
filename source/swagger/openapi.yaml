@@ -8,8 +8,14 @@ servers:
   - url: https://portal.example.com/api/v1
 
 tags:
+  - name: Auth
+    description: Авторизация и получение данных текущего пользователя
+
   - name: Applications
     description: Внутренняя логика портала для работы с заявками на обучение
+
+  - name: Students
+    description: Поиск и получение списка сотрудников для работы с заявками
 
   - name: LMS Integration
     description: Интеграция с системой дистанционного обучения
@@ -64,7 +70,7 @@ paths:
 
 components:
   securitySchemes:
-    bearerAuth:
+    BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
