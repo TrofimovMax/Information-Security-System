@@ -14,6 +14,9 @@ tags:
   - name: LMS Integration
     description: Интеграция с системой дистанционного обучения
 
+  - name: Mail Integration
+    description: Интеграция с почтовой службой для отправки уведомлений о событиях заявок
+
 paths:
   /users/current:
     $ref: "./src/users/api.yaml#/paths/~1users~1current"
@@ -53,9 +56,21 @@ paths:
   /lms/applications/status:
     $ref: "./src/integrations/lms/api.yaml#/paths/~1lms~1applications~1status"
 
+  # =========================
+  # Mail Integration
+  # =========================
+  /integrations/mail/notifications:
+    $ref: "./src/integrations/mail/api.yaml#/paths/~1mail~1notifications"
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+    MailServiceAuth:
+      type: apiKey
+      in: header
+      name: X-Service-Token
+      description: Служебный токен для взаимодействия с почтовой службой

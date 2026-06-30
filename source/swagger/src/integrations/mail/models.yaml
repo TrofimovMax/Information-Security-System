@@ -1,0 +1,48 @@
+components:
+  schemas:
+
+    MailNotificationRequest:
+      type: object
+      description: Данные уведомления для отправки в почтовую службу
+
+      required:
+        - number_application
+        - application_state
+        - emails
+        - event_type
+
+      properties:
+
+        number_application:
+          type: string
+          description: Номер заявки
+          example: APP-2026-0001
+
+
+        application_state:
+          type: string
+          description: Название текущего статуса заявки
+          example: Согласована
+
+
+        emails:
+          type: array
+          description: Список email получателей уведомления
+
+          minItems: 1
+
+          items:
+            type: string
+            format: email
+
+          example:
+            - ivanov@example.com
+            - petrov@example.com
+
+
+        event_type:
+          $ref: "../../notifications/models.yaml#/components/schemas/NotificationEventType"
+
+
+        content:
+          $ref: "../../notifications/models.yaml#/components/schemas/NotificationContent"

@@ -1,0 +1,69 @@
+components:
+  schemas:
+
+    NotificationId:
+      type: integer
+      format: int64
+      description: ID уведомления
+      example: 1
+
+
+    NotificationEventType:
+      type: string
+      description: Тип события уведомления
+      example: APPLICATION_STATUS_CHANGED
+
+
+    NotificationContent:
+      type: string
+      description: Содержание уведомления
+      maxLength: 255
+      example: Заявка APP-2026-0001 переведена в статус Согласована
+
+
+    Notification:
+      type: object
+      description: Уведомление пользователя
+
+      required:
+        - id
+        - user_id
+        - content
+        - event_type
+        - is_read
+        - created_at
+
+      properties:
+
+        id:
+          $ref: "#/components/schemas/NotificationId"
+
+        user_id:
+          type: integer
+          format: int64
+          description: ID пользователя
+          example: 10
+
+        content:
+          $ref: "#/components/schemas/NotificationContent"
+
+        event_type:
+          $ref: "#/components/schemas/NotificationEventType"
+
+        is_read:
+          type: boolean
+          description: Признак прочитанного уведомления
+          example: false
+
+        application_id:
+          type: integer
+          format: int64
+          nullable: true
+          description: ID заявки, связанной с уведомлением
+          example: 1
+
+        created_at:
+          type: string
+          format: date-time
+          description: Дата создания уведомления
+          example: "2026-06-30T10:30:00Z"
