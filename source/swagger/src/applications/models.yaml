@@ -415,3 +415,66 @@ components:
           type: string
           description: Комментарий согласующего
           example: Необходимо скорректировать список сотрудников
+
+    LmsApplicationWebhookRequest:
+      oneOf:
+        - $ref: "#/components/schemas/LmsApplicationWebhookAccepted"
+        - $ref: "#/components/schemas/LmsApplicationWebhookCompleted"
+        - $ref: "#/components/schemas/LmsApplicationWebhookPostponed"
+
+      discriminator:
+        propertyName: status
+
+    LmsApplicationWebhookAccepted:
+      type: object
+      required:
+        - number_application
+        - status
+
+      properties:
+        number_application:
+          type: string
+          example: APP-2026-0001
+
+        status:
+          type: string
+          enum: [accepted]
+          example: accepted    
+
+    LmsApplicationWebhookCompleted:
+      type: object
+      required:
+        - number_application
+        - status
+
+      properties:
+        number_application:
+          type: string
+          example: APP-2026-0002
+
+        status:
+          type: string
+          enum: [completed]
+          example: completed
+
+    LmsApplicationWebhookPostponed:
+      type: object
+      required:
+        - number_application
+        - status
+        - comment
+
+      properties:
+        number_application:
+          type: string
+          example: APP-2026-0003
+
+        status:
+          type: string
+          enum: [postponed]
+          example: postponed
+
+        comment:
+          type: string
+          description: Причина переноса заявки
+          example: Нет доступных мест в группе

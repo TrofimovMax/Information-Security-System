@@ -8,6 +8,9 @@ servers:
   - url: https://portal.example.com/api/v1
 
 tags:
+  - name: Applications
+    description: Внутренняя логика портала для работы с заявками на обучение
+
   - name: LMS Integration
     description: Интеграция с системой дистанционного обучения
 
@@ -30,9 +33,17 @@ paths:
   /applications/downloads/excel:
     $ref: "./src/applications/api.yaml#/paths/~1applications~1downloads~1excel"
 
+  /applications/webhooks/status:
+    $ref: "./src/applications/api.yaml#/paths/~1applications~1webhooks~1status"
+
   /students/search:
     $ref: "./src/students/api.yaml#/paths/~1students~1search"
 
+  # Integrations
+
+  # =========================
+  # LMS Integration
+  # =========================
   /lms/courses:
     $ref: "./src/integrations/lms/api.yaml#/paths/~1lms~1courses"
 
