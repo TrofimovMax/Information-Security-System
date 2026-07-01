@@ -4,7 +4,7 @@ DuplicateStudentsInApplicationExample:
     code: APPLICATION_VALIDATION_FAILED
     message: Ошибка бизнес-валидации
     errors:
-      - field: students
+      - field: student_emails
         message: Обнаружены дубли
         rows: [3, 8]
 
@@ -14,8 +14,8 @@ StudentsNotFoundInApplicationExample:
     code: APPLICATION_VALIDATION_FAILED
     message: Ошибка бизнес-валидации
     errors:
-      - field: student_ids
-        message: Указанные сотрудники не найдены
+      - field: student_emails
+        message: Указанные студенты не найдены
         rows: [1, 2]
 
 CourseNotFoundInApplicationExample:

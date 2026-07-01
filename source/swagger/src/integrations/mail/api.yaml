@@ -4,17 +4,26 @@ paths:
       tags:
         - Mail Integration
 
-      summary: Отправка уведомления в почтовую службу
+      summary: Создание email сообщения в почтовой службе
 
       description: |
-        Портал передает в почтовую службу данные для отправки уведомления.
+        Портал передает данные для создания email сообщения.
 
-        Используется при изменении состояния заявки.
+        Почтовая служба:
+        - создает сообщение;
+        - применяет шаблон при наличии template_id;
+        - выполняет подстановку параметров;
+        - возвращает идентификатор созданного сообщения.
 
-      operationId: sendMailNotification
+        Фактическая отправка письма выполняется почтовой службой отдельно.
+
+      operationId: createMailNotification
 
       security:
         - MailServiceAuth: []
+
+      parameters:
+        - $ref: "../../common/parameters.yaml#/components/parameters/IdempotencyKeyHeader"
 
       requestBody:
         required: true
@@ -23,19 +32,37 @@ paths:
             schema:
               $ref: "./models.yaml#/components/schemas/MailNotificationRequest"
 
+            example:
+              sender_name: Портал обучения
+              sender_email: no-reply@example.com
+              recipients:
+                - ivanov@example.com
+                - petrov@example.com
+              subject: Статус заявки APP-2026-0001 изменен
+              body_html: |
+                <html>
+                  <body>
+                    <h1>Статус заявки изменен</h1>
+                    <p>Заявка APP-2026-0001 переведена в статус "Принята СДО"</p>
+                  </body>
+                </html>
+              event_type: APPLICATION_ACCEPTED
+              template_id: APPLICATION_STATUS_CHANGED
+              text_body: Статус заявки изменен
+              generate_text: true
+
       responses:
-        '202':
-          description: Уведомление принято почтовой службой
+
+        '200':
+          description: Email сообщение создано
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - message
-                properties:
-                  message:
-                    type: string
-                    example: Уведомление принято в обработку
+                $ref: "./models.yaml#/components/schemas/MailNotificationAcceptedResponse"
+
+              example:
+                message_id: MAIL-2026-00001
+                message: Email сообщение создано
 
         '400':
           $ref: "../../common/responses.yaml#/components/responses/BadRequestErrorResponse"

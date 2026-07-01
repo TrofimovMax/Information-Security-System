@@ -3,9 +3,7 @@ paths:
     post:
       tags:
         - Students
-
       summary: Получение учеников по фильтрам
-
       description: |
         Возвращает список учеников.
 
@@ -17,18 +15,9 @@ paths:
 
         Используется для выбора учеников при создании
         и редактировании заявки.
-
       operationId: getStudents
-
       security:
         - BearerAuth: []
-
-      parameters:
-
-        - $ref: "../common/parameters.yaml#/components/parameters/PageParam"
-
-        - $ref: "../common/parameters.yaml#/components/parameters/SizeParam"
-
 
       requestBody:
         required: false
@@ -36,7 +25,6 @@ paths:
           application/json:
             schema:
               $ref: "./models.yaml#/components/schemas/StudentSearchFilters"
-
 
       responses:
 

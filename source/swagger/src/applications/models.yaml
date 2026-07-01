@@ -1,7 +1,7 @@
 components:
   schemas:
 
-        # =========================
+    # =========================
     # PRIMITIVES
     # =========================
 
@@ -94,8 +94,81 @@ components:
     ApplicationListItem:
       type: object
       description: Элемент списка заявок
-      allOf:
-        - $ref: "#/components/schemas/Application"
+      required:
+        - id
+        - number_application
+        - course
+        - start_date
+        - end_date
+        - application_state
+        - created_by
+        - organization
+        - created_at
+        - updated_at
+
+      properties:
+        id:
+          $ref: "#/components/schemas/ApplicationId"
+
+        number_application:
+          $ref: "#/components/schemas/ApplicationNumber"
+
+        course:
+          $ref: "../courses/models.yaml#/components/schemas/CourseShort"
+
+        start_date:
+          $ref: "#/components/schemas/ApplicationStartDate"
+
+        end_date:
+          $ref: "#/components/schemas/ApplicationEndDate"
+
+        application_state:
+          $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateShort"
+
+        created_by:
+          type: object
+          description: Пользователь, создавший заявку
+          required:
+            - id
+            - full_name
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: ID пользователя
+              example: 1
+            full_name:
+              $ref: "../employees/models.yaml#/components/schemas/EmployeeFullName"
+
+        approver:
+          type: object
+          nullable: true
+          description: Согласующий заявки
+          required:
+            - id
+            - full_name
+          properties:
+            id:
+              type: integer
+              format: int64
+              description: ID согласующего
+              example: 10
+
+            full_name:
+              $ref: "../employees/models.yaml#/components/schemas/EmployeeFullName"
+
+        organization:
+          $ref: "../organizations/models.yaml#/components/schemas/OrganizationShort"
+
+        created_at:
+          type: string
+          format: date-time
+          example: "2026-06-15T10:30:00Z"
+
+        updated_at:
+          type: string
+          format: date-time
+          example: "2026-06-15T12:00:00Z"
 
     # =========================
     # LIST RESPONSE
@@ -105,11 +178,13 @@ components:
       type: object
       required:
         - applications
+        - pagination
       properties:
         applications:
           type: array
+          description: Список заявок
           items:
-            $ref: "#/components/schemas/Application"
+            $ref: "#/components/schemas/ApplicationListItem"
         pagination:
           $ref: "../common/models.yaml#/components/schemas/PaginationMeta"
 
@@ -148,80 +223,82 @@ components:
 
     ApplicationListFilters:
       type: object
-      description: Фильтры для получения и экспорта списка заявок
+      description: Фильтры для получения списка заявок
 
-      properties:
+      allOf:
+        - type: object
+          properties:
+            search:
+              type: string
+              description: Поиск по номеру заявки, названию курса или ФИО заявителя
+              example: Java
 
-        search:
-          type: string
-          description: Поиск по номеру заявки, названию курса или ФИО заявителя
-          example: Java
+            application_state_id:
+              type: integer
+              description: ID статуса заявки
+              example: 1
 
-        application_state_id:
-          type: integer
-          description: ID статуса заявки
-          example: 1
+            organization_id:
+              type: integer
+              description: ID организации
+              example: 2
 
-        organization_id:
-          type: integer
-          description: ID организации
-          example: 2
+            course_id:
+              type: integer
+              description: ID курса
+              example: 5
 
-        course_id:
-          type: integer
-          description: ID курса
-          example: 5
+            start_date_from:
+              type: string
+              format: date
+              description: Дата начала обучения (от)
+              example: "2026-06-01"
 
-        start_date_from:
-          type: string
-          format: date
-          description: Дата начала обучения (от)
-          example: "2026-06-01"
+            start_date_to:
+              type: string
+              format: date
+              description: Дата начала обучения (до)
+              example: "2026-06-30"
 
-        start_date_to:
-          type: string
-          format: date
-          description: Дата начала обучения (до)
-          example: "2026-06-30"
+            end_date_from:
+              type: string
+              format: date
+              example: "2026-06-01"
 
-        end_date_from:
-          type: string
-          format: date
-          example: "2026-06-01"
+            end_date_to:
+              type: string
+              format: date
+              example: "2026-06-30"
 
-        end_date_to:
-          type: string
-          format: date
-          example: "2026-06-30"
+            created_at_from:
+              type: string
+              format: date
+              example: "2026-06-01"
 
-        created_at_from:
-          type: string
-          format: date
-          example: "2026-06-01"
+            created_at_to:
+              type: string
+              format: date
+              example: "2026-06-30"
 
-        created_at_to:
-          type: string
-          format: date
-          example: "2026-06-30"
+            sort_by:
+              type: string
+              enum:
+                - number_application
+                - course_name
+                - application_state
+                - organization
+                - start_date
+                - end_date
+                - created_at
+              example: created_at
 
-        sort_by:
-          type: string
-          enum:
-            - number_application
-            - course_name
-            - application_state
-            - organization
-            - start_date
-            - end_date
-            - created_at
-          example: created_at
-
-        sort_direction:
-          type: string
-          enum:
-            - asc
-            - desc
-          example: desc
+            sort_direction:
+              type: string
+              enum:
+                - asc
+                - desc
+              example: desc
+        - $ref: "../common/models.yaml#/components/schemas/PaginationRequest"
 
     # =========================
     # POST REQUESTS
@@ -304,80 +381,94 @@ components:
 
     UpdateApplicationDraftRequest:
       type: object
+      description: Данные для обновления черновика
       required:
         - application_state_id
 
       properties:
-
         number_application:
-          type: string
           nullable: true
+          $ref: "#/components/schemas/ApplicationNumber"
 
         course_id:
-          $ref: "../courses/models.yaml#/components/schemas/CourseId"
           nullable: true
+          $ref: "../courses/models.yaml#/components/schemas/CourseId"
 
         start_date:
-          type: string
-          format: date
           nullable: true
+          $ref: "#/components/schemas/ApplicationStartDate"
 
         end_date:
-          type: string
-          format: date
           nullable: true
+          $ref: "#/components/schemas/ApplicationEndDate"
 
         approver_id:
           type: integer
+          format: int64
           nullable: true
+          description: ID согласующего сотрудника
+          example: 10
 
         application_state_id:
           $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
 
         student_emails:
           type: array
+          description: Список email сотрудников, записанных на обучение
+          nullable: true
           items:
             $ref: "../employees/models.yaml#/components/schemas/EmployeeEmail"
-          nullable: true
 
     UpdateApplicationStrictRequest:
       type: object
+      description: Данные для полного обновления заявки
+
       required:
         - number_application
         - course_id
         - start_date
         - end_date
         - application_state_id
+        - approver_id
         - student_emails
+        - comments
 
       properties:
-
         number_application:
-          type: string
+          $ref: "#/components/schemas/ApplicationNumber"
 
         course_id:
           $ref: "../courses/models.yaml#/components/schemas/CourseId"
 
         start_date:
-          type: string
-          format: date
+          $ref: "#/components/schemas/ApplicationStartDate"
 
         end_date:
-          type: string
-          format: date
+          $ref: "#/components/schemas/ApplicationEndDate"
 
         approver_id:
           type: integer
+          format: int64
           nullable: true
+          description: ID согласующего сотрудника
+          example: 10
 
         application_state_id:
           $ref: "../application_states/models.yaml#/components/schemas/ApplicationStateId"
 
         student_emails:
           type: array
+          description: Список email сотрудников, записанных на обучение
+          minItems: 1
           items:
             $ref: "../employees/models.yaml#/components/schemas/EmployeeEmail"
+
+        comments:
+          type: array
           nullable: true
+          description: Список комментариев к заявке
+          items:
+            $ref: "../comments/models.yaml#/components/schemas/CommentResponse"
 
     # =========================
     # PATCH REQUESTS

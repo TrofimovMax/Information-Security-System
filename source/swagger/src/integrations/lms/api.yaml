@@ -81,6 +81,9 @@ paths:
       security:
         - LmsServiceAuth: []
 
+      parameters:
+        - $ref: "../../common/parameters.yaml#/components/parameters/IdempotencyKeyHeader"
+
       requestBody:
         required: true
         description: Данные заявки для передачи в СДО
@@ -118,61 +121,60 @@ paths:
             application/json:
               schema:
                 $ref: "../../common/models.yaml#/components/schemas/ErrorResponse"
-              example:
-                code: VALIDATION_ERROR
-                message: Некорректные данные заявки
-                details:
-                  - field: external_course_id
-                    message: Поле external_course_id обязательно для заполнения
+              examples:
+                validationError:
+                  summary: Ошибка валидации полей
+                  value:
+                    code: VALIDATION_ERROR
+                    message: Некорректные данные заявки
+                    details:
+                      - field: external_course_id
+                        message: Поле external_course_id обязательно для заполнения
 
-                  - field: start_date
-                    message: Поле start_date обязательно для заполнения
+                      - field: start_date
+                        message: Поле start_date обязательно для заполнения
 
-                  - field: end_date
-                    message: Поле end_date обязательно для заполнения
+                      - field: end_date
+                        message: Поле end_date обязательно для заполнения
 
-                  - field: webhook_url
-                    message: Поле webhook_url обязательно для заполнения
+                      - field: webhook_url
+                        message: Поле webhook_url обязательно для заполнения
 
-                  - field: students
-                    message: Список учеников не может быть пустым
+                      - field: students
+                        message: Список учеников не может быть пустым
 
-                  - field: students[0].contacts
-                    message: Поле contacts обязательно для заполнения
+                      - field: students[0].contacts
+                        message: Поле contacts обязательно для заполнения
 
-                  - field: students[0].contacts.full_name
-                    message: Поле full_name обязательно для заполнения
+                      - field: students[0].contacts.full_name
+                        message: Поле full_name обязательно для заполнения
 
-                  - field: students[0].contacts.email
-                    message: Поле email обязательно для заполнения
+                      - field: students[0].contacts.email
+                        message: Поле email обязательно для заполнения
 
-                  - field: students[0].contacts.phone
-                    message: Поле phone обязательно для заполнения
+                      - field: students[0].contacts.phone
+                        message: Поле phone обязательно для заполнения
 
-                  - field: students[0].position
-                    message: Поле position обязательно для заполнения
+                      - field: students[0].position
+                        message: Поле position обязательно для заполнения
 
-                  - field: students[0].departament
-                    message: Поле departament обязательно для заполнения
+                      - field: students[0].departament
+                        message: Поле departament обязательно для заполнения
+
+                courseNotFound:
+                  summary: Курс не найден в СДО
+                  value:
+                    code: COURSE_NOT_FOUND
+                    message: Курс с указанным external_course_id не найден в СДО
+                    details:
+                      - field: external_course_id
+                        message: Курс LMS-COURSE-1005 не найден
 
         '401':
           $ref: "../../common/responses.yaml#/components/responses/UnauthorizedErrorResponse"
 
         '403':
           $ref: "../../common/responses.yaml#/components/responses/ForbiddenErrorResponse"
-        
-        '404':
-          description: Курс в СДО не найден
-          content:
-            application/json:
-              schema:
-                $ref: "../../common//models.yaml#/components/schemas/ErrorResponse"
-              example:
-                code: COURSE_NOT_FOUND
-                message: Курс с указанным external_course_id не найден в СДО
-                details:
-                  - field: external_course_id
-                    message: Курс LMS-COURSE-1005 не найден
 
         '429':
           $ref: "../../common/responses.yaml#/components/responses/TooManyRequestsErrorResponse"
@@ -203,6 +205,9 @@ paths:
 
       security:
         - LmsServiceAuth: []
+
+      parameters:
+        - $ref: "../../common/parameters.yaml#/components/parameters/IdempotencyKeyHeader"
 
       requestBody:
         required: true

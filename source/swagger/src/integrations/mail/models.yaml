@@ -3,46 +3,108 @@ components:
 
     MailNotificationRequest:
       type: object
-      description: Данные уведомления для отправки в почтовую службу
+      description: Данные для создания email сообщения
 
       required:
-        - number_application
-        - application_state
-        - emails
+        - sender_name
+        - sender_email
+        - recipients
+        - subject
         - event_type
 
       properties:
 
-        number_application:
+        sender_name:
           type: string
-          description: Номер заявки
-          example: APP-2026-0001
+          description: Имя отправителя
+          example: Портал обучения
 
-
-        application_state:
+        sender_email:
           type: string
-          description: Название текущего статуса заявки
-          example: Согласована
+          format: email
+          description: Email отправителя
+          example: no-reply@example.com
 
 
-        emails:
+        recipients:
           type: array
-          description: Список email получателей уведомления
-
+          description: Список получателей письма
           minItems: 1
-
           items:
             type: string
             format: email
-
           example:
             - ivanov@example.com
-            - petrov@example.com
+
+
+        subject:
+          type: string
+          description: Тема письма
+          example: Статус заявки изменен
+
+
+        body_html:
+          type: string
+          nullable: true
+          description: HTML содержимое письма
+          example: |
+            <h1>Заявка изменена</h1>
+            <p>Статус заявки обновлен</p>
+
+
+        text_body:
+          type: string
+          nullable: true
+          description: Текстовая версия письма
+          example: Статус заявки обновлен
+
+
+        template_id:
+          type: string
+          nullable: true
+          description: Идентификатор шаблона письма
+          example: APPLICATION_STATUS_CHANGED
+
+
+        generate_text:
+          type: boolean
+          default: false
+          description: Автоматическая генерация текстовой версии из HTML
 
 
         event_type:
-          $ref: "../../notifications/models.yaml#/components/schemas/NotificationEventType"
+          type: string
+          description: Тип события уведомления
+
+          enum:
+            - APPLICATION_CREATED
+            - APPLICATION_SUBMITTED
+            - APPLICATION_APPROVED
+            - APPLICATION_REJECTED
+            - APPLICATION_ACCEPTED
+            - APPLICATION_COMPLETED
+            - APPLICATION_POSTPONED
+
+          example: APPLICATION_ACCEPTED
 
 
-        content:
-          $ref: "../../notifications/models.yaml#/components/schemas/NotificationContent"
+
+    MailNotificationAcceptedResponse:
+      type: object
+
+      required:
+        - message_id
+        - message
+
+      properties:
+
+        message_id:
+          type: string
+          description: Идентификатор созданного email сообщения
+          example: MAIL-2026-00001
+
+
+        message:
+          type: string
+          description: Результат операции
+          example: Email сообщение создано

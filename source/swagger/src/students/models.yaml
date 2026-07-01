@@ -22,51 +22,53 @@ components:
     StudentSearchFilters:
       type: object
       description: Фильтры поиска учеников для добавления в заявку
-      properties:
+      allOf:
+        - type: object
+          properties:
+            application_id:
+              type: integer
+              format: int64
+              description: ID заявки. Если указан, возвращаются только ученики заявки
+              example: 1
 
-        application_id:
-          type: integer
-          format: int64
-          description: ID заявки. Если указан, возвращаются только ученики заявки
-          example: 1
+            search:
+              type: string
+              minLength: 2
+              description: Поиск ученика по ФИО
+              example: Иванов
 
-        search:
-          type: string
-          minLength: 2
-          description: Поиск ученика по ФИО
-          example: Иванов
+            organization_id:
+              type: integer
+              format: int64
+              description: ID организации
+              example: 3
 
-        organization_id:
-          type: integer
-          format: int64
-          description: ID организации
-          example: 3
+            position_id:
+              type: integer
+              format: int64
+              description: ID должности
+              example: 1
 
-        position_id:
-          type: integer
-          format: int64
-          description: ID должности
-          example: 1
+            departament_id:
+              type: integer
+              format: int64
+              description: ID подразделения
+              example: 2
 
-        departament_id:
-          type: integer
-          format: int64
-          description: ID подразделения
-          example: 2
+            sort_by:
+              type: string
+              description: Поле сортировки
+              enum:
+                - full_name
+                - position
+                - departament
+              example: full_name
 
-        sort_by:
-          type: string
-          description: Поле сортировки
-          enum:
-            - full_name
-            - position
-            - departament
-          example: full_name
-
-        sort_direction:
-          type: string
-          description: Направление сортировки
-          enum:
-            - asc
-            - desc
-          example: asc
+            sort_direction:
+              type: string
+              description: Направление сортировки
+              enum:
+                - asc
+                - desc
+              example: asc
+        - $ref: "../common/models.yaml#/components/schemas/PaginationRequest"
