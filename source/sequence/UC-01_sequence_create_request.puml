@@ -160,16 +160,13 @@ loop Повторяется необходимое количество раз
         loop Загрузка Excel-файла до успешной проверки данных
             Requester -> Frontend: Загрузить Excel-файл\nсо списком учеников
             activate Frontend
-            Frontend -> Portal: POST /api/v1/students
-            activate Portal
-            Portal -> Portal: Проверить загруженный файл\nи содержащиеся в нём данные
-            Portal --> Portal: Результат проверки файла
+
+            Frontend -> Frontend: Проверить загруженный файл\nи содержащиеся в нём данные
+            Frontend --> Frontend: Результат проверки файла
+
             alt #LightPink В загруженном файле обнаружены ошибки
-                Portal --> Frontend: 400 Bad Request\nВернуть ошибку с деталями,\nкоторые требуют доработки
                 Frontend --> Requester: Отобразить ошибки файла\nи вернуть к выбору файла
             else #White Загруженный файл прошёл проверку
-                Portal --> Frontend: 200 OK\nЗагруженный список учеников
-                deactivate Portal
                 Frontend --> Requester: Отобразить загруженный список учеников
                 deactivate Frontend
             end
@@ -215,7 +212,6 @@ else #White Заявка валидна
     Frontend --> Requester: Сообщение\n«Заявка успешно отправлена»
     deactivate Frontend
 end
-
 
 opt Сохранение заявки как черновика
     Requester -> Frontend: Инициировать сохранение заявки\nв качестве черновика

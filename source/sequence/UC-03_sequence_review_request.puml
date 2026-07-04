@@ -57,7 +57,7 @@ else #LightPink Некорректный запрос или заявка нед
 end
 
 opt Скачать заявку
-    Approver -> Frontend: Инициировать скачивание заявки\nDownloadApplicationsRequest
+    Approver -> Frontend: Инициировать скачивание заявки
     activate Frontend
 
     Frontend -> Portal: POST /api/v1/applications/downloads
@@ -111,13 +111,13 @@ alt Согласующий согласует заявку
         см. REF_UpdateStatusAndNotify
     end ref
 
-    Portal --> Frontend: 200 OK Отобразить заявку\nс соответствующим статусом
+    Portal --> Frontend: 200 OK
     activate Frontend
     Frontend --> Approver: Отобразить заявку\nс соответствующим статусом
     deactivate Frontend
     ... Передача согласованной заявки в СДО ...
     alt СДО приняло заявку на обработку
-        Portal -> LMS: Передать согласованную заявку\nPOST /api/v1/lms/applications\nCreateLmsApplicationRequest
+        Portal -> LMS: Передать согласованную заявку\nPOST /api/v1/lms/applications
         activate Portal
         activate LMS
         LMS --> Portal: 202 Accepted
@@ -126,7 +126,7 @@ alt Согласующий согласует заявку
     else #LightPink Нет доступа к СДО или ошибка СДО
         break
             loop 5 попыток
-                Portal -> LMS: Передать согласованную заявку\nPOST /api/v1/lms/applications\nCreateLmsApplicationRequest
+                Portal -> LMS: Передать согласованную заявку\nPOST /api/v1/lms/applications
                 activate Portal
                 activate LMS
                 LMS --> Portal: 500 Internal Server Error / 4xx: Client Error   
@@ -207,7 +207,7 @@ else Согласующий отклоняет заявку
     Frontend --> Frontend: Комментарий заполнен
     Frontend --> Approver: Разблокировать кнопку отправки
     Approver -> Frontend: Подтвердить отклонение заявки
-    Frontend -> Portal: POST /api/v1/applications/{id}/state\napplication_state_id = «Отклонена»
+    Frontend -> Portal: PATCH /api/v1/applications/{id}/state
     deactivate Frontend
 
     ref over Approver, Requester, Frontend, Portal, DB, Mail
@@ -228,7 +228,7 @@ else Согласующий отправляет заявку на коррек�
     Frontend --> Approver: Разблокировать кнопку отправки
 
     Approver -> Frontend: Подтвердить отправку заявки\nна корректировку
-    Frontend -> Portal: POST /api/v1/applications/{id}/state\napplication_state_id = «На корректировке»
+    Frontend -> Portal: PATCH /api/v1/applications/{id}/state
     deactivate Frontend
 
     ref over Approver, Requester, Frontend, Portal, DB, Mail
