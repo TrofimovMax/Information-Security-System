@@ -1,0 +1,5 @@
+student = person "Student" "Searches for, books, and pays for temporary accommodation during university sessions."
+universityStaff = person "University Staff" "Coordinates student accommodation and monitors booking requests."
+hotelStaff = person "Hotel Staff" "Manages hotel listings, room availability, and booking requests."
+landlord = person "Landlord" "Publishes and manages rental properties and booking requests."
+supportAgent = person "Support Agent" "Provides customer support, resolves booking issues, payment disputes, and user inquiries."

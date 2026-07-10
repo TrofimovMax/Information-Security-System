@@ -7,3 +7,5 @@ tmp/
 node_modules/
 openapi/dist/
 source/swagger/dist/
+source/c4/Structurizr/.structurizr/
+source/c4/Structurizr/*.json
