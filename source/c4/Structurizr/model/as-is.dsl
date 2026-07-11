@@ -8,38 +8,66 @@ fourStay = softwareSystem "4Stay" {
 
     monolithApplication = container "Monolithic Application" {
         technology "Ruby on Rails"
-        description "Modular monolithic backend containing all business logic of the platform."
+        description "Modular monolithic backend containing all business logic."
 
-        authenticationModule = component "Authentication Module" {
-            description "Handles user authentication, authorization and role management."
+        identityModule = component "Identity Module" {
+            description "Authentication, authorization, users and OTP."
         }
 
-        userModule = component "User Management Module" {
-            description "Manages users, profiles and permissions."
+        organisationModule = component "Organisation Module" {
+            description "Organisations, offices, partners and university management."
         }
 
-        accommodationModule = component "Accommodation Module" {
-            description "Manages accommodation listings, availability and rental information."
+        propertyModule = component "Property Management Module" {
+            description "Property, units, listings and amenities management."
+        }
+
+        inventoryModule = component "Inventory Module" {
+            description "Inventories, calendars, disable days and availability."
         }
 
         bookingModule = component "Booking Module" {
-            description "Handles booking lifecycle from creation to completion."
+            description "Booking lifecycle and reservation management."
+        }
+
+        billingModule = component "Billing Module" {
+            description "Invoices, billing, invoice line items and tariffs."
         }
 
         paymentModule = component "Payment Module" {
-            description "Processes payments and integrates with external payment provider."
+            description "Payments, payouts, Stripe integration and financial transactions."
         }
 
-        notificationModule = component "Notification Module" {
-            description "Generates and sends notifications about booking events."
+        communicationModule = component "Communication Module" {
+            description "Conversations, notifications, notes and customer interactions."
         }
 
-        supportModule = component "Support Module" {
-            description "Handles customer requests, complaints and booking issues."
+        contentModule = component "Content Management Module" {
+            description "Landing pages and CMS content."
         }
 
-        administrationModule = component "Administration Module" {
-            description "Provides administrative operations and system management."
+        analyticsModule = component "Analytics Module" {
+            description "Dashboard, analytics and activity tracking."
+        }
+
+        importModule = component "Import Module" {
+            description "Import documents and records."
+        }
+
+        dictionaryModule = component "Reference Data Module" {
+            description "Cities, locations, areas, currencies, universities and custom dictionaries."
+        }
+
+        settingsModule = component "Settings Module" {
+            description "Application settings and configuration."
+        }
+
+        integrationModule = component "Integration Module" {
+            description "External calendars, Stripe and third-party integrations."
+        }
+
+        taskModule = component "Task Module" {
+            description "Background jobs and operational tasks."
         }
     }
 
@@ -56,21 +84,39 @@ fourStay = softwareSystem "4Stay" {
     }
 }
 
-student -> fourStay "Searches accommodation, creates bookings and makes payments"
-universityStaff -> fourStay "Monitors accommodation requests and booking information"
-hotelStaff -> fourStay "Manages hotel listings and bookings"
-landlord -> fourStay "Publishes rental properties and manages bookings"
-supportAgent -> fourStay "Provides customer support and resolves issues"
+# guest — студент/гость, ищет и бронирует жильё.
+# host — владелец жилья (Landlord).
+# manager — сотрудник отеля или управляющий объектами.
+# organisation_admin — администратор университета или организации.
+# customer_service — сотрудник поддержки.
+# agent — операционный сотрудник, координирующий бронирования.
+# admin — системный администратор платформы.
 
-fourStay.webApplication -> fourStay.monolithApplication "Sends API requests" "HTTPS / REST"
-fourStay.monolithApplication -> fourStay.database "Reads and writes application data" "SQL"
-fourStay.monolithApplication -> fourStay.cache "Stores temporary data" "Redis Protocol"
+guest -> fourStay.webApplication "Searches and books accommodation" "HTTPS"
+host -> fourStay.webApplication "Manages properties and bookings" "HTTPS"
+manager -> fourStay.webApplication "Manages accommodation operations" "HTTPS"
+organisation_admin -> fourStay.webApplication "Manages organisation, users and properties" "HTTPS"
+customer_service -> fourStay.webApplication "Resolves booking and payment issues" "HTTPS"
+agent -> fourStay.webApplication "Coordinates bookings and supports customers" "HTTPS"
+admin -> fourStay.webApplication "Administers the platform" "HTTPS"
+
+fourStay.webApplication -> fourStay.monolithApplication "API requests" "HTTPS / GraphQL"
+fourStay.monolithApplication -> fourStay.database "Reads and writes data" "SQL"
+fourStay.monolithApplication -> fourStay.cache "Caches sessions and frequently accessed data" "Redis"
 fourStay.monolithApplication.paymentModule -> stripe "Processes payments" "HTTPS / REST API"
 
-fourStay.monolithApplication.authenticationModule -> fourStay.monolithApplication.userModule "Loads user roles and permissions"
-fourStay.monolithApplication.bookingModule -> fourStay.monolithApplication.accommodationModule "Checks accommodation availability"
-fourStay.monolithApplication.bookingModule -> fourStay.monolithApplication.userModule "Retrieves user information"
-fourStay.monolithApplication.paymentModule -> fourStay.monolithApplication.bookingModule "Updates booking payment status"
-fourStay.monolithApplication.notificationModule -> fourStay.monolithApplication.bookingModule "Receives booking events"
-fourStay.monolithApplication.supportModule -> fourStay.monolithApplication.bookingModule "Handles booking issues"
-fourStay.monolithApplication.administrationModule -> fourStay.monolithApplication.userModule "Manages users and roles"
+fourStay.monolithApplication.identityModule -> fourStay.monolithApplication.organisationModule "Loads organisation membership"
+fourStay.monolithApplication.bookingModule -> fourStay.monolithApplication.propertyModule "Retrieves property information"
+fourStay.monolithApplication.bookingModule -> fourStay.monolithApplication.inventoryModule "Checks availability"
+fourStay.monolithApplication.bookingModule -> fourStay.monolithApplication.identityModule "Retrieves customer information"
+fourStay.monolithApplication.bookingModule -> fourStay.monolithApplication.billingModule "Creates invoice"
+fourStay.monolithApplication.bookingModule -> fourStay.monolithApplication.paymentModule "Initiates payment"
+fourStay.monolithApplication.bookingModule -> fourStay.monolithApplication.communicationModule "Publishes booking events"
+fourStay.monolithApplication.paymentModule -> fourStay.monolithApplication.billingModule "Updates invoice status"
+fourStay.monolithApplication.paymentModule -> fourStay.monolithApplication.integrationModule "Calls Stripe"
+fourStay.monolithApplication.communicationModule -> fourStay.monolithApplication.identityModule "Retrieves recipient information"
+fourStay.monolithApplication.analyticsModule -> fourStay.monolithApplication.bookingModule "Collects booking statistics"
+fourStay.monolithApplication.analyticsModule -> fourStay.monolithApplication.paymentModule "Collects payment statistics"
+fourStay.monolithApplication.importModule -> fourStay.monolithApplication.propertyModule "Imports properties"
+fourStay.monolithApplication.settingsModule -> fourStay.monolithApplication.identityModule "Provides configuration"
+fourStay.monolithApplication.organisationModule -> fourStay.monolithApplication.propertyModule "Manages owned properties"
