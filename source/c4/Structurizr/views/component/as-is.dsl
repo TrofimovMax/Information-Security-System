@@ -1,4 +1,4 @@
-component fourStay.monolithApplication "Component-AS-IS" "Component diagram for the existing Ruby on Rails monolith." {
+component fourStay.monolithApplication "Component-AS-IS" "Диаграмма компонентов существующего монолитного приложения на Ruby on Rails." {
     include *
     autoLayout lr
 }

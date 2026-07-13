@@ -1,1 +1,1 @@
-stripe = softwareSystem "Stripe" "Processes online payments and returns payment status."
+stripe = softwareSystem "Stripe" "Внешний платежный сервис для обработки онлайн-платежей и возврата статусов транзакций."

@@ -1,4 +1,4 @@
-systemContext fourStay "SystemContext-AS-IS" "Existing monolithic architecture context diagram." {
+systemContext fourStay "SystemContext-AS-IS" "Контекстная диаграмма существующей монолитной архитектуры." {
     include *
-    autoLayout lr
+    # autoLayout lr
 }
