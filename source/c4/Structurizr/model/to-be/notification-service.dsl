@@ -1,10 +1,10 @@
 notificationService = container "Notification Service" {
     technology "Ruby on Rails"
-    description "Управляет уведомлениями, перепиской и коммуникацией с пользователями."
+    description "Отправляет пользователям системные уведомления по электронной почте, SMS и push."
 }
 
 notificationDatabase = container "Notification DB" {
     technology "PostgreSQL"
-    description "Хранит уведомления, сообщения и историю коммуникации."
+    description "Хранит уведомления, шаблоны сообщений и статусы доставки."
     tags "Database"
 }

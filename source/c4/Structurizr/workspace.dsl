@@ -20,6 +20,11 @@ workspace "4Stay" "Architecture documentation" {
             element "Database" {
                 shape Cylinder
             }
+
+            element "External" {
+                background #999999
+                color #ffffff
+            }
         }
 
         !include views/context/as-is.dsl
