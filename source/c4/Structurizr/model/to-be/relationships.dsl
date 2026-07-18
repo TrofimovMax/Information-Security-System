@@ -2,45 +2,68 @@
  * ПОЛЬЗОВАТЕЛИ
  ************************************************/
 
-admin -> fourStayMicroservices.webApplication "Администрирует платформу" "JSON / HTTPS"
-agent -> fourStayMicroservices.webApplication "Координирует бронирования и помогает пользователям" "JSON / HTTPS"
-customer_service -> fourStayMicroservices.webApplication "Обрабатывает обращения пользователей" "JSON / HTTPS"
-guest -> fourStayMicroservices.webApplication "Ищет, бронирует и оплачивает жильё" "JSON / HTTPS"
-host -> fourStayMicroservices.webApplication "Управляет объектами размещения и бронированиями" "JSON / HTTPS"
-manager -> fourStayMicroservices.webApplication "Управляет операциями размещения" "JSON / HTTPS"
-organisation_admin -> fourStayMicroservices.webApplication "Управляет организациями, пользователями и объектами размещения" "JSON / HTTPS"
+guest -> fourStayMicroservices.guestApi "Ищет, бронирует, оплачивает и продлевает проживание" "JSON / HTTPS"
+host -> fourStayMicroservices.hostApi "Управляет объектами размещения, тарифами и доступностью" "JSON / HTTPS"
+manager -> fourStayMicroservices.hostApi "Управляет календарями, бронированиями и заселением" "JSON / HTTPS"
+organisation_admin -> fourStayMicroservices.operationsApi "Управляет организацией, пользователями и настройками" "JSON / HTTPS"
+customer_service -> fourStayMicroservices.operationsApi "Обрабатывает обращения и решает проблемы гостей" "JSON / HTTPS"
+agent -> fourStayMicroservices.operationsApi "Координирует обращения и эскалирует запросы" "JSON / HTTPS"
+admin -> fourStayMicroservices.operationsApi "Администрирует платформу и управляет системой" "JSON / HTTPS"
 
 
 /************************************************
- * FRONTEND
+ * Web Application обращается к API
  ************************************************/
 
-fourStayMicroservices.webApplication -> fourStayMicroservices.apiGateway "Выполняет API-запросы" "GraphQL / HTTPS"
+fourStayMicroservices.webApplication -> fourStayMicroservices.guestApi "Выполняет REST-запросы" "JSON / HTTPS"
+fourStayMicroservices.webApplication -> fourStayMicroservices.hostApi "Выполняет REST-запросы" "JSON / HTTPS"
+fourStayMicroservices.webApplication -> fourStayMicroservices.operationsApi "Выполняет REST-запросы" "JSON / HTTPS"
 
 
 /************************************************
- * API GATEWAY → МИКРОСЕРВИСЫ
+ * Guest API
  ************************************************/
 
-fourStayMicroservices.apiGateway -> fourStayMicroservices.analyticsService "Analytics API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.auditService "Audit API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.billingService "Billing API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.bookingService "Booking API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.contentService "Content API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.conversationService "Conversation API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.dictionaryService "Dictionary API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.identityService "Identity API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.importService "Import API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.inventoryService "Inventory API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.notificationService "Notification API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.organisationService "Organisation API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.paymentService "Payment API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.propertyService "Property API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.reviewService "Review API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.taskService "Task API" "JSON / HTTPS"
-fourStayMicroservices.apiGateway -> fourStayMicroservices.userProfileService "User Profile API" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.bookingService "Booking API" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.conversationService "Conversation API" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.identityService "Identity API" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.inventoryService "Inventory API" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.notificationService "Notification API" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.paymentService "Payment API" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.propertyService "Property API" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.reviewService "Review API" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.userProfileService "User Profile API" "JSON / HTTPS"
 
+/************************************************
+ * Host API
+ ************************************************/
 
+fourStayMicroservices.hostApi -> fourStayMicroservices.bookingService "Booking API" "JSON / HTTPS"
+fourStayMicroservices.hostApi -> fourStayMicroservices.billingService "Billing API" "JSON / HTTPS"
+fourStayMicroservices.hostApi -> fourStayMicroservices.conversationService "Conversation API" "JSON / HTTPS"
+fourStayMicroservices.hostApi -> fourStayMicroservices.identityService "Identity API" "JSON / HTTPS"
+fourStayMicroservices.hostApi -> fourStayMicroservices.inventoryService "Inventory API" "JSON / HTTPS"
+fourStayMicroservices.hostApi -> fourStayMicroservices.notificationService "Notification API" "JSON / HTTPS"
+fourStayMicroservices.hostApi -> fourStayMicroservices.organisationService "Organisation API" "JSON / HTTPS"
+fourStayMicroservices.hostApi -> fourStayMicroservices.propertyService "Property API" "JSON / HTTPS"
+fourStayMicroservices.hostApi -> fourStayMicroservices.userProfileService "User Profile API" "JSON / HTTPS"
+
+/************************************************
+ * Operations API
+ ************************************************/
+
+fourStayMicroservices.operationsApi -> fourStayMicroservices.analyticsService "Analytics API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.auditService "Audit API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.billingService "Billing API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.bookingService "Booking API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.conversationService "Conversation API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.identityService "Identity API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.notificationService "Notification API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.paymentService "Payment API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.propertyService "Property API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.reviewService "Review API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.taskService "Task API" "JSON / HTTPS"
+fourStayMicroservices.operationsApi -> fourStayMicroservices.userProfileService "User Profile API" "JSON / HTTPS"
 
 /************************************************
  * БАЗЫ ДАННЫХ

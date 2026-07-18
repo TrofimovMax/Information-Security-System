@@ -3,7 +3,17 @@ webApplication = container "Web Application" {
     description "Веб-приложение, предоставляющее пользовательский интерфейс для всех ролей системы."
 }
 
-apiGateway = container "API Gateway" {
-    technology "NGINX / GraphQL Gateway"
-    description "Единая точка входа для клиентских приложений и маршрутизации запросов к микросервисам."
+guestApi = container "Guest API" {
+    technology "REST API"
+    description "REST API для гостей платформы."
+}
+
+hostApi = container "Host API" {
+    technology "REST API"
+    description "REST API для владельцев объектов размещения."
+}
+
+operationsApi = container "Operations API" {
+    technology "REST API"
+    description "REST API для сотрудников платформы."
 }
