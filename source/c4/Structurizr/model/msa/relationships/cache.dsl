@@ -1,0 +1,8 @@
+fourStayMicroservices.bookingService -> fourStayMicroservices.cache "Кэширует активные бронирования и данные доступности" "Redis"
+fourStayMicroservices.calendarService -> fourStayMicroservices.cache "Кэширует данные доступности календарей" "Redis"
+fourStayMicroservices.contentService -> fourStayMicroservices.cache "Кэширует часто используемый контент" "Redis"
+fourStayMicroservices.conversationService -> fourStayMicroservices.cache "Кэширует активные диалоги и статусы сообщений" "Redis"
+fourStayMicroservices.dashboardService -> fourStayMicroservices.cache "Кэширует показатели и виджеты дашбордов" "Redis"
+fourStayMicroservices.identityService -> fourStayMicroservices.cache "Кэширует пользовательские сессии и токены" "Redis"
+fourStayMicroservices.inventoryService -> fourStayMicroservices.cache "Кэширует данные доступности объектов" "Redis"
+fourStayMicroservices.paymentService -> fourStayMicroservices.cache "Кэширует состояние платежей" "Redis"

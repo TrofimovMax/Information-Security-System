@@ -1,0 +1,10 @@
+!include relationships/users.dsl
+!include relationships/gateways.dsl
+!include relationships/databases.dsl
+!include relationships/cache.dsl
+!include relationships/kafka.dsl
+!include relationships/storage.dsl
+!include relationships/payment.dsl
+!include relationships/calendar.dsl
+!include relationships/services.dsl
+!include relationships/external.dsl

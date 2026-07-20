@@ -13,7 +13,7 @@ mapbox = softwareSystem "Mapbox" {
     tags "External"
 }
 
-calendar = softwareSystem "Calendar (iCal)" {
+ical = softwareSystem "Calendar (iCal)" {
     description "Внешние календарные сервисы, поддерживающие стандарт iCalendar (iCal), используемые для импорта и экспорта информации о доступности объектов размещения."
     tags "External"
 }

@@ -33,7 +33,7 @@ fourStay.monolithApplication.contentModule -> fourStay.objectStorage "Храни
 
 fourStay.monolithApplication.paymentModule -> stripe "Обрабатывает платежи" "JSON / HTTPS"
 fourStay.monolithApplication.identityModule -> knock "Отправляет OTP и выполняет коммуникации авторизации" "JSON / HTTPS"
-fourStay.monolithApplication.inventoryModule -> calendar "Синхронизирует календарь доступности" "HTTPS / iCalendar (.ics)"
+fourStay.monolithApplication.inventoryModule -> ical "Синхронизирует календарь доступности" "HTTPS / iCalendar (.ics)"
 fourStay.monolithApplication.propertyModule -> mapbox "Получает геоданные и отображение карт" "HTTPS / Mapbox API"
 
 

@@ -1,11 +1,11 @@
 workspace "4Stay" "Architecture documentation" {
     !identifiers hierarchical
     model {
-        !include model/people.dsl
-        !include model/external-systems.dsl
+        !include model/common/people.dsl
+        !include model/common/external-systems.dsl
 
         !include model/monolith/infrastructure.dsl
-        # !include model/msa/infrastructure.dsl
+        !include model/msa/infrastructure.dsl
     }
 
     views {
@@ -27,6 +27,6 @@ workspace "4Stay" "Architecture documentation" {
         }
 
         !include views/monolith.dsl
-        # !include views/msa.dsl
+        !include views/msa.dsl
     }
 }
