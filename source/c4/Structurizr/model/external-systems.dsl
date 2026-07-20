@@ -12,3 +12,8 @@ mapbox = softwareSystem "Mapbox" {
     description "Внешний картографический сервис для отображения карт, геокодирования и работы с геоданными."
     tags "External"
 }
+
+calendar = softwareSystem "Calendar (iCal)" {
+    description "Внешние календарные сервисы, поддерживающие стандарт iCalendar (iCal), используемые для импорта и экспорта информации о доступности объектов размещения."
+    tags "External"
+}
