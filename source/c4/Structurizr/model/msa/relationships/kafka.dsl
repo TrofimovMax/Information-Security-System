@@ -18,7 +18,7 @@ fourStayMicroservices.kafka -> fourStayMicroservices.billingService "Получ�
 /************************************************
  * booking
  ************************************************/
-fourStayMicroservices.bookingService -> fourStayMicroservices.kafka "Публикует события бронирований" "Kafka Protocol"
+fourStayMicroservices.bookingService -> fourStayMicroservices.kafka "Публикует события изменения бронирований" "Kafka event"
 
 /************************************************
  * calendar

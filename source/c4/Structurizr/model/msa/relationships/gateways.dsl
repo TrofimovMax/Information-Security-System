@@ -2,13 +2,10 @@
  * GUEST API
  ************************************************/
 
-fourStayMicroservices.guestApi -> fourStayMicroservices.analyticsService "Получает персональную статистику пользователя" "JSON / HTTPS"
-fourStayMicroservices.guestApi -> fourStayMicroservices.billingService "Получает информацию о стоимости и счетах" "JSON / HTTPS"
 fourStayMicroservices.guestApi -> fourStayMicroservices.bookingService "Создает и управляет бронированиями" "JSON / HTTPS"
-fourStayMicroservices.guestApi -> fourStayMicroservices.conversationService "Отправляет и получает сообщения по бронированиям" "JSON / HTTPS"
+fourStayMicroservices.guestApi -> fourStayMicroservices.conversationService "Создаёт и получает сообщения с владельцем или поддержкой" "JSON / HTTPS"
 fourStayMicroservices.guestApi -> fourStayMicroservices.identityService "Аутентифицирует пользователя и проверяет права доступа" "JSON / HTTPS"
 fourStayMicroservices.guestApi -> fourStayMicroservices.landingService "Получает данные главной страницы и публичных лендингов" "JSON / HTTPS"
-fourStayMicroservices.guestApi -> fourStayMicroservices.paymentService "Инициирует оплату бронирования" "JSON / HTTPS"
 fourStayMicroservices.guestApi -> fourStayMicroservices.reviewService "Создает и управляет отзывами" "JSON / HTTPS"
 fourStayMicroservices.guestApi -> fourStayMicroservices.searchService "Выполняет поиск жилья" "JSON / HTTPS"
 fourStayMicroservices.guestApi -> fourStayMicroservices.userProfileService "Просматривает и изменяет профиль пользователя" "JSON / HTTPS"

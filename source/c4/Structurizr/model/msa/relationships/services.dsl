@@ -3,14 +3,19 @@ fourStayMicroservices.analyticsService -> fourStayMicroservices.dashboardService
 fourStayMicroservices.billingService -> fourStayMicroservices.dictionaryService "Получает информацию о валютах" "JSON / HTTPS"
 fourStayMicroservices.billingService -> fourStayMicroservices.organisationService "Получает сведения об организациях для выставления счетов" "JSON / HTTPS"
 
-fourStayMicroservices.bookingService -> fourStayMicroservices.billingService "Рассчитывает стоимость бронирования" "JSON / HTTPS"
-fourStayMicroservices.bookingService -> fourStayMicroservices.calendarService "Обновляет календарь после изменения бронирования" "JSON / HTTPS"
-fourStayMicroservices.bookingService -> fourStayMicroservices.dictionaryService "Получает валюты и параметры бронирования" "JSON / HTTPS"
-fourStayMicroservices.bookingService -> fourStayMicroservices.inventoryService "Проверяет доступность объекта и резервирует доступность объектов на период проживания" "JSON / HTTPS"
-fourStayMicroservices.bookingService -> fourStayMicroservices.paymentService "Инициирует оплату бронирования" "JSON / HTTPS"
-fourStayMicroservices.bookingService -> fourStayMicroservices.promotionService "Получает применимые акции и специальные цены" "JSON / HTTPS"
-fourStayMicroservices.bookingService -> fourStayMicroservices.propertyService "Получает сведения об объектах размещения" "JSON / HTTPS"
-fourStayMicroservices.bookingService -> fourStayMicroservices.userProfileService "Получает данные гостя" "JSON / HTTPS"
+/************************************************
+ * BOOKING SERVICE
+ ************************************************/
+
+fourStayMicroservices.bookingService -> fourStayMicroservices.billingService "Рассчитывает итоговую стоимость бронирования, включая тарифы, сборы и дополнительные услуги" "JSON / HTTPS"
+fourStayMicroservices.bookingService -> fourStayMicroservices.calendarService "Проверяет доступность дат бронирования и получает информацию о блокировках календаря" "JSON / HTTPS"
+fourStayMicroservices.bookingService -> fourStayMicroservices.conversationService "Инициирует создание чата после успешного создания бронирования" "Kafka event"
+fourStayMicroservices.bookingService -> fourStayMicroservices.dictionaryService "Получает справочные данные для бронирования: валюты, типы размещения и параметры заказа" "JSON / HTTPS"
+fourStayMicroservices.bookingService -> fourStayMicroservices.inventoryService "Проверяет наличие свободных единиц размещения и резервирует доступность на период проживания" "JSON / HTTPS"
+fourStayMicroservices.bookingService -> fourStayMicroservices.paymentService "Создаёт платёжную операцию и инициирует оплату бронирования" "JSON / HTTPS"
+fourStayMicroservices.bookingService -> fourStayMicroservices.promotionService "Получает активные акции, скидки и специальные условия бронирования" "JSON / HTTPS"
+fourStayMicroservices.bookingService -> fourStayMicroservices.propertyService "Получает информацию об объекте размещения, правилах проживания и параметрах объекта" "JSON / HTTPS"
+fourStayMicroservices.bookingService -> fourStayMicroservices.userProfileService "Получает данные гостя и информацию, необходимую для оформления бронирования" "JSON / HTTPS"
 
 fourStayMicroservices.calendarService -> fourStayMicroservices.inventoryService "Получает и обновляет данные доступности" "JSON / HTTPS"
 fourStayMicroservices.calendarService -> fourStayMicroservices.propertyService "Получает данные объектов размещения и помещений" "JSON / HTTPS"
