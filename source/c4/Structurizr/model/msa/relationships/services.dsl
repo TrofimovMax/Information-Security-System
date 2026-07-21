@@ -36,6 +36,12 @@ fourStayMicroservices.inventoryService -> fourStayMicroservices.calendarService 
 fourStayMicroservices.inventoryService -> fourStayMicroservices.dictionaryService "Получает справочные данные" "JSON / HTTPS"
 fourStayMicroservices.inventoryService -> fourStayMicroservices.propertyService "Получает сведения об объектах размещения" "JSON / HTTPS"
 
+fourStayMicroservices.landingService -> fourStayMicroservices.contentService "Получает CMS-контент" "JSON / HTTPS"
+fourStayMicroservices.landingService -> fourStayMicroservices.dictionaryService "Получает города, университеты и районы" "JSON / HTTPS"
+fourStayMicroservices.landingService -> fourStayMicroservices.propertyService "Получает популярные объекты размещения" "JSON / HTTPS"
+fourStayMicroservices.landingService -> fourStayMicroservices.inventoryService "Получает информацию о доступности" "JSON / HTTPS"
+fourStayMicroservices.landingService -> fourStayMicroservices.promotionService "Получает активные акции" "JSON / HTTPS"
+
 fourStayMicroservices.notificationService -> fourStayMicroservices.userProfileService "Получает контактные данные и настройки уведомлений пользователя" "JSON / HTTPS"
 
 fourStayMicroservices.organisationService -> fourStayMicroservices.userProfileService "Получает сведения о пользователях организации" "JSON / HTTPS"

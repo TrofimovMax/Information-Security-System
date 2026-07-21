@@ -17,5 +17,6 @@ fourStayMicroservices.paymentGateway -> fourStayMicroservices.paymentGatewayData
 fourStayMicroservices.promotionService -> fourStayMicroservices.promotionDatabase "Читает и сохраняет данные акций" "SQL"
 fourStayMicroservices.propertyService -> fourStayMicroservices.propertyDatabase "Читает и сохраняет данные объектов размещения" "SQL"
 fourStayMicroservices.reviewService -> fourStayMicroservices.reviewDatabase "Читает и сохраняет отзывы" "SQL"
+fourStayMicroservices.searchService -> fourStayMicroservices.searchDatabase "Читает и обновляет поисковый индекс" "REST / TCP"
 fourStayMicroservices.taskService -> fourStayMicroservices.taskDatabase "Читает и сохраняет задачи" "SQL"
 fourStayMicroservices.userProfileService -> fourStayMicroservices.userProfileDatabase "Читает и сохраняет профили пользователей" "SQL"

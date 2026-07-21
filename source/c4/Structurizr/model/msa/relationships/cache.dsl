@@ -6,3 +6,5 @@ fourStayMicroservices.dashboardService -> fourStayMicroservices.cache "Кэши�
 fourStayMicroservices.identityService -> fourStayMicroservices.cache "Кэширует пользовательские сессии и токены" "Redis"
 fourStayMicroservices.inventoryService -> fourStayMicroservices.cache "Кэширует данные доступности объектов" "Redis"
 fourStayMicroservices.paymentService -> fourStayMicroservices.cache "Кэширует состояние платежей" "Redis"
+
+fourStayMicroservices.landingService -> fourStayMicroservices.landingDatabase "Читает и обновляет кэш лендингов" "Redis"

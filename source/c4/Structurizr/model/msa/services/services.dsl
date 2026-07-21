@@ -10,6 +10,7 @@
 !include identity.dsl
 !include import.dsl
 !include inventory.dsl
+!include landing.dsl
 !include notification.dsl
 !include organisation.dsl
 !include payment_gateway.dsl
@@ -17,5 +18,6 @@
 !include property.dsl
 !include promotion.dsl
 !include review.dsl
+!include search.dsl
 !include task.dsl
 !include user_profile.dsl

@@ -65,6 +65,11 @@ fourStayMicroservices.importService -> fourStayMicroservices.kafka "Публик
 fourStayMicroservices.inventoryService -> fourStayMicroservices.kafka "Публикует события изменения доступности" "Kafka Protocol"
 
 /************************************************
+ * landing
+ ************************************************/
+fourStayMicroservices.kafka -> fourStayMicroservices.landingService "Передаёт события обновления контента, объектов и доступности" "Kafka"
+
+/************************************************
  * notification
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.notificationService "Получает события для отправки уведомлений" "Kafka Protocol"
@@ -97,6 +102,11 @@ fourStayMicroservices.propertyService -> fourStayMicroservices.kafka "Публи
  ************************************************/
 fourStayMicroservices.reviewService -> fourStayMicroservices.kafka "Публикует события отзывов" "Kafka Protocol"
 fourStayMicroservices.kafka -> fourStayMicroservices.reviewService "Получает события завершения проживания" "Kafka Protocol"
+
+/************************************************
+ * search
+ ************************************************/
+fourStayMicroservices.kafka -> fourStayMicroservices.searchService "Передаёт события изменения объектов, доступности и справочников" "Kafka"
 
 /************************************************
  * task
