@@ -1,6 +1,7 @@
 paymentGateway = container "Payment Gateway" {
     technology "Ruby on Rails"
     description "Инкапсулирует взаимодействие с внешними платёжными системами, выполняет обработку платежей, возвратов, выплат и маршрутизацию запросов к платёжным провайдерам."
+    tags "API Gateway"
 }
 
 paymentGatewayDatabase = container "Payment Gateway DB" {

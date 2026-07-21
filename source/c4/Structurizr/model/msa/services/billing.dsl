@@ -1,6 +1,7 @@
 billingService = container "Billing Service" {
     technology "Ruby on Rails"
     description "Управляет счетами, начислениями, оплатами аренды и финансовыми операциями."
+    tags "Microservice"
 }
 
 billingDatabase = container "Billing DB" {

@@ -9,22 +9,7 @@ workspace "4Stay" "Architecture documentation" {
     }
 
     views {
-        theme default
-
-        styles {
-            element "Person" {
-                shape Person
-            }
-
-            element "Database" {
-                shape Cylinder
-            }
-
-            element "External" {
-                background #999999
-                color #ffffff
-            }
-        }
+        theme themes/theme.json
 
         !include views/monolith.dsl
         !include views/msa.dsl

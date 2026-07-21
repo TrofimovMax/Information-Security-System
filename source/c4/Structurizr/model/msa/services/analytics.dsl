@@ -1,6 +1,7 @@
 analyticsService = container "Analytics Service" {
     technology "Ruby on Rails"
     description "Собирает и предоставляет аналитические данные по бронированиям, платежам, активности пользователей и операционным показателям платформы."
+    tags "Microservice"
 }
 
 analyticsDatabase = container "Analytics DB" {

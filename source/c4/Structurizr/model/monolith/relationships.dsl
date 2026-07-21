@@ -2,20 +2,36 @@
  * ПОЛЬЗОВАТЕЛИ
  ************************************************/
 
-guest -> fourStay.webApplication "Ищет, бронирует и оплачивает временное жильё" "JSON / HTTPS"
-host -> fourStay.webApplication "Публикует и управляет объектами размещения" "JSON / HTTPS"
-manager -> fourStay.webApplication "Управляет операциями размещения" "JSON / HTTPS"
-organisation_admin -> fourStay.webApplication "Администрирует организацию и ресурсы размещения" "JSON / HTTPS"
-customer_service -> fourStay.webApplication "Обрабатывает обращения пользователей" "JSON / HTTPS"
-agent -> fourStay.webApplication "Координирует бронирования и помогает клиентам" "JSON / HTTPS"
-admin -> fourStay.webApplication "Администрирует платформу" "JSON / HTTPS"
+guest -> fourStay.webApplication "Ищет, бронирует и оплачивает временное жильё" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+host -> fourStay.webApplication "Публикует и управляет объектами размещения" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+manager -> fourStay.webApplication "Управляет операциями размещения" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+organisation_admin -> fourStay.webApplication "Администрирует организацию и ресурсы размещения" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+customer_service -> fourStay.webApplication "Обрабатывает обращения пользователей" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+agent -> fourStay.webApplication "Координирует бронирования и помогает клиентам" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+admin -> fourStay.webApplication "Администрирует платформу" "JSON / HTTPS" {
+    tags "Data Flow"
+}
 
 
 /************************************************
  * FRONTEND
  ************************************************/
 
-fourStay.webApplication -> fourStay.monolithApplication "Выполняет API-запросы" "JSON / HTTPS"
+fourStay.webApplication -> fourStay.monolithApplication "Выполняет API-запросы" "JSON / HTTPS" {
+    tags "Data Flow"
+}
 fourStay.webApplication -> fourStay.objectStorage "Загружает изображения и документы" "HTTPS"
 
 /************************************************
@@ -31,8 +47,12 @@ fourStay.monolithApplication.contentModule -> fourStay.objectStorage "Храни
  * ВНЕШНИЕ СИСТЕМЫ
  ************************************************/
 
-fourStay.monolithApplication.paymentModule -> stripe "Обрабатывает платежи" "JSON / HTTPS"
-fourStay.monolithApplication.identityModule -> knock "Отправляет OTP и выполняет коммуникации авторизации" "JSON / HTTPS"
+fourStay.monolithApplication.paymentModule -> stripe "Обрабатывает платежи" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStay.monolithApplication.identityModule -> knock "Отправляет OTP и выполняет коммуникации авторизации" "JSON / HTTPS" {
+    tags "Data Flow"
+}
 fourStay.monolithApplication.inventoryModule -> ical "Синхронизирует календарь доступности" "HTTPS / iCalendar (.ics)"
 fourStay.monolithApplication.propertyModule -> mapbox "Получает геоданные и отображение карт" "HTTPS / Mapbox API"
 

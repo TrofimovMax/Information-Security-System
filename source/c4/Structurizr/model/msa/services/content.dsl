@@ -1,6 +1,7 @@
 contentService = container "Content Service" {
     technology "Ruby on Rails"
     description "Управляет CMS-контентом платформы: landing pages, информационными блоками, изображениями, описаниями университетов, локаций и маркетинговыми материалами."
+    tags "Microservice"
 }
 
 contentDatabase = container "Content DB" {

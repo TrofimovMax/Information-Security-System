@@ -1,6 +1,7 @@
 identityService = container "Identity Service" {
     technology "Ruby on Rails"
     description "Обеспечивает аутентификацию и авторизацию пользователей, управление сессиями, токенами доступа, OTP-кодами и проверку прав доступа."
+    tags "Microservice"
 }
 
 identityDatabase = container "Identity DB" {

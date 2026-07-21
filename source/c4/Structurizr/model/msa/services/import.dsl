@@ -1,6 +1,7 @@
 importService = container "Import Service" {
     technology "Ruby on Rails"
     description "Обрабатывает массовый импорт данных, управляет заданиями импорта, проверяет файлы и координирует загрузку данных в бизнес-сервисы."
+    tags "Microservice"
 }
 
 importDatabase = container "Import DB" {

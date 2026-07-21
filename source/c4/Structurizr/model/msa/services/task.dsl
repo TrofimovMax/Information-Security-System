@@ -1,6 +1,7 @@
 taskService = container "Task Service" {
     technology "Ruby Rails"
     description "Управляет операционными задачами сотрудников поддержки, обращениями пользователей, назначением исполнителей, статусами обработки и внутренними рабочими процессами."
+    tags "Microservice"
 }
 
 taskDatabase = container "Task DB" {

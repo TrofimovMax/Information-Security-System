@@ -1,6 +1,7 @@
 calendarService = container "Calendar Service" {
     technology "Ruby on Rails"
     description "Управляет календарями доступности объектов размещения, синхронизацией iCal-календарей, блокировками дат и интеграциями с внешними календарными системами."
+    tags "Microservice"
 }
 
 calendarDatabase = container "Calendar DB" {

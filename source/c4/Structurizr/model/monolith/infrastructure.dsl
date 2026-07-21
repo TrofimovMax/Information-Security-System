@@ -4,6 +4,7 @@ fourStay = softwareSystem "4Stay (Monolith)" {
     webApplication = container "Web Application" {
         technology "React"
         description "Веб-приложение, предоставляющее пользовательский интерфейс для гостей, владельцев размещения, менеджеров, администраторов организаций, сотрудников поддержки и операторов."
+        tags "Web Application"
     }
 
     monolithApplication = container "Monolithic Application" {
@@ -43,12 +44,13 @@ fourStay = softwareSystem "4Stay (Monolith)" {
     cache = container "Cache" {
         technology "Redis"
         description "Хранит сессии, временные данные и часто используемую информацию."
-        tags "Database"
+        tags "Cache"
     }
 
     objectStorage = container "Object Storage" {
         technology "S3 Compatible Storage"
         description "Хранит изображения, документы и другие файлы платформы."
+        tags "Object Storage"
     }
 
 }

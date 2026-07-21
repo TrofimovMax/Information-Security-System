@@ -1,6 +1,7 @@
 bookingService = container "Booking Service" {
     technology "Ruby on Rails"
     description "Управляет жизненным циклом бронирований: создание, изменение, продление, отмена и управление статусами проживания гостей."
+    tags "Microservice"
 }
 
 bookingDatabase = container "Booking DB" {

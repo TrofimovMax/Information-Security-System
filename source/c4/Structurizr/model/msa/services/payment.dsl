@@ -1,6 +1,7 @@
 paymentService = container "Payment Service" {
     technology "Ruby on Rails"
     description "Управляет жизненным циклом платежей, возвратов, выплат, транзакций и взаимодействует с платежным шлюзом."
+    tags "Microservice"
 }
 
 paymentDatabase = container "Payment DB" {

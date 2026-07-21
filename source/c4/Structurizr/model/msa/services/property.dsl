@@ -1,6 +1,7 @@
 propertyService = container "Property Service" {
     technology "Ruby on Rails"
     description "Управляет объектами размещения, объявлениями, помещениями, удобствами, изображениями и характеристиками жилья."
+    tags "Microservice"
 }
 
 propertyDatabase = container "Property DB" {
