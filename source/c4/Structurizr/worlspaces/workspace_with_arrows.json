@@ -1,0 +1,5525 @@
+{
+  "configuration" : { },
+  "description" : "Architecture documentation",
+  "documentation" : { },
+  "id" : 1,
+  "lastModifiedAgent" : "structurizr/diagrams/ab281bd1-b839-4578-a48a-b6ce0e9b9432",
+  "lastModifiedDate" : "2026-07-22T17:06:01Z",
+  "lastModifiedUser" : "1720312485",
+  "model" : {
+    "people" : [ {
+      "description" : "Студент или арендатор, который ищет, бронирует, оплачивает и продлевает временное жильё.",
+      "id" : "1",
+      "name" : "Guest",
+      "properties" : {
+        "structurizr.dsl.identifier" : "guest"
+      },
+      "relationships" : [ {
+        "description" : "Ищет, бронирует и оплачивает временное жильё",
+        "destinationId" : "13",
+        "id" : "40",
+        "sourceId" : "1",
+        "tags" : "Relationship,Data Flow",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Ищет, бронирует и оплачивает временное жильё",
+        "destinationId" : "12",
+        "id" : "41",
+        "linkedRelationshipId" : "40",
+        "sourceId" : "1",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Ищет, бронирует и оплачивает жильё",
+        "destinationId" : "117",
+        "id" : "174",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Ищет, бронирует и оплачивает жильё",
+        "destinationId" : "113",
+        "id" : "175",
+        "linkedRelationshipId" : "174",
+        "sourceId" : "1",
+        "technology" : "JSON / HTTPS"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Арендодатель или владелец жилья, публикует объекты размещения, управляет доступностью, тарифами и бронированиями.",
+      "id" : "2",
+      "name" : "Host",
+      "properties" : {
+        "structurizr.dsl.identifier" : "host"
+      },
+      "relationships" : [ {
+        "description" : "Публикует и управляет объектами размещения",
+        "destinationId" : "13",
+        "id" : "42",
+        "sourceId" : "2",
+        "tags" : "Relationship,Data Flow",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Публикует и управляет объектами размещения",
+        "destinationId" : "12",
+        "id" : "43",
+        "linkedRelationshipId" : "42",
+        "sourceId" : "2",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Управляет объектами размещения, доступностью и бронированиями",
+        "destinationId" : "118",
+        "id" : "176",
+        "sourceId" : "2",
+        "tags" : "Relationship",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Управляет объектами размещения, доступностью и бронированиями",
+        "destinationId" : "113",
+        "id" : "177",
+        "linkedRelationshipId" : "176",
+        "sourceId" : "2",
+        "technology" : "JSON / HTTPS"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Менеджер объекта размещения, назначенный арендодателем, управляет объектами, календарями, доступностью, тарифами и бронированиями.",
+      "id" : "3",
+      "name" : "Manager",
+      "properties" : {
+        "structurizr.dsl.identifier" : "manager"
+      },
+      "relationships" : [ {
+        "description" : "Управляет операциями размещения",
+        "destinationId" : "13",
+        "id" : "44",
+        "sourceId" : "3",
+        "tags" : "Relationship,Data Flow",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Управляет операциями размещения",
+        "destinationId" : "12",
+        "id" : "45",
+        "linkedRelationshipId" : "44",
+        "sourceId" : "3",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Управляет операциями размещения и бронированиями",
+        "destinationId" : "119",
+        "id" : "178",
+        "sourceId" : "3",
+        "tags" : "Relationship",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Управляет операциями размещения и бронированиями",
+        "destinationId" : "113",
+        "id" : "179",
+        "linkedRelationshipId" : "178",
+        "sourceId" : "3",
+        "technology" : "JSON / HTTPS"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Администратор университета или организации, управляет пользователями, настройками организации и связанными ресурсами в рамках своей организации.",
+      "id" : "4",
+      "name" : "Organisation Admin",
+      "properties" : {
+        "structurizr.dsl.identifier" : "organisation_admin"
+      },
+      "relationships" : [ {
+        "description" : "Администрирует организацию и ресурсы размещения",
+        "destinationId" : "13",
+        "id" : "46",
+        "sourceId" : "4",
+        "tags" : "Relationship,Data Flow",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Администрирует организацию и ресурсы размещения",
+        "destinationId" : "12",
+        "id" : "47",
+        "linkedRelationshipId" : "46",
+        "sourceId" : "4",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Администрирует пользователей и ресурсы своей организации",
+        "destinationId" : "119",
+        "id" : "184",
+        "sourceId" : "4",
+        "tags" : "Relationship",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Администрирует пользователей и ресурсы своей организации",
+        "destinationId" : "113",
+        "id" : "185",
+        "linkedRelationshipId" : "184",
+        "sourceId" : "4",
+        "technology" : "JSON / HTTPS"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Специалист службы поддержки арендодателя, помогает гостям, решает вопросы проживания, бронирований и взаимодействия с объектами размещения.",
+      "id" : "5",
+      "name" : "Customer Service",
+      "properties" : {
+        "structurizr.dsl.identifier" : "customer_service"
+      },
+      "relationships" : [ {
+        "description" : "Обрабатывает обращения пользователей",
+        "destinationId" : "13",
+        "id" : "48",
+        "sourceId" : "5",
+        "tags" : "Relationship,Data Flow",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Обрабатывает обращения пользователей",
+        "destinationId" : "12",
+        "id" : "49",
+        "linkedRelationshipId" : "48",
+        "sourceId" : "5",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Обрабатывает обращения пользователей и решает проблемы с бронированиями",
+        "destinationId" : "119",
+        "id" : "180",
+        "sourceId" : "5",
+        "tags" : "Relationship",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Обрабатывает обращения пользователей и решает проблемы с бронированиями",
+        "destinationId" : "113",
+        "id" : "181",
+        "linkedRelationshipId" : "180",
+        "sourceId" : "5",
+        "technology" : "JSON / HTTPS"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Оператор первой линии поддержки платформы 4Stay, обрабатывает обращения пользователей, координирует бронирования и передаёт сложные случаи профильным специалистам.",
+      "id" : "6",
+      "name" : "Agent",
+      "properties" : {
+        "structurizr.dsl.identifier" : "agent"
+      },
+      "relationships" : [ {
+        "description" : "Координирует бронирования и помогает клиентам",
+        "destinationId" : "13",
+        "id" : "50",
+        "sourceId" : "6",
+        "tags" : "Relationship,Data Flow",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Координирует бронирования и помогает клиентам",
+        "destinationId" : "12",
+        "id" : "51",
+        "linkedRelationshipId" : "50",
+        "sourceId" : "6",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Координирует бронирования и операционные запросы",
+        "destinationId" : "119",
+        "id" : "182",
+        "sourceId" : "6",
+        "tags" : "Relationship",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Координирует бронирования и операционные запросы",
+        "destinationId" : "113",
+        "id" : "183",
+        "linkedRelationshipId" : "182",
+        "sourceId" : "6",
+        "technology" : "JSON / HTTPS"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "Системный администратор платформы 4Stay, управляет конфигурацией системы, пользователями, организациями и обеспечивает функционирование платформы.",
+      "id" : "7",
+      "name" : "Admin",
+      "properties" : {
+        "structurizr.dsl.identifier" : "admin"
+      },
+      "relationships" : [ {
+        "description" : "Администрирует платформу",
+        "destinationId" : "13",
+        "id" : "52",
+        "sourceId" : "7",
+        "tags" : "Relationship,Data Flow",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Администрирует платформу",
+        "destinationId" : "12",
+        "id" : "53",
+        "linkedRelationshipId" : "52",
+        "sourceId" : "7",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Администрирует платформу и системные настройки",
+        "destinationId" : "119",
+        "id" : "186",
+        "sourceId" : "7",
+        "tags" : "Relationship",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Администрирует платформу и системные настройки",
+        "destinationId" : "113",
+        "id" : "187",
+        "linkedRelationshipId" : "186",
+        "sourceId" : "7",
+        "technology" : "JSON / HTTPS"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "description" : "Внешний платежный сервис для обработки онлайн-платежей и возврата статусов транзакций.",
+      "documentation" : { },
+      "id" : "8",
+      "name" : "Stripe",
+      "properties" : {
+        "structurizr.dsl.identifier" : "stripe"
+      },
+      "tags" : "Element,Software System,External System,Payment Provider"
+    }, {
+      "description" : "Внешний сервис аутентификации и доставки одноразовых паролей.",
+      "documentation" : { },
+      "id" : "9",
+      "name" : "Knock",
+      "properties" : {
+        "structurizr.dsl.identifier" : "knock"
+      },
+      "tags" : "Element,Software System,External API"
+    }, {
+      "description" : "Внешний картографический сервис для отображения карт, геокодирования и работы с геоданными.",
+      "documentation" : { },
+      "id" : "10",
+      "name" : "Mapbox",
+      "properties" : {
+        "structurizr.dsl.identifier" : "mapbox"
+      },
+      "tags" : "Element,Software System,External API"
+    }, {
+      "description" : "Внешние календарные сервисы, поддерживающие стандарт iCalendar (iCal), используемые для импорта и экспорта информации о доступности объектов размещения.",
+      "documentation" : { },
+      "id" : "11",
+      "name" : "Calendar (iCal)",
+      "properties" : {
+        "structurizr.dsl.identifier" : "ical"
+      },
+      "tags" : "Element,Software System,External API,Calendar Provider"
+    }, {
+      "containers" : [ {
+        "description" : "Веб-приложение, предоставляющее пользовательский интерфейс для гостей, владельцев размещения, менеджеров, администраторов организаций, сотрудников поддержки и операторов.",
+        "documentation" : { },
+        "id" : "13",
+        "name" : "Web Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStay.webApplication"
+        },
+        "relationships" : [ {
+          "description" : "Выполняет API-запросы",
+          "destinationId" : "14",
+          "id" : "54",
+          "sourceId" : "13",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Загружает изображения и документы",
+          "destinationId" : "39",
+          "id" : "55",
+          "sourceId" : "13",
+          "tags" : "Relationship",
+          "technology" : "HTTPS"
+        } ],
+        "tags" : "Element,Container,Web Application",
+        "technology" : "React"
+      }, {
+        "components" : [ {
+          "description" : "Dashboard, аналитика и сбор информации об активности пользователей.",
+          "documentation" : { },
+          "id" : "15",
+          "name" : "Analytics Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.analyticsModule"
+          },
+          "relationships" : [ {
+            "description" : "Предоставляет аналитические показатели",
+            "destinationId" : "22",
+            "id" : "72",
+            "sourceId" : "15",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает данные о бронированиях",
+            "destinationId" : "18",
+            "id" : "73",
+            "sourceId" : "15",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает данные о платежах",
+            "destinationId" : "29",
+            "id" : "74",
+            "sourceId" : "15",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Журналирование действий пользователей и изменений бизнес-данных.",
+          "documentation" : { },
+          "id" : "16",
+          "name" : "Audit Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.auditModule"
+          },
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление счетами, тарификацией, позициями счетов и тарифами.",
+          "documentation" : { },
+          "id" : "17",
+          "name" : "Billing Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.billingModule"
+          },
+          "relationships" : [ {
+            "description" : "Получает валюты",
+            "destinationId" : "23",
+            "id" : "85",
+            "sourceId" : "17",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление жизненным циклом бронирования и резервирования.",
+          "documentation" : { },
+          "id" : "18",
+          "name" : "Booking Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.bookingModule"
+          },
+          "relationships" : [ {
+            "description" : "Журналирует изменения бронирований",
+            "destinationId" : "16",
+            "id" : "75",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Создает счета",
+            "destinationId" : "17",
+            "id" : "76",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Синхронизирует календарь бронирований",
+            "destinationId" : "19",
+            "id" : "77",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Создает события бронирования",
+            "destinationId" : "20",
+            "id" : "78",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Проверяет доступность размещения",
+            "destinationId" : "27",
+            "id" : "79",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает данные пользователя",
+            "destinationId" : "24",
+            "id" : "80",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Инициирует платеж",
+            "destinationId" : "29",
+            "id" : "81",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает информацию об объектах размещения",
+            "destinationId" : "30",
+            "id" : "82",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Создает возможность оставить отзыв",
+            "destinationId" : "33",
+            "id" : "83",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает профиль пользователя",
+            "destinationId" : "36",
+            "id" : "84",
+            "sourceId" : "18",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Синхронизация календарей доступности объектов размещения через iCalendar (ICS).",
+          "documentation" : { },
+          "id" : "19",
+          "name" : "Calendar Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.calendarModule"
+          },
+          "relationships" : [ {
+            "description" : "Импортирует изменения календаря",
+            "destinationId" : "27",
+            "id" : "86",
+            "sourceId" : "19",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление диалогами, уведомлениями, заметками и взаимодействием с клиентами.",
+          "documentation" : { },
+          "id" : "20",
+          "name" : "Communication Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.communicationModule"
+          },
+          "relationships" : [ {
+            "description" : "Получает данные получателей",
+            "destinationId" : "24",
+            "id" : "88",
+            "sourceId" : "20",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает информацию о получателях",
+            "destinationId" : "36",
+            "id" : "89",
+            "sourceId" : "20",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление лендингами и CMS-контентом.",
+          "documentation" : { },
+          "id" : "21",
+          "name" : "Content Management Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.contentModule"
+          },
+          "relationships" : [ {
+            "description" : "Хранит медиафайлы",
+            "destinationId" : "39",
+            "id" : "59",
+            "sourceId" : "21",
+            "tags" : "Relationship",
+            "technology" : "S3 API"
+          }, {
+            "description" : "Получает справочные данные",
+            "destinationId" : "23",
+            "id" : "87",
+            "sourceId" : "21",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Формирование пользовательских панелей мониторинга и сводной информации.",
+          "documentation" : { },
+          "id" : "22",
+          "name" : "Dashboard Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.dashboardModule"
+          },
+          "relationships" : [ {
+            "description" : "Получает статистику бронирований",
+            "destinationId" : "18",
+            "id" : "90",
+            "sourceId" : "22",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает финансовые показатели",
+            "destinationId" : "29",
+            "id" : "91",
+            "sourceId" : "22",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление справочными данными: города, локации, районы, валюты, университеты и пользовательские справочники.",
+          "documentation" : { },
+          "id" : "23",
+          "name" : "Reference Data Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.dictionaryModule"
+          },
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Аутентификация, авторизация, управление пользователями и OTP.",
+          "documentation" : { },
+          "id" : "24",
+          "name" : "Identity Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.identityModule"
+          },
+          "relationships" : [ {
+            "description" : "Отправляет OTP и выполняет коммуникации авторизации",
+            "destinationId" : "9",
+            "id" : "63",
+            "sourceId" : "24",
+            "tags" : "Relationship,Data Flow",
+            "technology" : "JSON / HTTPS"
+          }, {
+            "description" : "Журналирует события аутентификации",
+            "destinationId" : "16",
+            "id" : "92",
+            "sourceId" : "24",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает информацию о членстве в организации",
+            "destinationId" : "28",
+            "id" : "93",
+            "sourceId" : "24",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Импорт документов и записей.",
+          "documentation" : { },
+          "id" : "25",
+          "name" : "Import Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.importModule"
+          },
+          "relationships" : [ {
+            "description" : "Импортирует данные объектов размещения",
+            "destinationId" : "30",
+            "id" : "95",
+            "sourceId" : "25",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Интеграция со сторонними сервисами и внешними API.",
+          "documentation" : { },
+          "id" : "26",
+          "name" : "Integration Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.integrationModule"
+          },
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление инвентарём, календарями доступности, запрещёнными датами и доступностью размещения.",
+          "documentation" : { },
+          "id" : "27",
+          "name" : "Inventory Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.inventoryModule"
+          },
+          "relationships" : [ {
+            "description" : "Синхронизирует календарь доступности",
+            "destinationId" : "11",
+            "id" : "66",
+            "sourceId" : "27",
+            "tags" : "Relationship",
+            "technology" : "HTTPS / iCalendar (.ics)"
+          }, {
+            "description" : "Обновляет доступность объектов",
+            "destinationId" : "19",
+            "id" : "94",
+            "sourceId" : "27",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление организациями, офисами, партнёрами и университетами.",
+          "documentation" : { },
+          "id" : "28",
+          "name" : "Organisation Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.organisationModule"
+          },
+          "relationships" : [ {
+            "description" : "Журналирует изменения организаций",
+            "destinationId" : "16",
+            "id" : "96",
+            "sourceId" : "28",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает данные университетов",
+            "destinationId" : "23",
+            "id" : "97",
+            "sourceId" : "28",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Управляет объектами организации",
+            "destinationId" : "30",
+            "id" : "98",
+            "sourceId" : "28",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Получает участников организации",
+            "destinationId" : "36",
+            "id" : "99",
+            "sourceId" : "28",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Обработка платежей, выплат и управление финансовыми операциями.",
+          "documentation" : { },
+          "id" : "29",
+          "name" : "Payment Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.paymentModule"
+          },
+          "relationships" : [ {
+            "description" : "Обрабатывает платежи",
+            "destinationId" : "8",
+            "id" : "60",
+            "sourceId" : "29",
+            "tags" : "Relationship,Data Flow",
+            "technology" : "JSON / HTTPS"
+          }, {
+            "description" : "Журналирует платежные операции",
+            "destinationId" : "16",
+            "id" : "100",
+            "sourceId" : "29",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Обновляет статус счетов",
+            "destinationId" : "17",
+            "id" : "101",
+            "sourceId" : "29",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Использует внешние платежные интеграции",
+            "destinationId" : "26",
+            "id" : "102",
+            "sourceId" : "29",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление объектами размещения, помещениями, объявлениями и удобствами.",
+          "documentation" : { },
+          "id" : "30",
+          "name" : "Property Management Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.propertyModule"
+          },
+          "relationships" : [ {
+            "description" : "Получает геоданные и отображение карт",
+            "destinationId" : "10",
+            "id" : "69",
+            "sourceId" : "30",
+            "tags" : "Relationship",
+            "technology" : "HTTPS / Mapbox API"
+          }, {
+            "description" : "Получает справочные данные",
+            "destinationId" : "23",
+            "id" : "105",
+            "sourceId" : "30",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление скидками, специальными предложениями и промоакциями.",
+          "documentation" : { },
+          "id" : "31",
+          "name" : "Promotion Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.promotionModule"
+          },
+          "relationships" : [ {
+            "description" : "Предоставляет скидки",
+            "destinationId" : "18",
+            "id" : "103",
+            "sourceId" : "31",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Применяет акции к объектам размещения",
+            "destinationId" : "30",
+            "id" : "104",
+            "sourceId" : "31",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Обработка заявок, запросов и договоров размещения.",
+          "documentation" : { },
+          "id" : "32",
+          "name" : "Request Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.requestModule"
+          },
+          "relationships" : [ {
+            "description" : "Создает бронирование",
+            "destinationId" : "18",
+            "id" : "108",
+            "sourceId" : "32",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Проверяет принадлежность организации",
+            "destinationId" : "28",
+            "id" : "109",
+            "sourceId" : "32",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление отзывами и рейтингами объектов размещения.",
+          "documentation" : { },
+          "id" : "33",
+          "name" : "Review Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.reviewModule"
+          },
+          "relationships" : [ {
+            "description" : "Проверяет завершение бронирования",
+            "destinationId" : "18",
+            "id" : "106",
+            "sourceId" : "33",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Связывает отзыв с объектом размещения",
+            "destinationId" : "30",
+            "id" : "107",
+            "sourceId" : "33",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Настройки приложения и конфигурация системы.",
+          "documentation" : { },
+          "id" : "34",
+          "name" : "Settings Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.settingsModule"
+          },
+          "relationships" : [ {
+            "description" : "Передает конфигурацию авторизации",
+            "destinationId" : "24",
+            "id" : "110",
+            "sourceId" : "34",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Фоновые задачи и операционные процессы.",
+          "documentation" : { },
+          "id" : "35",
+          "name" : "Task Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.taskModule"
+          },
+          "relationships" : [ {
+            "description" : "Запускает фоновые процессы бронирований",
+            "destinationId" : "18",
+            "id" : "111",
+            "sourceId" : "35",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Запускает фоновые платежные процессы",
+            "destinationId" : "29",
+            "id" : "112",
+            "sourceId" : "35",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component,Monolith Module"
+        }, {
+          "description" : "Управление профилями пользователей, поиском и персональными данными.",
+          "documentation" : { },
+          "id" : "36",
+          "name" : "User Profile Module",
+          "properties" : {
+            "structurizr.dsl.identifier" : "fourStay.monolithApplication.userProfileModule"
+          },
+          "tags" : "Element,Component,Monolith Module"
+        } ],
+        "description" : "Модульное монолитное backend-приложение, содержащее всю бизнес-логику платформы.",
+        "documentation" : { },
+        "id" : "14",
+        "name" : "Monolithic Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStay.monolithApplication"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет бизнес-данные",
+          "destinationId" : "37",
+          "id" : "56",
+          "sourceId" : "14",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Кэширует сессии и часто используемые данные",
+          "destinationId" : "38",
+          "id" : "57",
+          "sourceId" : "14",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        }, {
+          "description" : "Хранит файлы и медиафайлы",
+          "destinationId" : "39",
+          "id" : "58",
+          "sourceId" : "14",
+          "tags" : "Relationship",
+          "technology" : "S3 API"
+        }, {
+          "description" : "Обрабатывает платежи",
+          "destinationId" : "8",
+          "id" : "61",
+          "linkedRelationshipId" : "60",
+          "sourceId" : "14",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Отправляет OTP и выполняет коммуникации авторизации",
+          "destinationId" : "9",
+          "id" : "64",
+          "linkedRelationshipId" : "63",
+          "sourceId" : "14",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Синхронизирует календарь доступности",
+          "destinationId" : "11",
+          "id" : "67",
+          "linkedRelationshipId" : "66",
+          "sourceId" : "14",
+          "technology" : "HTTPS / iCalendar (.ics)"
+        }, {
+          "description" : "Получает геоданные и отображение карт",
+          "destinationId" : "10",
+          "id" : "70",
+          "linkedRelationshipId" : "69",
+          "sourceId" : "14",
+          "technology" : "HTTPS / Mapbox API"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит данные пользователей, объектов размещения, бронирований, платежей и бизнес-информацию платформы.",
+        "documentation" : { },
+        "id" : "37",
+        "name" : "Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStay.database"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Хранит сессии, временные данные и часто используемую информацию.",
+        "documentation" : { },
+        "id" : "38",
+        "name" : "Cache",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStay.cache"
+        },
+        "tags" : "Element,Container,Cache",
+        "technology" : "Redis"
+      }, {
+        "description" : "Хранит изображения, документы и другие файлы платформы.",
+        "documentation" : { },
+        "id" : "39",
+        "name" : "Object Storage",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStay.objectStorage"
+        },
+        "tags" : "Element,Container,Object Storage",
+        "technology" : "S3 Compatible Storage"
+      } ],
+      "description" : "Монолитная веб-платформа для поиска, бронирования и управления временным размещением.",
+      "documentation" : { },
+      "id" : "12",
+      "name" : "4Stay (Monolith)",
+      "properties" : {
+        "structurizr.dsl.identifier" : "fourStay"
+      },
+      "relationships" : [ {
+        "description" : "Обрабатывает платежи",
+        "destinationId" : "8",
+        "id" : "62",
+        "linkedRelationshipId" : "60",
+        "sourceId" : "12",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Отправляет OTP и выполняет коммуникации авторизации",
+        "destinationId" : "9",
+        "id" : "65",
+        "linkedRelationshipId" : "63",
+        "sourceId" : "12",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Синхронизирует календарь доступности",
+        "destinationId" : "11",
+        "id" : "68",
+        "linkedRelationshipId" : "66",
+        "sourceId" : "12",
+        "technology" : "HTTPS / iCalendar (.ics)"
+      }, {
+        "description" : "Получает геоданные и отображение карт",
+        "destinationId" : "10",
+        "id" : "71",
+        "linkedRelationshipId" : "69",
+        "sourceId" : "12",
+        "technology" : "HTTPS / Mapbox API"
+      } ],
+      "tags" : "Element,Software System"
+    }, {
+      "containers" : [ {
+        "description" : "REST API для студентов и арендаторов.",
+        "documentation" : { },
+        "id" : "114",
+        "name" : "Guest API Gateway",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.guestApi"
+        },
+        "relationships" : [ {
+          "description" : "Создает и управляет бронированиями",
+          "destinationId" : "129",
+          "id" : "188",
+          "sourceId" : "114",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Создаёт и получает сообщения с владельцем или поддержкой",
+          "destinationId" : "133",
+          "id" : "189",
+          "sourceId" : "114",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Аутентифицирует пользователя и проверяет права доступа",
+          "destinationId" : "143",
+          "id" : "190",
+          "sourceId" : "114",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные главной страницы и публичных лендингов",
+          "destinationId" : "149",
+          "id" : "191",
+          "sourceId" : "114",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Создает и управляет отзывами",
+          "destinationId" : "163",
+          "id" : "192",
+          "sourceId" : "114",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Выполняет поиск жилья",
+          "destinationId" : "165",
+          "id" : "193",
+          "sourceId" : "114",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Просматривает и изменяет профиль пользователя",
+          "destinationId" : "169",
+          "id" : "194",
+          "sourceId" : "114",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,API Gateway",
+        "technology" : "REST API"
+      }, {
+        "description" : "REST API для арендодателей.",
+        "documentation" : { },
+        "id" : "115",
+        "name" : "Host API Gateway",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.hostApi"
+        },
+        "relationships" : [ {
+          "description" : "Получает статистику объектов размещения",
+          "destinationId" : "123",
+          "id" : "195",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает финансовую информацию по объектам",
+          "destinationId" : "127",
+          "id" : "196",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Просматривает и управляет бронированиями объектов",
+          "destinationId" : "129",
+          "id" : "197",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет доступностью и синхронизацией календарей",
+          "destinationId" : "131",
+          "id" : "198",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Общается с гостями и управляет сообщениями",
+          "destinationId" : "133",
+          "id" : "199",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет описаниями и медиафайлами объектов",
+          "destinationId" : "135",
+          "id" : "200",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает показатели объектов размещения и бронирований",
+          "destinationId" : "137",
+          "id" : "201",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает справочные данные для создания объектов размещения",
+          "destinationId" : "139",
+          "id" : "202",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Аутентифицирует пользователя и проверяет права доступа",
+          "destinationId" : "143",
+          "id" : "203",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет доступностью объектов размещения",
+          "destinationId" : "147",
+          "id" : "204",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает информацию о выплатах",
+          "destinationId" : "157",
+          "id" : "205",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет акциями и специальными предложениями",
+          "destinationId" : "161",
+          "id" : "206",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет объектами размещения",
+          "destinationId" : "159",
+          "id" : "207",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Просматривает и отвечает на отзывы",
+          "destinationId" : "163",
+          "id" : "208",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет профилем владельца",
+          "destinationId" : "169",
+          "id" : "209",
+          "sourceId" : "115",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,API Gateway",
+        "technology" : "REST API"
+      }, {
+        "description" : "REST API для сотрудников платформы и организаций.",
+        "documentation" : { },
+        "id" : "116",
+        "name" : "Operations API Gateway",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.operationsApi"
+        },
+        "relationships" : [ {
+          "description" : "Получает аналитические отчёты и метрики",
+          "destinationId" : "123",
+          "id" : "210",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает историю действий пользователей и изменений данных",
+          "destinationId" : "125",
+          "id" : "211",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет счетами и начислениями",
+          "destinationId" : "127",
+          "id" : "212",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Обрабатывает операционные запросы по бронированиям",
+          "destinationId" : "129",
+          "id" : "213",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Контролирует календари объектов размещения",
+          "destinationId" : "131",
+          "id" : "214",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Просматривает и обрабатывает обращения пользователей",
+          "destinationId" : "133",
+          "id" : "215",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет информационным контентом организации",
+          "destinationId" : "135",
+          "id" : "216",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает операционные показатели платформы и административные показатели системы",
+          "destinationId" : "137",
+          "id" : "217",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет справочными данными организации",
+          "destinationId" : "139",
+          "id" : "218",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Аутентифицирует пользователя и проверяет права доступа",
+          "destinationId" : "143",
+          "id" : "219",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет заданиями импорта",
+          "destinationId" : "145",
+          "id" : "220",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет календарями и доступностью объектов",
+          "destinationId" : "147",
+          "id" : "221",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет уведомлениями и шаблонами",
+          "destinationId" : "151",
+          "id" : "222",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет организациями и их структурой",
+          "destinationId" : "153",
+          "id" : "223",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет платежами и возвратами",
+          "destinationId" : "157",
+          "id" : "224",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет промо-кампаниями",
+          "destinationId" : "161",
+          "id" : "225",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Управляет объектами размещения",
+          "destinationId" : "159",
+          "id" : "226",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Модерирует отзывы",
+          "destinationId" : "163",
+          "id" : "227",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Создает и обрабатывает операционные задачи",
+          "destinationId" : "167",
+          "id" : "228",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные пользователей",
+          "destinationId" : "169",
+          "id" : "229",
+          "sourceId" : "116",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,API Gateway",
+        "technology" : "REST API"
+      }, {
+        "description" : "Пользовательский интерфейс для студентов и арендаторов.",
+        "documentation" : { },
+        "id" : "117",
+        "name" : "Guest Web Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.guestWebApplication"
+        },
+        "relationships" : [ {
+          "description" : "REST API запросы",
+          "destinationId" : "114",
+          "id" : "120",
+          "sourceId" : "117",
+          "tags" : "Relationship",
+          "technology" : "HTTPS / JSON"
+        }, {
+          "description" : "Отображает расположение объектов размещения",
+          "destinationId" : "10",
+          "id" : "349",
+          "sourceId" : "117",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Web Application",
+        "technology" : "React"
+      }, {
+        "description" : "Пользовательский интерфейс для владельцев объектов размещения.",
+        "documentation" : { },
+        "id" : "118",
+        "name" : "Host Web Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.hostWebApplication"
+        },
+        "relationships" : [ {
+          "description" : "REST API запросы",
+          "destinationId" : "115",
+          "id" : "121",
+          "sourceId" : "118",
+          "tags" : "Relationship",
+          "technology" : "HTTPS / JSON"
+        }, {
+          "description" : "Выбор и отображение расположения объектов размещения",
+          "destinationId" : "10",
+          "id" : "351",
+          "sourceId" : "118",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Web Application",
+        "technology" : "React"
+      }, {
+        "description" : "Интерфейс для менеджеров, операторов поддержки и администраторов.",
+        "documentation" : { },
+        "id" : "119",
+        "name" : "Operations Web Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.operationsWebApplication"
+        },
+        "relationships" : [ {
+          "description" : "REST API запросы",
+          "destinationId" : "116",
+          "id" : "122",
+          "sourceId" : "119",
+          "tags" : "Relationship",
+          "technology" : "HTTPS / JSON"
+        }, {
+          "description" : "Отображает географические данные объектов",
+          "destinationId" : "10",
+          "id" : "352",
+          "sourceId" : "119",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "HTTPS / Mapbox API"
+        } ],
+        "tags" : "Element,Container,Web Application",
+        "technology" : "React"
+      }, {
+        "description" : "Собирает и предоставляет аналитические данные по бронированиям, платежам, активности пользователей и операционным показателям платформы.",
+        "documentation" : { },
+        "id" : "123",
+        "name" : "Analytics Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.analyticsService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет агрегированные аналитические данные",
+          "destinationId" : "124",
+          "id" : "230",
+          "sourceId" : "123",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Передает агрегированные аналитические данные",
+          "destinationId" : "137",
+          "id" : "300",
+          "sourceId" : "123",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит агрегированные данные аналитики, отчёты, метрики и результаты обработки событий.",
+        "documentation" : { },
+        "id" : "124",
+        "name" : "Analytics DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.analyticsDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Сервис аудита, который собирает и хранит информацию о действиях пользователей, изменениях бизнес-данных и системных событиях.",
+        "documentation" : { },
+        "id" : "125",
+        "name" : "Audit Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.auditService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет записи аудита",
+          "destinationId" : "126",
+          "id" : "231",
+          "sourceId" : "125",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит историю действий пользователей, изменения сущностей, системные события и записи аудита.",
+        "documentation" : { },
+        "id" : "126",
+        "name" : "Audit DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.auditDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет счетами, начислениями, оплатами аренды и финансовыми операциями.",
+        "documentation" : { },
+        "id" : "127",
+        "name" : "Billing Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.billingService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет счета, начисления и тарифы",
+          "destinationId" : "128",
+          "id" : "232",
+          "sourceId" : "127",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Получает информацию о валютах",
+          "destinationId" : "139",
+          "id" : "301",
+          "sourceId" : "127",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает сведения об организациях для выставления счетов",
+          "destinationId" : "153",
+          "id" : "302",
+          "sourceId" : "127",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит счета, начисления, статусы оплаты и финансовые операции.",
+        "documentation" : { },
+        "id" : "128",
+        "name" : "Billing DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.billingDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет жизненным циклом бронирований: создание, изменение, продление, отмена и управление статусами проживания гостей.",
+        "documentation" : { },
+        "id" : "129",
+        "name" : "Booking Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.bookingService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет данные бронирований",
+          "destinationId" : "130",
+          "id" : "233",
+          "sourceId" : "129",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Кэширует активные бронирования и данные доступности",
+          "destinationId" : "171",
+          "id" : "253",
+          "sourceId" : "129",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        }, {
+          "description" : "Публикует события изменения бронирований",
+          "destinationId" : "172",
+          "id" : "266",
+          "sourceId" : "129",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Рассчитывает стоимость проживания, сервисные сборы и налоги",
+          "destinationId" : "127",
+          "id" : "303",
+          "sourceId" : "129",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Проверяет доступность объекта и резервирует размещение на выбранный период",
+          "destinationId" : "147",
+          "id" : "304",
+          "sourceId" : "129",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Создаёт платёжную операцию и инициирует оплату бронирования",
+          "destinationId" : "157",
+          "id" : "305",
+          "sourceId" : "129",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает информацию об объекте размещения, правилах проживания и параметрах объекта",
+          "destinationId" : "159",
+          "id" : "306",
+          "sourceId" : "129",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные гостя и информацию, необходимую для оформления бронирования",
+          "destinationId" : "169",
+          "id" : "307",
+          "sourceId" : "129",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит бронирования, статусы, даты проживания, связи гостей с объектами размещения и историю изменений.",
+        "documentation" : { },
+        "id" : "130",
+        "name" : "Booking DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.bookingDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет календарями доступности объектов размещения, синхронизацией iCal-календарей, блокировками дат и интеграциями с внешними календарными системами.",
+        "documentation" : { },
+        "id" : "131",
+        "name" : "Calendar Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.calendarService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет данные календарей",
+          "destinationId" : "132",
+          "id" : "234",
+          "sourceId" : "131",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Кэширует данные доступности календарей",
+          "destinationId" : "171",
+          "id" : "254",
+          "sourceId" : "131",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        }, {
+          "description" : "Публикует события изменения календарей",
+          "destinationId" : "172",
+          "id" : "268",
+          "sourceId" : "131",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Импортирует и экспортирует календари доступности",
+          "destinationId" : "11",
+          "id" : "298",
+          "sourceId" : "131",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "iCal / HTTPS"
+        }, {
+          "description" : "Получает и обновляет данные доступности",
+          "destinationId" : "147",
+          "id" : "308",
+          "sourceId" : "131",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные объектов размещения и помещений",
+          "destinationId" : "159",
+          "id" : "309",
+          "sourceId" : "131",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит календари объектов размещения, настройки синхронизации, внешние iCal ссылки и состояние импортированных событий.",
+        "documentation" : { },
+        "id" : "132",
+        "name" : "Calendar DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.calendarDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет чатами и сообщениями между пользователями платформы: гостями, хостами, менеджерами и сотрудниками поддержки.",
+        "documentation" : { },
+        "id" : "133",
+        "name" : "Conversation Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.conversationService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет сообщения и диалоги",
+          "destinationId" : "134",
+          "id" : "236",
+          "sourceId" : "133",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Кэширует активные диалоги и статусы сообщений",
+          "destinationId" : "171",
+          "id" : "256",
+          "sourceId" : "133",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        }, {
+          "description" : "Публикует события сообщений",
+          "destinationId" : "172",
+          "id" : "272",
+          "sourceId" : "133",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Передает события отправки сообщений для уведомления пользователей",
+          "destinationId" : "151",
+          "id" : "313",
+          "sourceId" : "133",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Создает задачи из обращений пользователей",
+          "destinationId" : "167",
+          "id" : "314",
+          "sourceId" : "133",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные пользователей и участников диалогов",
+          "destinationId" : "169",
+          "id" : "315",
+          "sourceId" : "133",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит диалоги, сообщения, участников чатов, статусы сообщений и историю коммуникаций.",
+        "documentation" : { },
+        "id" : "134",
+        "name" : "Conversation DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.conversationDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет CMS-контентом платформы: landing pages, информационными блоками, изображениями, описаниями университетов, локаций и маркетинговыми материалами.",
+        "documentation" : { },
+        "id" : "135",
+        "name" : "Content Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.contentService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет CMS-контент",
+          "destinationId" : "136",
+          "id" : "235",
+          "sourceId" : "135",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Кэширует часто используемый контент",
+          "destinationId" : "171",
+          "id" : "255",
+          "sourceId" : "135",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        }, {
+          "description" : "Публикует события изменения контента",
+          "destinationId" : "172",
+          "id" : "270",
+          "sourceId" : "135",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Хранит изображения, медиафайлы и CMS-контент",
+          "destinationId" : "173",
+          "id" : "293",
+          "sourceId" : "135",
+          "tags" : "Relationship",
+          "technology" : "S3 API"
+        }, {
+          "description" : "Получает справочные данные для формирования страниц",
+          "destinationId" : "139",
+          "id" : "310",
+          "sourceId" : "135",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает информацию об объектах размещения для отображения",
+          "destinationId" : "159",
+          "id" : "311",
+          "sourceId" : "135",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные организаций для формирования страниц",
+          "destinationId" : "153",
+          "id" : "312",
+          "sourceId" : "135",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит страницы, CMS-блоки, тексты, настройки отображения и метаданные контента.",
+        "documentation" : { },
+        "id" : "136",
+        "name" : "Content DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.contentDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Предоставляет готовые аналитические представления и операционные панели для хостов, менеджеров, администраторов организаций и операторов платформы.",
+        "documentation" : { },
+        "id" : "137",
+        "name" : "Dashboard Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.dashboardService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет данные представлений дашбордов",
+          "destinationId" : "138",
+          "id" : "237",
+          "sourceId" : "137",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Кэширует показатели и виджеты дашбордов",
+          "destinationId" : "171",
+          "id" : "257",
+          "sourceId" : "137",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит подготовленные представления дашбордов, пользовательские настройки отображения и сохранённые фильтры.",
+        "documentation" : { },
+        "id" : "138",
+        "name" : "Dashboard DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.dashboardDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет справочными данными платформы: города, районы, локации, валюты, университеты, типы размещения и другие общие классификаторы.",
+        "documentation" : { },
+        "id" : "139",
+        "name" : "Dictionary Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.dictionaryService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет справочные данные",
+          "destinationId" : "140",
+          "id" : "238",
+          "sourceId" : "139",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события изменения справочных данных",
+          "destinationId" : "172",
+          "id" : "274",
+          "sourceId" : "139",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит справочники и классификаторы, используемые бизнес-сервисами платформы.",
+        "documentation" : { },
+        "id" : "140",
+        "name" : "Dictionary DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.dictionaryDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Рассчитывает комиссии платежных систем, банковские сборы, комиссии за международные переводы, валютные комиссии и итоговую сумму списания.",
+        "documentation" : { },
+        "id" : "141",
+        "name" : "Fee Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.feeService"
+        },
+        "relationships" : [ {
+          "description" : "Хранит тарифы и правила расчета комиссий",
+          "destinationId" : "142",
+          "id" : "239",
+          "sourceId" : "141",
+          "tags" : "Relationship",
+          "technology" : "JDBC"
+        }, {
+          "description" : "Получает валюты и финансовые справочники",
+          "destinationId" : "139",
+          "id" : "316",
+          "sourceId" : "141",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает доступные способы оплаты и параметры платежного провайдера",
+          "destinationId" : "155",
+          "id" : "317",
+          "sourceId" : "141",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Java / Spring Boot"
+      }, {
+        "description" : "Хранит тарифы платежных провайдеров, правила расчета комиссий, комиссии по странам, валютам, способам оплаты и временным периодам.",
+        "documentation" : { },
+        "id" : "142",
+        "name" : "Fee DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.feeDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Обеспечивает аутентификацию и авторизацию пользователей, управление сессиями, токенами доступа, OTP-кодами и проверку прав доступа.",
+        "documentation" : { },
+        "id" : "143",
+        "name" : "Identity Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.identityService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет учетные данные пользователей",
+          "destinationId" : "144",
+          "id" : "240",
+          "sourceId" : "143",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Кэширует пользовательские сессии и токены",
+          "destinationId" : "171",
+          "id" : "258",
+          "sourceId" : "143",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        }, {
+          "description" : "Публикует события пользователей",
+          "destinationId" : "172",
+          "id" : "276",
+          "sourceId" : "143",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Проверяет членство и права пользователя в организации",
+          "destinationId" : "153",
+          "id" : "318",
+          "sourceId" : "143",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные профиля пользователя",
+          "destinationId" : "169",
+          "id" : "319",
+          "sourceId" : "143",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Отправляет OTP-коды и выполняет подтверждение пользователя",
+          "destinationId" : "9",
+          "id" : "353",
+          "sourceId" : "143",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит учетные записи пользователей, учетные данные, роли, сессии, токены и одноразовые пароли.",
+        "documentation" : { },
+        "id" : "144",
+        "name" : "Identity DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.identityDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Обрабатывает массовый импорт данных, управляет заданиями импорта, проверяет файлы и координирует загрузку данных в бизнес-сервисы.",
+        "documentation" : { },
+        "id" : "145",
+        "name" : "Import Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.importService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет задания импорта",
+          "destinationId" : "146",
+          "id" : "241",
+          "sourceId" : "145",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события завершения импорта",
+          "destinationId" : "172",
+          "id" : "277",
+          "sourceId" : "145",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Хранит импортируемые файлы",
+          "destinationId" : "173",
+          "id" : "294",
+          "sourceId" : "145",
+          "tags" : "Relationship",
+          "technology" : "S3 API"
+        }, {
+          "description" : "Получает справочные данные для проверки импортируемых записей",
+          "destinationId" : "139",
+          "id" : "320",
+          "sourceId" : "145",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Импортирует данные доступности объектов",
+          "destinationId" : "147",
+          "id" : "321",
+          "sourceId" : "145",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Импортирует организации и участников",
+          "destinationId" : "153",
+          "id" : "322",
+          "sourceId" : "145",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Импортирует объекты размещения",
+          "destinationId" : "159",
+          "id" : "323",
+          "sourceId" : "145",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Импортирует профили пользователей",
+          "destinationId" : "169",
+          "id" : "324",
+          "sourceId" : "145",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит задания импорта, статусы выполнения, журналы обработки и результаты валидации.",
+        "documentation" : { },
+        "id" : "146",
+        "name" : "Import DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.importDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет доступностью объектов размещения, календарями, блокировками дат, остатками размещения и предотвращением двойного бронирования.",
+        "documentation" : { },
+        "id" : "147",
+        "name" : "Inventory Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.inventoryService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет данные доступности",
+          "destinationId" : "148",
+          "id" : "242",
+          "sourceId" : "147",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Кэширует данные доступности объектов",
+          "destinationId" : "171",
+          "id" : "259",
+          "sourceId" : "147",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        }, {
+          "description" : "Публикует события изменения доступности",
+          "destinationId" : "172",
+          "id" : "278",
+          "sourceId" : "147",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Синхронизирует календари доступности",
+          "destinationId" : "131",
+          "id" : "325",
+          "sourceId" : "147",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает справочные данные",
+          "destinationId" : "139",
+          "id" : "326",
+          "sourceId" : "147",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает сведения об объектах размещения",
+          "destinationId" : "159",
+          "id" : "327",
+          "sourceId" : "147",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит данные календарей доступности, блокировок, ограничений размещения и состояния инвентаря.",
+        "documentation" : { },
+        "id" : "148",
+        "name" : "Inventory DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.inventoryDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Агрегирует данные для публичных страниц платформы, формирует лендинги, кэширует результаты и предоставляет оптимизированные ответы для Guest API.",
+        "documentation" : { },
+        "id" : "149",
+        "name" : "Landing Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.landingService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и обновляет кэш лендингов",
+          "destinationId" : "150",
+          "id" : "261",
+          "sourceId" : "149",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        }, {
+          "description" : "Получает CMS-контент",
+          "destinationId" : "135",
+          "id" : "328",
+          "sourceId" : "149",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает города, университеты и районы",
+          "destinationId" : "139",
+          "id" : "329",
+          "sourceId" : "149",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает популярные объекты размещения",
+          "destinationId" : "159",
+          "id" : "330",
+          "sourceId" : "149",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает информацию о доступности",
+          "destinationId" : "147",
+          "id" : "331",
+          "sourceId" : "149",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает активные акции",
+          "destinationId" : "161",
+          "id" : "332",
+          "sourceId" : "149",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит кэш агрегированных данных лендингов и популярных страниц.",
+        "documentation" : { },
+        "id" : "150",
+        "name" : "Landing Cache DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.landingDatabase"
+        },
+        "tags" : "Element,Container,Cache",
+        "technology" : "Redis"
+      }, {
+        "description" : "Отправляет пользователям уведомления по электронной почте, SMS, Push и внутри приложения на основе доменных событий платформы.",
+        "documentation" : { },
+        "id" : "151",
+        "name" : "Notification Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.notificationService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет уведомления",
+          "destinationId" : "152",
+          "id" : "243",
+          "sourceId" : "151",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события отправки уведомлений",
+          "destinationId" : "172",
+          "id" : "281",
+          "sourceId" : "151",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает контактные данные и настройки уведомлений пользователя",
+          "destinationId" : "169",
+          "id" : "333",
+          "sourceId" : "151",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Отправляет уведомления пользователям",
+          "destinationId" : "9",
+          "id" : "355",
+          "sourceId" : "151",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит шаблоны уведомлений, историю отправки, статусы доставки и пользовательские настройки уведомлений.",
+        "documentation" : { },
+        "id" : "152",
+        "name" : "Notification DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.notificationDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет организациями, офисами, участниками организаций, партнёрами, университетами и настройками доступа к объектам размещения.",
+        "documentation" : { },
+        "id" : "153",
+        "name" : "Organisation Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.organisationService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет данные организаций",
+          "destinationId" : "154",
+          "id" : "244",
+          "sourceId" : "153",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события организаций",
+          "destinationId" : "172",
+          "id" : "282",
+          "sourceId" : "153",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает сведения о пользователях организации",
+          "destinationId" : "169",
+          "id" : "334",
+          "sourceId" : "153",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит организации, офисы, участников организаций, связи пользователей с организациями и настройки организаций.",
+        "documentation" : { },
+        "id" : "154",
+        "name" : "Organisation DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.organisationDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Инкапсулирует взаимодействие с внешними платёжными системами, выполняет обработку платежей, возвратов, выплат и маршрутизацию запросов к платёжным провайдерам.",
+        "documentation" : { },
+        "id" : "155",
+        "name" : "Payment Gateway",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.paymentGateway"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет журналы платежных операций",
+          "destinationId" : "156",
+          "id" : "246",
+          "sourceId" : "155",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события обработки платежей",
+          "destinationId" : "172",
+          "id" : "285",
+          "sourceId" : "155",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Обрабатывает платежные операции",
+          "destinationId" : "8",
+          "id" : "296",
+          "sourceId" : "155",
+          "tags" : "Relationship",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,API Gateway",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит журналы взаимодействия с платёжными провайдерами, идентификаторы внешних транзакций, результаты обработки запросов и технические логи.",
+        "documentation" : { },
+        "id" : "156",
+        "name" : "Payment Gateway DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.paymentGatewayDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет жизненным циклом платежей, возвратов, выплат, транзакций и взаимодействует с платежным шлюзом.",
+        "documentation" : { },
+        "id" : "157",
+        "name" : "Payment Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.paymentService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет данные платежей",
+          "destinationId" : "158",
+          "id" : "245",
+          "sourceId" : "157",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Кэширует состояние платежей",
+          "destinationId" : "171",
+          "id" : "260",
+          "sourceId" : "157",
+          "tags" : "Relationship",
+          "technology" : "Redis"
+        }, {
+          "description" : "Публикует события платежей",
+          "destinationId" : "172",
+          "id" : "283",
+          "sourceId" : "157",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Инициирует обработку платежей",
+          "destinationId" : "155",
+          "id" : "295",
+          "sourceId" : "157",
+          "tags" : "Relationship",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Обновляет статус оплаты счета",
+          "destinationId" : "127",
+          "id" : "335",
+          "sourceId" : "157",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает поддерживаемые валюты",
+          "destinationId" : "139",
+          "id" : "336",
+          "sourceId" : "157",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Рассчитывает комиссии платежной системы и итоговую сумму списания",
+          "destinationId" : "141",
+          "id" : "337",
+          "sourceId" : "157",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит платежи, транзакции, возвраты, выплаты и статусы финансовых операций.",
+        "documentation" : { },
+        "id" : "158",
+        "name" : "Payment DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.paymentDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет объектами размещения, объявлениями, помещениями, удобствами, изображениями и характеристиками жилья.",
+        "documentation" : { },
+        "id" : "159",
+        "name" : "Property Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.propertyService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет данные объектов размещения",
+          "destinationId" : "160",
+          "id" : "248",
+          "sourceId" : "159",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события объектов размещения",
+          "destinationId" : "172",
+          "id" : "287",
+          "sourceId" : "159",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает медиафайлы объектов размещения",
+          "destinationId" : "135",
+          "id" : "339",
+          "sourceId" : "159",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает типы размещения, локации и удобства",
+          "destinationId" : "139",
+          "id" : "340",
+          "sourceId" : "159",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает сведения о владельце объекта размещения",
+          "destinationId" : "153",
+          "id" : "341",
+          "sourceId" : "159",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит объекты размещения, объявления, помещения, удобства, изображения и характеристики жилья.",
+        "documentation" : { },
+        "id" : "160",
+        "name" : "Property DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.propertyDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет акциями, специальными предложениями, скидками и промо-тарифами для объектов размещения.",
+        "documentation" : { },
+        "id" : "161",
+        "name" : "Promotion Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.promotionService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет данные акций",
+          "destinationId" : "162",
+          "id" : "247",
+          "sourceId" : "161",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события изменения акций",
+          "destinationId" : "172",
+          "id" : "286",
+          "sourceId" : "161",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает сведения об объектах размещения",
+          "destinationId" : "159",
+          "id" : "338",
+          "sourceId" : "161",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит акции, специальные цены, периоды действия, условия применения и промо-кампании.",
+        "documentation" : { },
+        "id" : "162",
+        "name" : "Promotion DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.promotionDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет отзывами, рейтингами, комментариями и оценками объектов размещения после завершения проживания.",
+        "documentation" : { },
+        "id" : "163",
+        "name" : "Review Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.reviewService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет отзывы",
+          "destinationId" : "164",
+          "id" : "249",
+          "sourceId" : "163",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события отзывов",
+          "destinationId" : "172",
+          "id" : "288",
+          "sourceId" : "163",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Проверяет завершённые бронирования",
+          "destinationId" : "129",
+          "id" : "342",
+          "sourceId" : "163",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает информацию об объектах размещения",
+          "destinationId" : "159",
+          "id" : "343",
+          "sourceId" : "163",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные автора отзыва",
+          "destinationId" : "169",
+          "id" : "344",
+          "sourceId" : "163",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит отзывы, оценки, комментарии, ответы владельцев и статусы модерации.",
+        "documentation" : { },
+        "id" : "164",
+        "name" : "Review DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.reviewDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Предоставляет быстрый поиск жилья, хранит агрегированный поисковый индекс объектов размещения, доступности, календарей и справочных данных. Обновляет индекс по событиям Kafka.",
+        "documentation" : { },
+        "id" : "165",
+        "name" : "Search Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.searchService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и обновляет поисковый индекс",
+          "destinationId" : "166",
+          "id" : "250",
+          "sourceId" : "165",
+          "tags" : "Relationship",
+          "technology" : "REST / TCP"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит поисковый индекс объектов размещения, фильтров и доступности.",
+        "documentation" : { },
+        "id" : "166",
+        "name" : "Search Index",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.searchDatabase"
+        },
+        "tags" : "Element,Container,Search Index",
+        "technology" : "Elasticsearch"
+      }, {
+        "description" : "Управляет операционными задачами сотрудников поддержки, обращениями пользователей, назначением исполнителей, статусами обработки и внутренними рабочими процессами.",
+        "documentation" : { },
+        "id" : "167",
+        "name" : "Task Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.taskService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет задачи",
+          "destinationId" : "168",
+          "id" : "251",
+          "sourceId" : "167",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события задач",
+          "destinationId" : "172",
+          "id" : "291",
+          "sourceId" : "167",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает данные бронирований по задаче",
+          "destinationId" : "129",
+          "id" : "345",
+          "sourceId" : "167",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные организации и сотрудников",
+          "destinationId" : "153",
+          "id" : "346",
+          "sourceId" : "167",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные объекта размещения",
+          "destinationId" : "159",
+          "id" : "347",
+          "sourceId" : "167",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        }, {
+          "description" : "Получает данные пользователя",
+          "destinationId" : "169",
+          "id" : "348",
+          "sourceId" : "167",
+          "tags" : "Relationship,Data Flow",
+          "technology" : "JSON / HTTPS"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby Rails"
+      }, {
+        "description" : "Хранит задачи, обращения пользователей, исполнителей, статусы, приоритеты, комментарии и историю изменений.",
+        "documentation" : { },
+        "id" : "168",
+        "name" : "Task DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.taskDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Управляет профилями пользователей, персональными данными, контактной информацией и пользовательскими настройками.",
+        "documentation" : { },
+        "id" : "169",
+        "name" : "User Profile Service",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.userProfileService"
+        },
+        "relationships" : [ {
+          "description" : "Читает и сохраняет профили пользователей",
+          "destinationId" : "170",
+          "id" : "252",
+          "sourceId" : "169",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Публикует события изменения профиля",
+          "destinationId" : "172",
+          "id" : "292",
+          "sourceId" : "169",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        } ],
+        "tags" : "Element,Container,Microservice",
+        "technology" : "Ruby on Rails"
+      }, {
+        "description" : "Хранит профили пользователей, контактные данные, аватары, настройки и пользовательские предпочтения.",
+        "documentation" : { },
+        "id" : "170",
+        "name" : "User Profile DB",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.userProfileDatabase"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Распределённое кэш-хранилище для ускорения доступа к часто используемым данным, временным состояниям и сессиям.",
+        "documentation" : { },
+        "id" : "171",
+        "name" : "Redis Cache",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.cache"
+        },
+        "tags" : "Element,Container,Cache",
+        "technology" : "Redis"
+      }, {
+        "description" : "Шина событий для асинхронного взаимодействия микросервисов, передачи доменных событий и интеграции между сервисами.",
+        "documentation" : { },
+        "id" : "172",
+        "name" : "Apache Kafka",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.kafka"
+        },
+        "relationships" : [ {
+          "description" : "Получает доменные события для построения аналитики",
+          "destinationId" : "123",
+          "id" : "262",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает доменные события для аудита",
+          "destinationId" : "125",
+          "id" : "263",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает события создания и изменения бронирований",
+          "destinationId" : "127",
+          "id" : "264",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает события изменения статуса платежей",
+          "destinationId" : "127",
+          "id" : "265",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает события бронирований и изменений доступности",
+          "destinationId" : "131",
+          "id" : "267",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает события изменения объектов и организаций",
+          "destinationId" : "135",
+          "id" : "269",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает события бронирований для создания диалогов",
+          "destinationId" : "133",
+          "id" : "271",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает события для обновления показателей",
+          "destinationId" : "137",
+          "id" : "273",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает события для обновления тарифов и правил расчета комиссий",
+          "destinationId" : "141",
+          "id" : "275",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Передаёт события обновления контента, объектов и доступности",
+          "destinationId" : "149",
+          "id" : "279",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает события для отправки уведомлений",
+          "destinationId" : "151",
+          "id" : "280",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает результаты обработки платежей",
+          "destinationId" : "157",
+          "id" : "284",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Получает события завершения проживания",
+          "destinationId" : "163",
+          "id" : "289",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        }, {
+          "description" : "Передаёт события изменения объектов, доступности и справочников",
+          "destinationId" : "165",
+          "id" : "290",
+          "sourceId" : "172",
+          "tags" : "Relationship,Event",
+          "technology" : "Kafka Protocol"
+        } ],
+        "tags" : "Element,Container,Message Broker",
+        "technology" : "Apache Kafka"
+      }, {
+        "description" : "Объектное хранилище для хранения медиафайлов, изображений объектов размещения, CMS-контента и импортируемых документов.",
+        "documentation" : { },
+        "id" : "173",
+        "name" : "Object Storage",
+        "properties" : {
+          "structurizr.dsl.identifier" : "fourStayMicroservices.objectStorage"
+        },
+        "tags" : "Element,Container,Object Storage",
+        "technology" : "S3 Compatible Storage"
+      } ],
+      "description" : "Микросервисная архитектура платформы бронирования временного жилья 4Stay.",
+      "documentation" : { },
+      "id" : "113",
+      "name" : "4Stay (MSA)",
+      "properties" : {
+        "structurizr.dsl.identifier" : "fourStayMicroservices"
+      },
+      "relationships" : [ {
+        "description" : "Обрабатывает платежные операции",
+        "destinationId" : "8",
+        "id" : "297",
+        "linkedRelationshipId" : "296",
+        "sourceId" : "113",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Импортирует и экспортирует календари доступности",
+        "destinationId" : "11",
+        "id" : "299",
+        "linkedRelationshipId" : "298",
+        "sourceId" : "113",
+        "technology" : "iCal / HTTPS"
+      }, {
+        "description" : "Отображает расположение объектов размещения",
+        "destinationId" : "10",
+        "id" : "350",
+        "linkedRelationshipId" : "349",
+        "sourceId" : "113",
+        "technology" : "JSON / HTTPS"
+      }, {
+        "description" : "Отправляет OTP-коды и выполняет подтверждение пользователя",
+        "destinationId" : "9",
+        "id" : "354",
+        "linkedRelationshipId" : "353",
+        "sourceId" : "113",
+        "technology" : "JSON / HTTPS"
+      } ],
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "4Stay",
+  "properties" : {
+    "structurizr.inspection.info" : "0",
+    "structurizr.inspection.ignore" : "0",
+    "structurizr.inspection.error" : "49",
+    "structurizr.inspection.warning" : "0"
+  },
+  "views" : {
+    "componentViews" : [ {
+      "containerId" : "14",
+      "description" : "Диаграмма компонентов монолитного приложения.",
+      "dimensions" : {
+        "height" : 5472,
+        "width" : 6580
+      },
+      "elements" : [ {
+        "id" : "8",
+        "x" : 2645,
+        "y" : 435
+      }, {
+        "id" : "9",
+        "x" : 4715,
+        "y" : 395
+      }, {
+        "id" : "10",
+        "x" : 5555,
+        "y" : 395
+      }, {
+        "id" : "11",
+        "x" : 3450,
+        "y" : 415
+      }, {
+        "id" : "15",
+        "x" : 300,
+        "y" : 1663
+      }, {
+        "id" : "16",
+        "x" : 5035,
+        "y" : 2335
+      }, {
+        "id" : "17",
+        "x" : 1850,
+        "y" : 1630
+      }, {
+        "id" : "18",
+        "x" : 1880,
+        "y" : 2677
+      }, {
+        "id" : "19",
+        "x" : 2675,
+        "y" : 1670
+      }, {
+        "id" : "20",
+        "x" : 3020,
+        "y" : 3765
+      }, {
+        "id" : "21",
+        "x" : 5040,
+        "y" : 2931
+      }, {
+        "id" : "22",
+        "x" : 1090,
+        "y" : 1475
+      }, {
+        "id" : "23",
+        "x" : 5045,
+        "y" : 3445
+      }, {
+        "id" : "24",
+        "x" : 3460,
+        "y" : 2344
+      }, {
+        "id" : "25",
+        "x" : 3670,
+        "y" : 3770
+      }, {
+        "id" : "26",
+        "x" : 3910,
+        "y" : 1235
+      }, {
+        "id" : "27",
+        "x" : 3435,
+        "y" : 1885
+      }, {
+        "id" : "28",
+        "x" : 4250,
+        "y" : 3446
+      }, {
+        "id" : "29",
+        "x" : 2670,
+        "y" : 1237
+      }, {
+        "id" : "30",
+        "x" : 5040,
+        "y" : 3981
+      }, {
+        "id" : "31",
+        "x" : 1090,
+        "y" : 3997
+      }, {
+        "id" : "32",
+        "x" : 1090,
+        "y" : 3287
+      }, {
+        "id" : "33",
+        "x" : 2670,
+        "y" : 4263
+      }, {
+        "id" : "34",
+        "x" : 3935,
+        "y" : 1620
+      }, {
+        "id" : "35",
+        "x" : 1090,
+        "y" : 1825
+      }, {
+        "id" : "36",
+        "x" : 5040,
+        "y" : 4656
+      }, {
+        "id" : "39",
+        "x" : 6025,
+        "y" : 2915
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "Component-Monolith",
+      "name" : "Component View: 4Stay (Monolith) - Monolithic Application",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "100",
+        "vertices" : [ {
+          "x" : 2895,
+          "y" : 1585
+        }, {
+          "x" : 5260,
+          "y" : 1585
+        } ]
+      }, {
+        "id" : "101"
+      }, {
+        "id" : "102"
+      }, {
+        "id" : "103",
+        "vertices" : [ {
+          "x" : 880,
+          "y" : 4147
+        }, {
+          "x" : 880,
+          "y" : 2855
+        } ]
+      }, {
+        "id" : "104",
+        "vertices" : [ {
+          "x" : 1315,
+          "y" : 4635
+        }, {
+          "x" : 5265,
+          "y" : 4590
+        } ]
+      }, {
+        "id" : "105"
+      }, {
+        "id" : "106",
+        "vertices" : [ {
+          "x" : 2105,
+          "y" : 4285
+        } ]
+      }, {
+        "id" : "107"
+      }, {
+        "id" : "108",
+        "vertices" : [ {
+          "x" : 1315,
+          "y" : 3025
+        } ]
+      }, {
+        "id" : "109",
+        "vertices" : [ {
+          "x" : 1315,
+          "y" : 3690
+        }, {
+          "x" : 4080,
+          "y" : 3650
+        } ]
+      }, {
+        "id" : "110",
+        "vertices" : [ {
+          "x" : 4160,
+          "y" : 2255
+        }, {
+          "x" : 3685,
+          "y" : 2255
+        } ]
+      }, {
+        "id" : "111",
+        "vertices" : [ {
+          "x" : 1315,
+          "y" : 2530
+        } ]
+      }, {
+        "id" : "112",
+        "vertices" : [ {
+          "x" : 1635,
+          "y" : 1975
+        }, {
+          "x" : 1805,
+          "y" : 1540
+        }, {
+          "x" : 2530,
+          "y" : 1500
+        } ]
+      }, {
+        "id" : "59"
+      }, {
+        "id" : "60"
+      }, {
+        "id" : "63",
+        "vertices" : [ {
+          "x" : 4940,
+          "y" : 2160
+        } ]
+      }, {
+        "id" : "66"
+      }, {
+        "id" : "69",
+        "vertices" : [ {
+          "x" : 5830,
+          "y" : 4131
+        } ]
+      }, {
+        "id" : "72"
+      }, {
+        "id" : "73",
+        "vertices" : [ {
+          "x" : 525,
+          "y" : 2730
+        } ]
+      }, {
+        "id" : "74",
+        "vertices" : [ {
+          "x" : 525,
+          "y" : 1265
+        }, {
+          "x" : 2455,
+          "y" : 1265
+        } ]
+      }, {
+        "id" : "75",
+        "vertices" : [ {
+          "x" : 2500,
+          "y" : 2952
+        }, {
+          "x" : 4870,
+          "y" : 2735
+        } ]
+      }, {
+        "id" : "76"
+      }, {
+        "id" : "77",
+        "vertices" : [ {
+          "x" : 2540,
+          "y" : 2300
+        }, {
+          "x" : 2900,
+          "y" : 2300
+        } ]
+      }, {
+        "id" : "78",
+        "vertices" : [ {
+          "x" : 2505,
+          "y" : 3915
+        } ]
+      }, {
+        "id" : "79",
+        "vertices" : [ {
+          "x" : 3015,
+          "y" : 2827
+        }, {
+          "x" : 3015,
+          "y" : 2035
+        } ]
+      }, {
+        "id" : "80",
+        "vertices" : [ {
+          "x" : 2505,
+          "y" : 2494
+        } ]
+      }, {
+        "id" : "81",
+        "vertices" : [ {
+          "x" : 2470,
+          "y" : 1705
+        } ]
+      }, {
+        "id" : "82",
+        "vertices" : [ {
+          "x" : 2345,
+          "y" : 4202
+        } ]
+      }, {
+        "id" : "83",
+        "vertices" : [ {
+          "x" : 1855,
+          "y" : 4413
+        } ]
+      }, {
+        "id" : "84",
+        "vertices" : [ {
+          "x" : 1500,
+          "y" : 4906
+        }, {
+          "x" : 4855,
+          "y" : 4906
+        } ]
+      }, {
+        "id" : "85",
+        "vertices" : [ {
+          "x" : 2750,
+          "y" : 3340
+        }, {
+          "x" : 4900,
+          "y" : 3340
+        } ]
+      }, {
+        "id" : "86"
+      }, {
+        "id" : "87"
+      }, {
+        "id" : "88"
+      }, {
+        "id" : "89",
+        "vertices" : [ {
+          "x" : 3245,
+          "y" : 4806
+        } ]
+      }, {
+        "id" : "90",
+        "vertices" : [ {
+          "x" : 1610,
+          "y" : 1625
+        } ]
+      }, {
+        "id" : "91",
+        "vertices" : [ {
+          "x" : 1315,
+          "y" : 1420
+        } ]
+      }, {
+        "id" : "92"
+      }, {
+        "id" : "93",
+        "vertices" : [ {
+          "x" : 4080,
+          "y" : 3493
+        } ]
+      }, {
+        "id" : "94",
+        "vertices" : [ {
+          "x" : 3605,
+          "y" : 1820
+        } ]
+      }, {
+        "id" : "95"
+      }, {
+        "id" : "96",
+        "vertices" : [ {
+          "x" : 4475,
+          "y" : 2855
+        }, {
+          "x" : 5265,
+          "y" : 2855
+        } ]
+      }, {
+        "id" : "97"
+      }, {
+        "id" : "98"
+      }, {
+        "id" : "99",
+        "vertices" : [ {
+          "x" : 4475,
+          "y" : 4715
+        } ]
+      } ]
+    } ],
+    "configuration" : {
+      "lastSavedView" : "MSA-Containers",
+      "metadataSymbols" : "SquareBrackets",
+      "styles" : {
+        "elements" : [ {
+          "shape" : "Hexagon",
+          "tag" : "API Gateway"
+        }, {
+          "color" : "#438dd5",
+          "tag" : "Boundary:Container"
+        }, {
+          "color" : "#1168bd",
+          "tag" : "Boundary:SoftwareSystem"
+        }, {
+          "shape" : "Cylinder",
+          "tag" : "Cache"
+        }, {
+          "background" : "#999999",
+          "color" : "#ffffff",
+          "tag" : "Calendar Provider"
+        }, {
+          "background" : "#85bbf0",
+          "color" : "#ffffff",
+          "tag" : "Component"
+        }, {
+          "background" : "#438dd5",
+          "color" : "#ffffff",
+          "tag" : "Container"
+        }, {
+          "shape" : "Cylinder",
+          "tag" : "Database"
+        }, {
+          "shape" : "RoundedBox",
+          "tag" : "Element"
+        }, {
+          "background" : "#999999",
+          "color" : "#ffffff",
+          "tag" : "External API"
+        }, {
+          "background" : "#999999",
+          "color" : "#ffffff",
+          "tag" : "External System"
+        }, {
+          "background" : "#438dd5",
+          "color" : "#ffffff",
+          "shape" : "Pipe",
+          "tag" : "Message Broker"
+        }, {
+          "shape" : "Bucket",
+          "tag" : "Object Storage"
+        }, {
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "shape" : "Cylinder",
+          "tag" : "Search Index"
+        }, {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "tag" : "Software System"
+        }, {
+          "shape" : "WebBrowser",
+          "tag" : "Web Application"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "description" : "Контейнерная диаграмма монолитной архитектуры.",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "14",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "37",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "38",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "39",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Container-Monolith",
+      "name" : "Container View: 4Stay (Monolith)",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "40"
+      }, {
+        "id" : "42"
+      }, {
+        "id" : "44"
+      }, {
+        "id" : "46"
+      }, {
+        "id" : "48"
+      }, {
+        "id" : "50"
+      }, {
+        "id" : "52"
+      }, {
+        "id" : "54"
+      }, {
+        "id" : "55"
+      }, {
+        "id" : "56"
+      }, {
+        "id" : "57"
+      }, {
+        "id" : "58"
+      }, {
+        "id" : "61"
+      }, {
+        "id" : "64"
+      }, {
+        "id" : "67"
+      }, {
+        "id" : "70"
+      } ],
+      "softwareSystemId" : "12"
+    }, {
+      "description" : "Диаграмма контейнеров целевой микросервисной архитектуры.",
+      "dimensions" : {
+        "height" : 15934,
+        "width" : 14041
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 1843,
+        "y" : 2943
+      }, {
+        "id" : "2",
+        "x" : 1663,
+        "y" : 6718
+      }, {
+        "id" : "3",
+        "x" : 1668,
+        "y" : 8733
+      }, {
+        "id" : "4",
+        "x" : 1693,
+        "y" : 10653
+      }, {
+        "id" : "5",
+        "x" : 1683,
+        "y" : 9343
+      }, {
+        "id" : "6",
+        "x" : 1678,
+        "y" : 10038
+      }, {
+        "id" : "7",
+        "x" : 1753,
+        "y" : 11223
+      }, {
+        "id" : "8",
+        "x" : 11465,
+        "y" : 14260
+      }, {
+        "id" : "9",
+        "x" : 6295,
+        "y" : 14290
+      }, {
+        "id" : "10",
+        "x" : 2745,
+        "y" : 14285
+      }, {
+        "id" : "11",
+        "x" : 7660,
+        "y" : 14255
+      }, {
+        "id" : "114",
+        "x" : 3263,
+        "y" : 2903
+      }, {
+        "id" : "115",
+        "x" : 3118,
+        "y" : 6708
+      }, {
+        "id" : "116",
+        "x" : 3168,
+        "y" : 9688
+      }, {
+        "id" : "117",
+        "x" : 2523,
+        "y" : 2963
+      }, {
+        "id" : "118",
+        "x" : 2468,
+        "y" : 6768
+      }, {
+        "id" : "119",
+        "x" : 2478,
+        "y" : 9738
+      }, {
+        "id" : "123",
+        "x" : 4628,
+        "y" : 9203
+      }, {
+        "id" : "124",
+        "x" : 5353,
+        "y" : 9193
+      }, {
+        "id" : "125",
+        "x" : 3683,
+        "y" : 12503
+      }, {
+        "id" : "126",
+        "x" : 4963,
+        "y" : 12493
+      }, {
+        "id" : "127",
+        "x" : 4548,
+        "y" : 8098
+      }, {
+        "id" : "128",
+        "x" : 5498,
+        "y" : 8073
+      }, {
+        "id" : "129",
+        "x" : 6528,
+        "y" : 3753
+      }, {
+        "id" : "130",
+        "x" : 7423,
+        "y" : 3743
+      }, {
+        "id" : "131",
+        "x" : 4543,
+        "y" : 8648
+      }, {
+        "id" : "132",
+        "x" : 5228,
+        "y" : 8598
+      }, {
+        "id" : "133",
+        "x" : 6533,
+        "y" : 2853
+      }, {
+        "id" : "134",
+        "x" : 7493,
+        "y" : 2833
+      }, {
+        "id" : "135",
+        "x" : 6125,
+        "y" : 7825
+      }, {
+        "id" : "136",
+        "x" : 7045,
+        "y" : 7815
+      }, {
+        "id" : "137",
+        "x" : 6120,
+        "y" : 9450
+      }, {
+        "id" : "138",
+        "x" : 6780,
+        "y" : 9435
+      }, {
+        "id" : "139",
+        "x" : 6260,
+        "y" : 7095
+      }, {
+        "id" : "140",
+        "x" : 7025,
+        "y" : 7090
+      }, {
+        "id" : "141",
+        "x" : 9485,
+        "y" : 10825
+      }, {
+        "id" : "142",
+        "x" : 10430,
+        "y" : 10795
+      }, {
+        "id" : "143",
+        "x" : 6518,
+        "y" : 4558
+      }, {
+        "id" : "144",
+        "x" : 7448,
+        "y" : 4558
+      }, {
+        "id" : "145",
+        "x" : 3525,
+        "y" : 13780
+      }, {
+        "id" : "146",
+        "x" : 4430,
+        "y" : 13745
+      }, {
+        "id" : "147",
+        "x" : 6063,
+        "y" : 6503
+      }, {
+        "id" : "148",
+        "x" : 6918,
+        "y" : 6493
+      }, {
+        "id" : "149",
+        "x" : 5418,
+        "y" : 2065
+      }, {
+        "id" : "150",
+        "x" : 6310,
+        "y" : 2045
+      }, {
+        "id" : "151",
+        "x" : 4078,
+        "y" : 11973
+      }, {
+        "id" : "152",
+        "x" : 4948,
+        "y" : 11953
+      }, {
+        "id" : "153",
+        "x" : 4048,
+        "y" : 11388
+      }, {
+        "id" : "154",
+        "x" : 4783,
+        "y" : 11368
+      }, {
+        "id" : "155",
+        "x" : 11410,
+        "y" : 11455
+      }, {
+        "id" : "156",
+        "x" : 12455,
+        "y" : 11555
+      }, {
+        "id" : "157",
+        "x" : 5783,
+        "y" : 10898
+      }, {
+        "id" : "158",
+        "x" : 6613,
+        "y" : 10878
+      }, {
+        "id" : "159",
+        "x" : 4643,
+        "y" : 9883
+      }, {
+        "id" : "160",
+        "x" : 5450,
+        "y" : 9910
+      }, {
+        "id" : "161",
+        "x" : 4400,
+        "y" : 10580
+      }, {
+        "id" : "162",
+        "x" : 5165,
+        "y" : 10570
+      }, {
+        "id" : "163",
+        "x" : 5618,
+        "y" : 5988
+      }, {
+        "id" : "164",
+        "x" : 6433,
+        "y" : 5988
+      }, {
+        "id" : "165",
+        "x" : 5397,
+        "y" : 1597
+      }, {
+        "id" : "166",
+        "x" : 6308,
+        "y" : 1580
+      }, {
+        "id" : "167",
+        "x" : 3533,
+        "y" : 12983
+      }, {
+        "id" : "168",
+        "x" : 4320,
+        "y" : 12935
+      }, {
+        "id" : "169",
+        "x" : 6513,
+        "y" : 5283
+      }, {
+        "id" : "170",
+        "x" : 7378,
+        "y" : 5293
+      }, {
+        "id" : "171",
+        "x" : 13465,
+        "y" : 6635
+      }, {
+        "id" : "172",
+        "x" : 12620,
+        "y" : 6620
+      }, {
+        "id" : "173",
+        "x" : 11813,
+        "y" : 10858
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "MSA-Containers",
+      "name" : "Container View: 4Stay (MSA)",
+      "order" : 5,
+      "relationships" : [ {
+        "id" : "120"
+      }, {
+        "id" : "121"
+      }, {
+        "id" : "122"
+      }, {
+        "id" : "174"
+      }, {
+        "id" : "176"
+      }, {
+        "id" : "178"
+      }, {
+        "id" : "180"
+      }, {
+        "id" : "182"
+      }, {
+        "id" : "184"
+      }, {
+        "id" : "186"
+      }, {
+        "id" : "188",
+        "vertices" : [ {
+          "x" : 3713,
+          "y" : 2763
+        }, {
+          "x" : 5218,
+          "y" : 2763
+        }, {
+          "x" : 5218,
+          "y" : 3593
+        } ]
+      }, {
+        "id" : "189",
+        "vertices" : [ {
+          "x" : 3608,
+          "y" : 2638
+        }, {
+          "x" : 5218,
+          "y" : 2638
+        } ]
+      }, {
+        "id" : "190",
+        "vertices" : [ {
+          "x" : 3738,
+          "y" : 2928
+        }, {
+          "x" : 5033,
+          "y" : 2928
+        }, {
+          "x" : 5033,
+          "y" : 4488
+        } ]
+      }, {
+        "id" : "191",
+        "vertices" : [ {
+          "x" : 3568,
+          "y" : 2215
+        } ]
+      }, {
+        "id" : "192",
+        "vertices" : [ {
+          "x" : 3488,
+          "y" : 3398
+        }, {
+          "x" : 4643,
+          "y" : 3398
+        }, {
+          "x" : 4593,
+          "y" : 6083
+        }, {
+          "x" : 5408,
+          "y" : 6083
+        } ]
+      }, {
+        "id" : "193",
+        "vertices" : [ {
+          "x" : 3508,
+          "y" : 1747
+        } ]
+      }, {
+        "id" : "194",
+        "vertices" : [ {
+          "x" : 4813,
+          "y" : 3097
+        }, {
+          "x" : 4843,
+          "y" : 5303
+        }, {
+          "x" : 6223,
+          "y" : 5303
+        } ]
+      }, {
+        "id" : "195",
+        "vertices" : [ {
+          "x" : 3343,
+          "y" : 7303
+        }, {
+          "x" : 3443,
+          "y" : 9248
+        }, {
+          "x" : 4528,
+          "y" : 9248
+        } ]
+      }, {
+        "id" : "196",
+        "vertices" : [ {
+          "x" : 3393,
+          "y" : 7253
+        }, {
+          "x" : 3573,
+          "y" : 8193
+        }, {
+          "x" : 4393,
+          "y" : 8193
+        } ]
+      }, {
+        "id" : "197",
+        "vertices" : [ {
+          "x" : 3428,
+          "y" : 3903
+        } ]
+      }, {
+        "id" : "198",
+        "vertices" : [ {
+          "x" : 3383,
+          "y" : 7328
+        }, {
+          "x" : 3518,
+          "y" : 8713
+        }, {
+          "x" : 4443,
+          "y" : 8713
+        } ]
+      }, {
+        "id" : "199",
+        "vertices" : [ {
+          "x" : 3368,
+          "y" : 3543
+        }, {
+          "x" : 3738,
+          "y" : 3543
+        }, {
+          "x" : 3793,
+          "y" : 3218
+        } ]
+      }, {
+        "id" : "200",
+        "vertices" : [ {
+          "x" : 3605,
+          "y" : 7280
+        }, {
+          "x" : 5863,
+          "y" : 7280
+        }, {
+          "x" : 5863,
+          "y" : 7933
+        } ]
+      }, {
+        "id" : "201",
+        "vertices" : [ {
+          "x" : 3308,
+          "y" : 7243
+        }, {
+          "x" : 3338,
+          "y" : 9338
+        }, {
+          "x" : 4288,
+          "y" : 9338
+        }, {
+          "x" : 4288,
+          "y" : 9625
+        } ]
+      }, {
+        "id" : "202",
+        "vertices" : [ {
+          "x" : 3663,
+          "y" : 6998
+        }, {
+          "x" : 5765,
+          "y" : 6998
+        } ]
+      }, {
+        "id" : "203",
+        "vertices" : [ {
+          "x" : 3658,
+          "y" : 6328
+        }, {
+          "x" : 4473,
+          "y" : 6328
+        }, {
+          "x" : 4473,
+          "y" : 4683
+        } ]
+      }, {
+        "id" : "204",
+        "vertices" : [ {
+          "x" : 3710,
+          "y" : 6455
+        }, {
+          "x" : 5585,
+          "y" : 6500
+        } ]
+      }, {
+        "id" : "205",
+        "vertices" : [ {
+          "x" : 3123,
+          "y" : 7223
+        }, {
+          "x" : 3123,
+          "y" : 9643
+        }, {
+          "x" : 4013,
+          "y" : 9643
+        }, {
+          "x" : 4033,
+          "y" : 11048
+        } ]
+      }, {
+        "id" : "206",
+        "vertices" : [ {
+          "x" : 3253,
+          "y" : 7243
+        }, {
+          "x" : 3213,
+          "y" : 9553
+        }, {
+          "x" : 4103,
+          "y" : 9573
+        }, {
+          "x" : 4103,
+          "y" : 10498
+        } ]
+      }, {
+        "id" : "207",
+        "vertices" : [ {
+          "x" : 3183,
+          "y" : 7228
+        }, {
+          "x" : 3258,
+          "y" : 9458
+        }, {
+          "x" : 4158,
+          "y" : 9458
+        }, {
+          "x" : 4158,
+          "y" : 9948
+        }, {
+          "x" : 4488,
+          "y" : 9948
+        } ]
+      }, {
+        "id" : "208",
+        "vertices" : [ {
+          "x" : 3588,
+          "y" : 6278
+        }, {
+          "x" : 5418,
+          "y" : 6258
+        } ]
+      }, {
+        "id" : "209",
+        "vertices" : [ {
+          "x" : 3443,
+          "y" : 5498
+        } ]
+      }, {
+        "id" : "210",
+        "vertices" : [ {
+          "x" : 3713,
+          "y" : 9833
+        }, {
+          "x" : 4483,
+          "y" : 9833
+        }, {
+          "x" : 4483,
+          "y" : 9353
+        } ]
+      }, {
+        "id" : "211",
+        "vertices" : [ {
+          "x" : 3583,
+          "y" : 12378
+        } ]
+      }, {
+        "id" : "212",
+        "vertices" : [ {
+          "x" : 3718,
+          "y" : 9483
+        }, {
+          "x" : 4398,
+          "y" : 9483
+        }, {
+          "x" : 4398,
+          "y" : 8283
+        } ]
+      }, {
+        "id" : "213",
+        "vertices" : [ {
+          "x" : 3623,
+          "y" : 8873
+        }, {
+          "x" : 3948,
+          "y" : 8873
+        }, {
+          "x" : 3948,
+          "y" : 4038
+        }, {
+          "x" : 6288,
+          "y" : 3993
+        } ]
+      }, {
+        "id" : "214",
+        "vertices" : [ {
+          "x" : 3698,
+          "y" : 9693
+        }, {
+          "x" : 4443,
+          "y" : 9693
+        }, {
+          "x" : 4443,
+          "y" : 8808
+        } ]
+      }, {
+        "id" : "215",
+        "vertices" : [ {
+          "x" : 3598,
+          "y" : 8803
+        }, {
+          "x" : 3843,
+          "y" : 8803
+        }, {
+          "x" : 3843,
+          "y" : 3003
+        } ]
+      }, {
+        "id" : "216",
+        "vertices" : [ {
+          "x" : 3718,
+          "y" : 9423
+        }, {
+          "x" : 4323,
+          "y" : 9423
+        }, {
+          "x" : 4323,
+          "y" : 8058
+        }, {
+          "x" : 5963,
+          "y" : 8038
+        } ]
+      }, {
+        "id" : "217",
+        "vertices" : [ {
+          "x" : 4568,
+          "y" : 9882
+        }, {
+          "x" : 4568,
+          "y" : 9745
+        }, {
+          "x" : 5875,
+          "y" : 9725
+        } ]
+      }, {
+        "id" : "218",
+        "vertices" : [ {
+          "x" : 3743,
+          "y" : 9208
+        }, {
+          "x" : 4258,
+          "y" : 9208
+        }, {
+          "x" : 4258,
+          "y" : 7220
+        } ]
+      }, {
+        "id" : "219",
+        "vertices" : [ {
+          "x" : 3668,
+          "y" : 8918
+        }, {
+          "x" : 4013,
+          "y" : 8918
+        }, {
+          "x" : 4013,
+          "y" : 4858
+        }, {
+          "x" : 6258,
+          "y" : 4818
+        } ]
+      }, {
+        "id" : "220",
+        "vertices" : [ {
+          "x" : 3165,
+          "y" : 13955
+        } ]
+      }, {
+        "id" : "221",
+        "vertices" : [ {
+          "x" : 3723,
+          "y" : 9153
+        }, {
+          "x" : 4198,
+          "y" : 9153
+        }, {
+          "x" : 4220,
+          "y" : 6395
+        }, {
+          "x" : 5585,
+          "y" : 6395
+        } ]
+      }, {
+        "id" : "222",
+        "vertices" : [ {
+          "x" : 3938,
+          "y" : 12128
+        } ]
+      }, {
+        "id" : "223",
+        "vertices" : [ {
+          "x" : 3923,
+          "y" : 11348
+        } ]
+      }, {
+        "id" : "224",
+        "vertices" : [ {
+          "x" : 4028,
+          "y" : 11168
+        }, {
+          "x" : 5638,
+          "y" : 11168
+        } ]
+      }, {
+        "id" : "225",
+        "vertices" : [ {
+          "x" : 3823,
+          "y" : 10593
+        }, {
+          "x" : 4098,
+          "y" : 10638
+        } ]
+      }, {
+        "id" : "226",
+        "vertices" : [ {
+          "x" : 3718,
+          "y" : 10033
+        } ]
+      }, {
+        "id" : "227",
+        "vertices" : [ {
+          "x" : 3673,
+          "y" : 9033
+        }, {
+          "x" : 4078,
+          "y" : 9033
+        }, {
+          "x" : 4078,
+          "y" : 6213
+        } ]
+      }, {
+        "id" : "228",
+        "vertices" : [ {
+          "x" : 3368,
+          "y" : 12868
+        } ]
+      }, {
+        "id" : "229",
+        "vertices" : [ {
+          "x" : 3703,
+          "y" : 9088
+        }, {
+          "x" : 4138,
+          "y" : 9088
+        }, {
+          "x" : 4138,
+          "y" : 5643
+        }, {
+          "x" : 6218,
+          "y" : 5613
+        } ]
+      }, {
+        "id" : "230"
+      }, {
+        "id" : "231"
+      }, {
+        "id" : "232"
+      }, {
+        "id" : "233"
+      }, {
+        "id" : "234"
+      }, {
+        "id" : "235"
+      }, {
+        "id" : "236"
+      }, {
+        "id" : "237"
+      }, {
+        "id" : "238"
+      }, {
+        "id" : "239"
+      }, {
+        "id" : "240"
+      }, {
+        "id" : "241"
+      }, {
+        "id" : "242"
+      }, {
+        "id" : "243"
+      }, {
+        "id" : "244"
+      }, {
+        "id" : "245"
+      }, {
+        "id" : "246"
+      }, {
+        "id" : "247"
+      }, {
+        "id" : "248"
+      }, {
+        "id" : "249"
+      }, {
+        "id" : "250"
+      }, {
+        "id" : "251"
+      }, {
+        "id" : "252"
+      }, {
+        "id" : "253",
+        "vertices" : [ {
+          "x" : 7025,
+          "y" : 3630
+        }, {
+          "x" : 13750,
+          "y" : 3608
+        }, {
+          "x" : 13750,
+          "y" : 6450
+        } ]
+      }, {
+        "id" : "254",
+        "vertices" : [ {
+          "x" : 4768,
+          "y" : 8588
+        }, {
+          "x" : 13670,
+          "y" : 8480
+        }, {
+          "x" : 13690,
+          "y" : 7100
+        } ]
+      }, {
+        "id" : "255",
+        "vertices" : [ {
+          "x" : 6565,
+          "y" : 8255
+        }, {
+          "x" : 13575,
+          "y" : 8225
+        }, {
+          "x" : 13575,
+          "y" : 7105
+        } ]
+      }, {
+        "id" : "256",
+        "vertices" : [ {
+          "x" : 6758,
+          "y" : 2663
+        }, {
+          "x" : 13840,
+          "y" : 2663
+        }, {
+          "x" : 13840,
+          "y" : 6455
+        } ]
+      }, {
+        "id" : "257",
+        "vertices" : [ {
+          "x" : 6580,
+          "y" : 9990
+        }, {
+          "x" : 13785,
+          "y" : 9925
+        }, {
+          "x" : 13805,
+          "y" : 7085
+        } ]
+      }, {
+        "id" : "258",
+        "vertices" : [ {
+          "x" : 6763,
+          "y" : 4423
+        }, {
+          "x" : 13670,
+          "y" : 4423
+        }, {
+          "x" : 13670,
+          "y" : 6445
+        } ]
+      }, {
+        "id" : "259",
+        "vertices" : [ {
+          "x" : 6288,
+          "y" : 6448
+        }, {
+          "x" : 13570,
+          "y" : 6448
+        } ]
+      }, {
+        "id" : "260",
+        "vertices" : [ {
+          "x" : 6008,
+          "y" : 10788
+        }, {
+          "x" : 13900,
+          "y" : 10788
+        }, {
+          "x" : 13900,
+          "y" : 7070
+        } ]
+      }, {
+        "id" : "261"
+      }, {
+        "id" : "262",
+        "vertices" : [ {
+          "x" : 12365,
+          "y" : 7330
+        }, {
+          "x" : 12365,
+          "y" : 9143
+        }, {
+          "x" : 4853,
+          "y" : 9143
+        } ]
+      }, {
+        "id" : "263",
+        "vertices" : [ {
+          "x" : 13290,
+          "y" : 6860
+        }, {
+          "x" : 13400,
+          "y" : 12405
+        }, {
+          "x" : 3908,
+          "y" : 12428
+        } ]
+      }, {
+        "id" : "264",
+        "vertices" : [ {
+          "x" : 11875,
+          "y" : 6955
+        }, {
+          "x" : 11875,
+          "y" : 7753
+        }, {
+          "x" : 4353,
+          "y" : 7753
+        } ]
+      }, {
+        "id" : "265",
+        "vertices" : [ {
+          "x" : 11950,
+          "y" : 7030
+        }, {
+          "x" : 11950,
+          "y" : 7835
+        }, {
+          "x" : 4773,
+          "y" : 7793
+        } ]
+      }, {
+        "id" : "266",
+        "vertices" : [ {
+          "x" : 6753,
+          "y" : 4168
+        }, {
+          "x" : 12990,
+          "y" : 4168
+        }, {
+          "x" : 12970,
+          "y" : 6365
+        } ]
+      }, {
+        "id" : "267",
+        "vertices" : [ {
+          "x" : 12180,
+          "y" : 7240
+        }, {
+          "x" : 12180,
+          "y" : 8460
+        }, {
+          "x" : 4728,
+          "y" : 8533
+        } ]
+      }, {
+        "id" : "268",
+        "vertices" : [ {
+          "x" : 5038,
+          "y" : 8978
+        }, {
+          "x" : 12270,
+          "y" : 8935
+        }, {
+          "x" : 12270,
+          "y" : 7305
+        } ]
+      }, {
+        "id" : "269",
+        "vertices" : [ {
+          "x" : 12100,
+          "y" : 7165
+        }, {
+          "x" : 12100,
+          "y" : 8125
+        }, {
+          "x" : 6640,
+          "y" : 8170
+        } ]
+      }, {
+        "id" : "270",
+        "vertices" : [ {
+          "x" : 6343,
+          "y" : 7608
+        }, {
+          "x" : 11780,
+          "y" : 7588
+        }, {
+          "x" : 11780,
+          "y" : 6835
+        } ]
+      }, {
+        "id" : "271",
+        "vertices" : [ {
+          "x" : 13090,
+          "y" : 6380
+        }, {
+          "x" : 13090,
+          "y" : 3415
+        }, {
+          "x" : 6758,
+          "y" : 3363
+        } ]
+      }, {
+        "id" : "272",
+        "vertices" : [ {
+          "x" : 6808,
+          "y" : 2748
+        }, {
+          "x" : 13220,
+          "y" : 2830
+        }, {
+          "x" : 13195,
+          "y" : 6430
+        } ]
+      }, {
+        "id" : "273",
+        "vertices" : [ {
+          "x" : 12590,
+          "y" : 7345
+        }, {
+          "x" : 12590,
+          "y" : 9975
+        }, {
+          "x" : 6525,
+          "y" : 10055
+        } ]
+      }, {
+        "id" : "274",
+        "vertices" : [ {
+          "x" : 6485,
+          "y" : 7035
+        }, {
+          "x" : 11685,
+          "y" : 6975
+        }, {
+          "x" : 11685,
+          "y" : 6710
+        } ]
+      }, {
+        "id" : "275",
+        "vertices" : [ {
+          "x" : 12900,
+          "y" : 7290
+        }, {
+          "x" : 12880,
+          "y" : 11245
+        }, {
+          "x" : 9785,
+          "y" : 11225
+        } ]
+      }, {
+        "id" : "276",
+        "vertices" : [ {
+          "x" : 6823,
+          "y" : 4473
+        }, {
+          "x" : 12875,
+          "y" : 4495
+        } ]
+      }, {
+        "id" : "277",
+        "vertices" : [ {
+          "x" : 3775,
+          "y" : 13675
+        }, {
+          "x" : 13565,
+          "y" : 13550
+        }, {
+          "x" : 13400,
+          "y" : 6680
+        } ]
+      }, {
+        "id" : "278",
+        "vertices" : [ {
+          "x" : 6600,
+          "y" : 6820
+        }, {
+          "x" : 7415,
+          "y" : 6820
+        }, {
+          "x" : 7415,
+          "y" : 6555
+        }, {
+          "x" : 11675,
+          "y" : 6555
+        } ]
+      }, {
+        "id" : "279",
+        "vertices" : [ {
+          "x" : 13295,
+          "y" : 6515
+        }, {
+          "x" : 13295,
+          "y" : 2410
+        }, {
+          "x" : 6135,
+          "y" : 2410
+        } ]
+      }, {
+        "id" : "280",
+        "vertices" : [ {
+          "x" : 13180,
+          "y" : 7055
+        }, {
+          "x" : 13210,
+          "y" : 11945
+        }, {
+          "x" : 4248,
+          "y" : 11888
+        } ]
+      }, {
+        "id" : "281",
+        "vertices" : [ {
+          "x" : 4568,
+          "y" : 12303
+        }, {
+          "x" : 13285,
+          "y" : 12260
+        }, {
+          "x" : 13235,
+          "y" : 6935
+        } ]
+      }, {
+        "id" : "282",
+        "vertices" : [ {
+          "x" : 4483,
+          "y" : 11808
+        }, {
+          "x" : 8378,
+          "y" : 11788
+        }, {
+          "x" : 13125,
+          "y" : 11870
+        }, {
+          "x" : 13125,
+          "y" : 7120
+        } ]
+      }, {
+        "id" : "283",
+        "vertices" : [ {
+          "x" : 6070,
+          "y" : 11450
+        }, {
+          "x" : 12980,
+          "y" : 11380
+        }, {
+          "x" : 12980,
+          "y" : 7260
+        } ]
+      }, {
+        "id" : "284",
+        "vertices" : [ {
+          "x" : 12805,
+          "y" : 7315
+        }, {
+          "x" : 12770,
+          "y" : 10690
+        }, {
+          "x" : 5968,
+          "y" : 10758
+        } ]
+      }, {
+        "id" : "285",
+        "vertices" : [ {
+          "x" : 11955,
+          "y" : 11492
+        }, {
+          "x" : 13060,
+          "y" : 11492
+        }, {
+          "x" : 13060,
+          "y" : 7190
+        } ]
+      }, {
+        "id" : "286",
+        "vertices" : [ {
+          "x" : 4785,
+          "y" : 10460
+        }, {
+          "x" : 12700,
+          "y" : 10353
+        }, {
+          "x" : 12700,
+          "y" : 7320
+        } ]
+      }, {
+        "id" : "287",
+        "vertices" : [ {
+          "x" : 4868,
+          "y" : 9793
+        }, {
+          "x" : 12490,
+          "y" : 9735
+        }, {
+          "x" : 12465,
+          "y" : 7325
+        } ]
+      }, {
+        "id" : "288",
+        "vertices" : [ {
+          "x" : 5843,
+          "y" : 5888
+        }, {
+          "x" : 12620,
+          "y" : 5888
+        }, {
+          "x" : 12620,
+          "y" : 6380
+        } ]
+      }, {
+        "id" : "289",
+        "vertices" : [ {
+          "x" : 12510,
+          "y" : 6383
+        }, {
+          "x" : 5843,
+          "y" : 6383
+        } ]
+      }, {
+        "id" : "290",
+        "vertices" : [ {
+          "x" : 13390,
+          "y" : 6620
+        }, {
+          "x" : 13390,
+          "y" : 1983
+        }, {
+          "x" : 5622,
+          "y" : 1983
+        } ]
+      }, {
+        "id" : "291",
+        "vertices" : [ {
+          "x" : 3225,
+          "y" : 13520
+        }, {
+          "x" : 13495,
+          "y" : 13230
+        }, {
+          "x" : 13350,
+          "y" : 6770
+        } ]
+      }, {
+        "id" : "292",
+        "vertices" : [ {
+          "x" : 7080,
+          "y" : 5210
+        }, {
+          "x" : 12720,
+          "y" : 5210
+        }, {
+          "x" : 12720,
+          "y" : 6365
+        } ]
+      }, {
+        "id" : "293",
+        "vertices" : [ {
+          "x" : 6408,
+          "y" : 7663
+        }, {
+          "x" : 12038,
+          "y" : 7663
+        } ]
+      }, {
+        "id" : "294",
+        "vertices" : [ {
+          "x" : 3360,
+          "y" : 14190
+        }, {
+          "x" : 12038,
+          "y" : 14140
+        } ]
+      }, {
+        "id" : "295",
+        "vertices" : [ {
+          "x" : 6008,
+          "y" : 11649
+        } ]
+      }, {
+        "id" : "296"
+      }, {
+        "id" : "298",
+        "vertices" : [ {
+          "x" : 4830,
+          "y" : 9050
+        }, {
+          "x" : 7830,
+          "y" : 9050
+        } ]
+      }, {
+        "id" : "300",
+        "vertices" : [ {
+          "x" : 4853,
+          "y" : 9568
+        }, {
+          "x" : 5795,
+          "y" : 9530
+        } ]
+      }, {
+        "id" : "301",
+        "vertices" : [ {
+          "x" : 5020,
+          "y" : 7435
+        }, {
+          "x" : 6075,
+          "y" : 7310
+        } ]
+      }, {
+        "id" : "302",
+        "vertices" : [ {
+          "x" : 4773,
+          "y" : 8463
+        }, {
+          "x" : 7913,
+          "y" : 8440
+        }, {
+          "x" : 7913,
+          "y" : 11305
+        }, {
+          "x" : 4195,
+          "y" : 11280
+        } ]
+      }, {
+        "id" : "303",
+        "vertices" : [ {
+          "x" : 7060,
+          "y" : 3685
+        }, {
+          "x" : 9360,
+          "y" : 3665
+        }, {
+          "x" : 9395,
+          "y" : 8315
+        }, {
+          "x" : 5080,
+          "y" : 8405
+        } ]
+      }, {
+        "id" : "304",
+        "vertices" : [ {
+          "x" : 7095,
+          "y" : 4070
+        }, {
+          "x" : 8760,
+          "y" : 4070
+        }, {
+          "x" : 8795,
+          "y" : 6335
+        }, {
+          "x" : 6100,
+          "y" : 6335
+        } ]
+      }, {
+        "id" : "305",
+        "vertices" : [ {
+          "x" : 6690,
+          "y" : 3425
+        }, {
+          "x" : 9665,
+          "y" : 3425
+        }, {
+          "x" : 9665,
+          "y" : 10600
+        }, {
+          "x" : 5840,
+          "y" : 10655
+        } ]
+      }, {
+        "id" : "306",
+        "vertices" : [ {
+          "x" : 7000,
+          "y" : 3485
+        }, {
+          "x" : 9570,
+          "y" : 3485
+        }, {
+          "x" : 9570,
+          "y" : 9895
+        }, {
+          "x" : 5180,
+          "y" : 9895
+        } ]
+      }, {
+        "id" : "307",
+        "vertices" : [ {
+          "x" : 7025,
+          "y" : 3555
+        }, {
+          "x" : 10250,
+          "y" : 3555
+        }, {
+          "x" : 10250,
+          "y" : 5055
+        }, {
+          "x" : 7010,
+          "y" : 5105
+        } ]
+      }, {
+        "id" : "308",
+        "vertices" : [ {
+          "x" : 5370,
+          "y" : 8375
+        }, {
+          "x" : 5700,
+          "y" : 6805
+        } ]
+      }, {
+        "id" : "309",
+        "vertices" : [ {
+          "x" : 4768,
+          "y" : 9078
+        }, {
+          "x" : 7413,
+          "y" : 9078
+        }, {
+          "x" : 7413,
+          "y" : 10210
+        }, {
+          "x" : 5135,
+          "y" : 10210
+        } ]
+      }, {
+        "id" : "310",
+        "vertices" : [ {
+          "x" : 6075,
+          "y" : 7465
+        } ]
+      }, {
+        "id" : "311",
+        "vertices" : [ {
+          "x" : 6045,
+          "y" : 8225
+        }, {
+          "x" : 5985,
+          "y" : 9505
+        }, {
+          "x" : 4945,
+          "y" : 9825
+        } ]
+      }, {
+        "id" : "312",
+        "vertices" : [ {
+          "x" : 6460,
+          "y" : 8310
+        }, {
+          "x" : 7975,
+          "y" : 8310
+        }, {
+          "x" : 8015,
+          "y" : 11253
+        }, {
+          "x" : 4128,
+          "y" : 11253
+        } ]
+      }, {
+        "id" : "313",
+        "vertices" : [ {
+          "x" : 7013,
+          "y" : 3253
+        }, {
+          "x" : 10333,
+          "y" : 3253
+        }, {
+          "x" : 10313,
+          "y" : 6323
+        }, {
+          "x" : 10203,
+          "y" : 12283
+        }, {
+          "x" : 4303,
+          "y" : 12348
+        } ]
+      }, {
+        "id" : "314",
+        "vertices" : [ {
+          "x" : 7158,
+          "y" : 2788
+        }, {
+          "x" : 10445,
+          "y" : 2830
+        }, {
+          "x" : 10408,
+          "y" : 6333
+        }, {
+          "x" : 10303,
+          "y" : 12813
+        }, {
+          "x" : 3758,
+          "y" : 12903
+        } ]
+      }, {
+        "id" : "315",
+        "vertices" : [ {
+          "x" : 6958,
+          "y" : 3318
+        }, {
+          "x" : 8913,
+          "y" : 3318
+        }, {
+          "x" : 8888,
+          "y" : 5128
+        }, {
+          "x" : 7045,
+          "y" : 5150
+        } ]
+      }, {
+        "id" : "316",
+        "vertices" : [ {
+          "x" : 9710,
+          "y" : 10615
+        }, {
+          "x" : 9965,
+          "y" : 10615
+        }, {
+          "x" : 9938,
+          "y" : 8263
+        }, {
+          "x" : 9938,
+          "y" : 7460
+        }, {
+          "x" : 6485,
+          "y" : 7480
+        } ]
+      }, {
+        "id" : "317",
+        "vertices" : [ {
+          "x" : 9710,
+          "y" : 11275
+        }, {
+          "x" : 11255,
+          "y" : 11295
+        } ]
+      }, {
+        "id" : "318",
+        "vertices" : [ {
+          "x" : 6678,
+          "y" : 4343
+        }, {
+          "x" : 10053,
+          "y" : 4343
+        }, {
+          "x" : 10053,
+          "y" : 11848
+        }, {
+          "x" : 4438,
+          "y" : 11848
+        } ]
+      }, {
+        "id" : "319",
+        "vertices" : [ {
+          "x" : 6188,
+          "y" : 5058
+        } ]
+      }, {
+        "id" : "320",
+        "vertices" : [ {
+          "x" : 3400,
+          "y" : 14180
+        }, {
+          "x" : 8415,
+          "y" : 14070
+        }, {
+          "x" : 8495,
+          "y" : 7395
+        }, {
+          "x" : 6775,
+          "y" : 7395
+        } ]
+      }, {
+        "id" : "321",
+        "vertices" : [ {
+          "x" : 3525,
+          "y" : 14145
+        }, {
+          "x" : 8750,
+          "y" : 14110
+        }, {
+          "x" : 8780,
+          "y" : 6935
+        }, {
+          "x" : 6310,
+          "y" : 6955
+        } ]
+      }, {
+        "id" : "322",
+        "vertices" : [ {
+          "x" : 3725,
+          "y" : 13625
+        }, {
+          "x" : 5750,
+          "y" : 13565
+        }, {
+          "x" : 5750,
+          "y" : 11875
+        }, {
+          "x" : 4140,
+          "y" : 11875
+        } ]
+      }, {
+        "id" : "323",
+        "vertices" : [ {
+          "x" : 3880,
+          "y" : 14105
+        }, {
+          "x" : 6230,
+          "y" : 14070
+        }, {
+          "x" : 6305,
+          "y" : 10360
+        }, {
+          "x" : 4525,
+          "y" : 10340
+        } ]
+      }, {
+        "id" : "324",
+        "vertices" : [ {
+          "x" : 3445,
+          "y" : 14165
+        }, {
+          "x" : 8795,
+          "y" : 14125
+        }, {
+          "x" : 8820,
+          "y" : 5720
+        }, {
+          "x" : 6975,
+          "y" : 5700
+        } ]
+      }, {
+        "id" : "325",
+        "vertices" : [ {
+          "x" : 6360,
+          "y" : 6905
+        }, {
+          "x" : 8345,
+          "y" : 6905
+        }, {
+          "x" : 8345,
+          "y" : 9005
+        }, {
+          "x" : 4915,
+          "y" : 9005
+        } ]
+      }, {
+        "id" : "326",
+        "vertices" : [ {
+          "x" : 5865,
+          "y" : 6885
+        } ]
+      }, {
+        "id" : "327",
+        "vertices" : [ {
+          "x" : 6470,
+          "y" : 6860
+        }, {
+          "x" : 8435,
+          "y" : 6860
+        }, {
+          "x" : 8435,
+          "y" : 10240
+        }, {
+          "x" : 5005,
+          "y" : 10240
+        } ]
+      }, {
+        "id" : "328",
+        "vertices" : [ {
+          "x" : 5520,
+          "y" : 2545
+        }, {
+          "x" : 9155,
+          "y" : 2545
+        }, {
+          "x" : 9155,
+          "y" : 7560
+        }, {
+          "x" : 6275,
+          "y" : 7560
+        } ]
+      }, {
+        "id" : "329",
+        "vertices" : [ {
+          "x" : 5430,
+          "y" : 2585
+        }, {
+          "x" : 9100,
+          "y" : 2585
+        }, {
+          "x" : 9100,
+          "y" : 6965
+        }, {
+          "x" : 6390,
+          "y" : 7000
+        } ]
+      }, {
+        "id" : "330",
+        "vertices" : [ {
+          "x" : 5600,
+          "y" : 2495
+        }, {
+          "x" : 9205,
+          "y" : 2495
+        }, {
+          "x" : 9205,
+          "y" : 9850
+        }, {
+          "x" : 5145,
+          "y" : 9870
+        } ]
+      }, {
+        "id" : "331",
+        "vertices" : [ {
+          "x" : 5360,
+          "y" : 2620
+        }, {
+          "x" : 9055,
+          "y" : 2620
+        }, {
+          "x" : 9055,
+          "y" : 6425
+        }, {
+          "x" : 6210,
+          "y" : 6425
+        } ]
+      }, {
+        "id" : "332",
+        "vertices" : [ {
+          "x" : 5715,
+          "y" : 2435
+        }, {
+          "x" : 9285,
+          "y" : 2455
+        }, {
+          "x" : 9285,
+          "y" : 10415
+        }, {
+          "x" : 4930,
+          "y" : 10515
+        } ]
+      }, {
+        "id" : "333",
+        "vertices" : [ {
+          "x" : 4218,
+          "y" : 12398
+        }, {
+          "x" : 11023,
+          "y" : 12313
+        }, {
+          "x" : 11123,
+          "y" : 5658
+        }, {
+          "x" : 7048,
+          "y" : 5658
+        } ]
+      }, {
+        "id" : "334",
+        "vertices" : [ {
+          "x" : 4563,
+          "y" : 11743
+        }, {
+          "x" : 7653,
+          "y" : 11743
+        }, {
+          "x" : 7615,
+          "y" : 5800
+        }, {
+          "x" : 6845,
+          "y" : 5780
+        } ]
+      }, {
+        "id" : "335",
+        "vertices" : [ {
+          "x" : 5910,
+          "y" : 10710
+        }, {
+          "x" : 8925,
+          "y" : 10655
+        }, {
+          "x" : 8925,
+          "y" : 8355
+        }, {
+          "x" : 5020,
+          "y" : 8430
+        } ]
+      }, {
+        "id" : "336",
+        "vertices" : [ {
+          "x" : 6135,
+          "y" : 11395
+        }, {
+          "x" : 9035,
+          "y" : 11370
+        }, {
+          "x" : 9035,
+          "y" : 7330
+        }, {
+          "x" : 6850,
+          "y" : 7330
+        } ]
+      }, {
+        "id" : "337"
+      }, {
+        "id" : "338",
+        "vertices" : [ {
+          "x" : 4428,
+          "y" : 10328
+        } ]
+      }, {
+        "id" : "339",
+        "vertices" : [ {
+          "x" : 4750,
+          "y" : 10260
+        }, {
+          "x" : 7610,
+          "y" : 10260
+        }, {
+          "x" : 7585,
+          "y" : 8340
+        }, {
+          "x" : 6350,
+          "y" : 8340
+        } ]
+      }, {
+        "id" : "340",
+        "vertices" : [ {
+          "x" : 5040,
+          "y" : 9835
+        }, {
+          "x" : 8125,
+          "y" : 9835
+        }, {
+          "x" : 8125,
+          "y" : 7445
+        }, {
+          "x" : 6660,
+          "y" : 7445
+        } ]
+      }, {
+        "id" : "341",
+        "vertices" : [ {
+          "x" : 4300,
+          "y" : 10110
+        }, {
+          "x" : 4300,
+          "y" : 10995
+        }, {
+          "x" : 4075,
+          "y" : 11235
+        } ]
+      }, {
+        "id" : "342",
+        "vertices" : [ {
+          "x" : 5795,
+          "y" : 5825
+        }, {
+          "x" : 8085,
+          "y" : 5845
+        }, {
+          "x" : 8085,
+          "y" : 4255
+        }, {
+          "x" : 6555,
+          "y" : 4255
+        } ]
+      }, {
+        "id" : "343",
+        "vertices" : [ {
+          "x" : 6145,
+          "y" : 5935
+        }, {
+          "x" : 8165,
+          "y" : 5935
+        }, {
+          "x" : 8220,
+          "y" : 10280
+        }, {
+          "x" : 4680,
+          "y" : 10280
+        } ]
+      }, {
+        "id" : "344",
+        "vertices" : [ {
+          "x" : 5365,
+          "y" : 5785
+        }, {
+          "x" : 6235,
+          "y" : 5685
+        } ]
+      }, {
+        "id" : "345",
+        "vertices" : [ {
+          "x" : 3340,
+          "y" : 13480
+        }, {
+          "x" : 8665,
+          "y" : 13300
+        }, {
+          "x" : 8665,
+          "y" : 4125
+        }, {
+          "x" : 7035,
+          "y" : 4125
+        } ]
+      }, {
+        "id" : "346",
+        "vertices" : [ {
+          "x" : 4040,
+          "y" : 13275
+        }, {
+          "x" : 6885,
+          "y" : 13220
+        }, {
+          "x" : 6885,
+          "y" : 11360
+        }, {
+          "x" : 4273,
+          "y" : 11310
+        } ]
+      }, {
+        "id" : "347",
+        "vertices" : [ {
+          "x" : 3725,
+          "y" : 13345
+        }, {
+          "x" : 7605,
+          "y" : 13245
+        }, {
+          "x" : 7575,
+          "y" : 10315
+        }, {
+          "x" : 4605,
+          "y" : 10315
+        } ]
+      }, {
+        "id" : "348",
+        "vertices" : [ {
+          "x" : 3510,
+          "y" : 13410
+        }, {
+          "x" : 7705,
+          "y" : 13285
+        }, {
+          "x" : 7685,
+          "y" : 5745
+        }, {
+          "x" : 6905,
+          "y" : 5745
+        } ]
+      }, {
+        "id" : "349",
+        "vertices" : [ {
+          "x" : 3078,
+          "y" : 4588
+        }, {
+          "x" : 3098,
+          "y" : 13288
+        } ]
+      }, {
+        "id" : "351",
+        "vertices" : [ {
+          "x" : 2943,
+          "y" : 7133
+        } ]
+      }, {
+        "id" : "352",
+        "vertices" : [ {
+          "x" : 2758,
+          "y" : 13288
+        } ]
+      }, {
+        "id" : "353",
+        "vertices" : [ {
+          "x" : 6743,
+          "y" : 4958
+        }, {
+          "x" : 8575,
+          "y" : 4980
+        }, {
+          "x" : 8575,
+          "y" : 13995
+        }, {
+          "x" : 6580,
+          "y" : 14030
+        } ]
+      }, {
+        "id" : "355",
+        "vertices" : [ {
+          "x" : 4303,
+          "y" : 11933
+        }, {
+          "x" : 6543,
+          "y" : 11953
+        } ]
+      } ],
+      "softwareSystemId" : "113"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "description" : "Контекстная диаграмма монолитной архитектуры.",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "SystemContext-Monolith",
+      "name" : "System Context View: 4Stay (Monolith)",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "41"
+      }, {
+        "id" : "43"
+      }, {
+        "id" : "45"
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "49"
+      }, {
+        "id" : "51"
+      }, {
+        "id" : "53"
+      }, {
+        "id" : "62"
+      }, {
+        "id" : "65"
+      }, {
+        "id" : "68"
+      }, {
+        "id" : "71"
+      } ],
+      "softwareSystemId" : "12"
+    }, {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "description" : "Контекстная диаграмма целевой микросервисной архитектуры.",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "113",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "MSA-SystemContext",
+      "name" : "System Context View: 4Stay (MSA)",
+      "order" : 4,
+      "relationships" : [ {
+        "id" : "175"
+      }, {
+        "id" : "177"
+      }, {
+        "id" : "179"
+      }, {
+        "id" : "181"
+      }, {
+        "id" : "183"
+      }, {
+        "id" : "185"
+      }, {
+        "id" : "187"
+      }, {
+        "id" : "297"
+      }, {
+        "id" : "299"
+      }, {
+        "id" : "350"
+      }, {
+        "id" : "354"
+      } ],
+      "softwareSystemId" : "113"
+    } ]
+  }
+}
