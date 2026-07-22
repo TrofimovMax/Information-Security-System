@@ -7,6 +7,7 @@ fourStayMicroservices.contentService -> fourStayMicroservices.contentDatabase "�
 fourStayMicroservices.conversationService -> fourStayMicroservices.conversationDatabase "Читает и сохраняет сообщения и диалоги" "SQL"
 fourStayMicroservices.dashboardService -> fourStayMicroservices.dashboardDatabase "Читает и сохраняет данные представлений дашбордов" "SQL"
 fourStayMicroservices.dictionaryService -> fourStayMicroservices.dictionaryDatabase "Читает и сохраняет справочные данные" "SQL"
+fourStayMicroservices.feeService -> fourStayMicroservices.feeDatabase "Хранит тарифы и правила расчета комиссий" "JDBC"
 fourStayMicroservices.identityService -> fourStayMicroservices.identityDatabase "Читает и сохраняет учетные данные пользователей" "SQL"
 fourStayMicroservices.importService -> fourStayMicroservices.importDatabase "Читает и сохраняет задания импорта" "SQL"
 fourStayMicroservices.inventoryService -> fourStayMicroservices.inventoryDatabase "Читает и сохраняет данные доступности" "SQL"

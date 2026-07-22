@@ -28,6 +28,9 @@ fourStayMicroservices.conversationService -> fourStayMicroservices.notificationS
 fourStayMicroservices.conversationService -> fourStayMicroservices.taskService "Создает задачи из обращений пользователей" "JSON / HTTPS"
 fourStayMicroservices.conversationService -> fourStayMicroservices.userProfileService "Получает данные пользователей и участников диалогов" "JSON / HTTPS"
 
+fourStayMicroservices.feeService -> fourStayMicroservices.dictionaryService "Получает валюты и финансовые справочники" "JSON / HTTPS"
+fourStayMicroservices.feeService -> fourStayMicroservices.paymentGateway "Получает доступные способы оплаты и параметры платежного провайдера" "JSON / HTTPS"
+
 fourStayMicroservices.identityService -> fourStayMicroservices.organisationService "Проверяет членство и права пользователя в организации" "JSON / HTTPS"
 fourStayMicroservices.identityService -> fourStayMicroservices.userProfileService "Получает данные профиля пользователя" "JSON / HTTPS"
 
@@ -53,6 +56,7 @@ fourStayMicroservices.organisationService -> fourStayMicroservices.userProfileSe
 
 fourStayMicroservices.paymentService -> fourStayMicroservices.billingService "Обновляет статус оплаты счета" "JSON / HTTPS"
 fourStayMicroservices.paymentService -> fourStayMicroservices.dictionaryService "Получает поддерживаемые валюты" "JSON / HTTPS"
+fourStayMicroservices.paymentService -> fourStayMicroservices.feeService "Рассчитывает комиссии платежной системы и итоговую сумму списания" "JSON / HTTPS"
 
 fourStayMicroservices.promotionService -> fourStayMicroservices.propertyService "Получает сведения об объектах размещения" "JSON / HTTPS"
 

@@ -7,6 +7,7 @@
 !include content.dsl
 !include dashboard.dsl
 !include dictionary.dsl
+!include fee.dsl
 !include identity.dsl
 !include import.dsl
 !include inventory.dsl

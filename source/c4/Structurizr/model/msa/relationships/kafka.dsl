@@ -74,6 +74,13 @@ fourStayMicroservices.dictionaryService -> fourStayMicroservices.kafka "Публ
 }
 
 /************************************************
+ * fee
+ ************************************************/
+fourStayMicroservices.kafka -> fourStayMicroservices.feeService "Получает события PaymentProviderTariffChanged для обновления тарифов и правил расчета комиссий" "Kafka Protocol" {
+    tags "Event"
+}
+
+/************************************************
  * identity
  ************************************************/
 fourStayMicroservices.identityService -> fourStayMicroservices.kafka "Публикует события пользователей" "Kafka Protocol" {
