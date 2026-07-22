@@ -17,6 +17,3 @@ fourStayMicroservices.identityService -> knock "Отправляет OTP-код�
 fourStayMicroservices.notificationService -> knock "Отправляет уведомления пользователям" "JSON / HTTPS" {
     tags "Data Flow"
 }
-fourStayMicroservices.calendarService -> ical "Получает и публикует данные календарей" "JSON / HTTPS" {
-    tags "Data Flow"
-}

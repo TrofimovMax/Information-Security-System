@@ -1,5 +1,5 @@
 /************************************************
- * analytic
+ * ANALYTIC SERVICE
  ************************************************/
 
 fourStayMicroservices.kafka -> fourStayMicroservices.analyticsService "Получает доменные события для построения аналитики" "Kafka Protocol" {
@@ -7,14 +7,14 @@ fourStayMicroservices.kafka -> fourStayMicroservices.analyticsService "Полу�
 }
 
 /************************************************
- * audit
+ * AUDIT SERVICE
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.auditService "Получает доменные события для аудита" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * billing
+ * BILLING SERVICE
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.billingService "Получает события создания и изменения бронирований" "Kafka Protocol" {
     tags "Event"
@@ -24,12 +24,14 @@ fourStayMicroservices.kafka -> fourStayMicroservices.billingService "Получ�
 }
 
 /************************************************
- * booking
+ * BOOKING SERVICE
  ************************************************/
-fourStayMicroservices.bookingService -> fourStayMicroservices.kafka "Публикует события изменения бронирований" "Kafka event"
+fourStayMicroservices.bookingService -> fourStayMicroservices.kafka "Публикует события изменения бронирований" "Kafka Protocol" {
+    tags "Event"
+}
 
 /************************************************
- * calendar
+ * CALENDAR SERVICE
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.calendarService "Получает события бронирований и изменений доступности" "Kafka Protocol" {
     tags "Event"
@@ -39,7 +41,7 @@ fourStayMicroservices.calendarService -> fourStayMicroservices.kafka "Публи
 }
 
 /************************************************
- * content
+ * CONTENT SERVICE
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.contentService "Получает события изменения объектов и организаций" "Kafka Protocol" {
     tags "Event"
@@ -49,9 +51,8 @@ fourStayMicroservices.contentService -> fourStayMicroservices.kafka "Публи�
 }
 
 /************************************************
- * conversation
+ * CONVERSATION SERVICE
  ************************************************/
-
 fourStayMicroservices.kafka -> fourStayMicroservices.conversationService "Получает события бронирований для создания диалогов" "Kafka Protocol" {
     tags "Event"
 }
@@ -60,56 +61,56 @@ fourStayMicroservices.conversationService -> fourStayMicroservices.kafka "Пуб
 }
 
 /************************************************
- * dashboard
+ * DASHBOARD SERVICE
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.dashboardService "Получает события для обновления показателей" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * dictionary
+ * DICTIONARY SERVICE
  ************************************************/
 fourStayMicroservices.dictionaryService -> fourStayMicroservices.kafka "Публикует события изменения справочных данных" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * fee
+ * FEE SERVICE
  ************************************************/
-fourStayMicroservices.kafka -> fourStayMicroservices.feeService "Получает события PaymentProviderTariffChanged для обновления тарифов и правил расчета комиссий" "Kafka Protocol" {
+fourStayMicroservices.kafka -> fourStayMicroservices.feeService "Получает события для обновления тарифов и правил расчета комиссий" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * identity
+ * IDENTITY SERVICE
  ************************************************/
 fourStayMicroservices.identityService -> fourStayMicroservices.kafka "Публикует события пользователей" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * import
+ * IMPORT SERVICE
  ************************************************/
 fourStayMicroservices.importService -> fourStayMicroservices.kafka "Публикует события завершения импорта" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * inventory
+ * INVENTORY SERVICE
  ************************************************/
 fourStayMicroservices.inventoryService -> fourStayMicroservices.kafka "Публикует события изменения доступности" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * landing
+ * LANDING SERVICE
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.landingService "Передаёт события обновления контента, объектов и доступности" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * notification
+ * NOTIFICATION SERVICE
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.notificationService "Получает события для отправки уведомлений" "Kafka Protocol" {
     tags "Event"
@@ -119,14 +120,14 @@ fourStayMicroservices.notificationService -> fourStayMicroservices.kafka "Пуб
 }
 
 /************************************************
- * organisation
+ * ORGANISATION SERVICE
  ************************************************/
 fourStayMicroservices.organisationService -> fourStayMicroservices.kafka "Публикует события организаций" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * payment and payment gateway
+ * PAYMENT AND PAYMENT GATEWAY SERVICES
  ************************************************/
 fourStayMicroservices.paymentService -> fourStayMicroservices.kafka "Публикует события платежей" "Kafka Protocol" {
     tags "Event"
@@ -139,21 +140,21 @@ fourStayMicroservices.paymentGateway -> fourStayMicroservices.kafka "Публи�
 }
 
 /************************************************
- * promotion
+ * PROMOTION SERVICE
  ************************************************/
 fourStayMicroservices.promotionService -> fourStayMicroservices.kafka "Публикует события изменения акций" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * property
+ * PROPERTY SERVICE
  ************************************************/
 fourStayMicroservices.propertyService -> fourStayMicroservices.kafka "Публикует события объектов размещения" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * review
+ * REVIEW SERVICE
  ************************************************/
 fourStayMicroservices.reviewService -> fourStayMicroservices.kafka "Публикует события отзывов" "Kafka Protocol" {
     tags "Event"
@@ -163,21 +164,21 @@ fourStayMicroservices.kafka -> fourStayMicroservices.reviewService "Получа
 }
 
 /************************************************
- * search
+ * SEARCH SERVICE
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.searchService "Передаёт события изменения объектов, доступности и справочников" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * task
+ * TASK SERVICE
  ************************************************/
 fourStayMicroservices.taskService -> fourStayMicroservices.kafka "Публикует события задач" "Kafka Protocol" {
     tags "Event"
 }
 
 /************************************************
- * user profile
+ * USER PROFILE SERVICE
  ************************************************/
 fourStayMicroservices.userProfileService -> fourStayMicroservices.kafka "Публикует события изменения профиля" "Kafka Protocol" {
     tags "Event"
