@@ -127,6 +127,16 @@ fourStayMicroservices.organisationService -> fourStayMicroservices.kafka "Пуб
 }
 
 /************************************************
+ * PERSONAL DATA SERVICE
+ ************************************************/
+fourStayMicroservices.personalDataService -> fourStayMicroservices.kafka "Публикует события изменения ПДн и согласий" "Kafka Protocol" {
+    tags "Event"
+}
+fourStayMicroservices.kafka -> fourStayMicroservices.personalDataService "Получает события для синхронизации ПДн" "Kafka Protocol" {
+    tags "Event"
+}
+
+/************************************************
  * PAYMENT AND PAYMENT GATEWAY SERVICES
  ************************************************/
 fourStayMicroservices.paymentService -> fourStayMicroservices.kafka "Публикует события платежей" "Kafka Protocol" {

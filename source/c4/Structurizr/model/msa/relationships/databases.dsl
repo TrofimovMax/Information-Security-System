@@ -13,6 +13,7 @@ fourStayMicroservices.importService -> fourStayMicroservices.importDatabase "Ч�
 fourStayMicroservices.inventoryService -> fourStayMicroservices.inventoryDatabase "Читает и сохраняет данные доступности" "SQL"
 fourStayMicroservices.notificationService -> fourStayMicroservices.notificationDatabase "Читает и сохраняет уведомления" "SQL"
 fourStayMicroservices.organisationService -> fourStayMicroservices.organisationDatabase "Читает и сохраняет данные организаций" "SQL"
+fourStayMicroservices.personalDataService -> fourStayMicroservices.personalDataDatabase "Читает и сохраняет персональные данные, согласия и журнал запросов ПДн" "SQL"
 fourStayMicroservices.paymentService -> fourStayMicroservices.paymentDatabase "Читает и сохраняет данные платежей" "SQL"
 fourStayMicroservices.paymentGateway -> fourStayMicroservices.paymentGatewayDatabase "Читает и сохраняет журналы платежных операций" "SQL"
 fourStayMicroservices.promotionService -> fourStayMicroservices.promotionDatabase "Читает и сохраняет данные акций" "SQL"

@@ -172,6 +172,28 @@ fourStayMicroservices.organisationService -> fourStayMicroservices.userProfileSe
 }
 
 /************************************************
+ * PERSONAL DATA SERVICE
+ ************************************************/
+fourStayMicroservices.identityService -> fourStayMicroservices.personalDataService "Отправляет персональные данные пользователей на хранение" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.userProfileService -> fourStayMicroservices.personalDataService "Отправляет персональные данные профилей на хранение" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.organisationService -> fourStayMicroservices.personalDataService "Отправляет персональные данные участников на хранение" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.personalDataService -> fourStayMicroservices.identityService "Предоставляет персональные данные по запросу" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.personalDataService -> fourStayMicroservices.userProfileService "Предоставляет персональные данные по запросу" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.personalDataService -> fourStayMicroservices.auditService "Журналирует операции с персональными данными" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+
+/************************************************
  * PAYMENT AND PAYMENT GATEWAY SERVICES
  ************************************************/
 fourStayMicroservices.paymentService -> fourStayMicroservices.billingService "Обновляет статус оплаты счета" "JSON / HTTPS" {

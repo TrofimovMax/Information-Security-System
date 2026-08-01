@@ -120,6 +120,9 @@ fourStayMicroservices.operationsApi -> fourStayMicroservices.notificationService
 fourStayMicroservices.operationsApi -> fourStayMicroservices.organisationService "Управляет организациями и их структурой" "JSON / HTTPS" {
     tags "Data Flow"
 }
+fourStayMicroservices.operationsApi -> fourStayMicroservices.personalDataService "Управляет согласиями и запросами на экспорт/удаление ПДн" "JSON / HTTPS" {
+    tags "Data Flow"
+}
 fourStayMicroservices.operationsApi -> fourStayMicroservices.paymentService "Управляет платежами и возвратами" "JSON / HTTPS" {
     tags "Data Flow"
 }

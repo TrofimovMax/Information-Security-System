@@ -14,6 +14,7 @@
 !include landing.dsl
 !include notification.dsl
 !include organisation.dsl
+!include personal_data.dsl
 !include payment_gateway.dsl
 !include payment.dsl
 !include property.dsl
