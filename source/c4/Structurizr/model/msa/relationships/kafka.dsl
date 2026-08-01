@@ -75,6 +75,16 @@ fourStayMicroservices.dictionaryService -> fourStayMicroservices.kafka "Публ
 }
 
 /************************************************
+ * DOCUMENT SERVICE
+ ************************************************/
+fourStayMicroservices.documentService -> fourStayMicroservices.kafka "Публикует события подписания и изменения договоров" "Kafka Protocol" {
+    tags "Event"
+}
+fourStayMicroservices.kafka -> fourStayMicroservices.documentService "Получает события для актуализации договоров" "Kafka Protocol" {
+    tags "Event"
+}
+
+/************************************************
  * FEE SERVICE
  ************************************************/
 fourStayMicroservices.kafka -> fourStayMicroservices.feeService "Получает события для обновления тарифов и правил расчета комиссий" "Kafka Protocol" {

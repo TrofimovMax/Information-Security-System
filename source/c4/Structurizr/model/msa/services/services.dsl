@@ -6,6 +6,7 @@
 !include conversation.dsl
 !include content.dsl
 !include dashboard.dsl
+!include document.dsl
 !include dictionary.dsl
 !include fee.dsl
 !include identity.dsl

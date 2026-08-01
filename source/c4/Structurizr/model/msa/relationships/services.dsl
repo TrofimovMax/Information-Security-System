@@ -87,6 +87,19 @@ fourStayMicroservices.conversationService -> fourStayMicroservices.userProfileSe
 # ???
 
 /************************************************
+ * DOCUMENT SERVICE
+ ************************************************/
+fourStayMicroservices.documentService -> fourStayMicroservices.organisationService "Получает данные организаций для заполнения сторон договора" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.documentService -> fourStayMicroservices.personalDataService "Получает персональные данные сторон договора" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.documentService -> fourStayMicroservices.propertyService "Получает данные об объекте размещения для договора" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+
+/************************************************
  * FEE SERVICE
  ************************************************/
 fourStayMicroservices.feeService -> fourStayMicroservices.dictionaryService "Получает валюты и финансовые справочники" "JSON / HTTPS" {

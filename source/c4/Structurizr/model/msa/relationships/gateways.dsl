@@ -8,6 +8,9 @@ fourStayMicroservices.guestApi -> fourStayMicroservices.bookingService "Созд
 fourStayMicroservices.guestApi -> fourStayMicroservices.conversationService "Создаёт и получает сообщения с владельцем или поддержкой" "JSON / HTTPS" {
     tags "Data Flow"
 }
+fourStayMicroservices.guestApi -> fourStayMicroservices.documentService "Получает и акцептует публичную оферту, получает договоры" "JSON / HTTPS" {
+    tags "Data Flow"
+}
 fourStayMicroservices.guestApi -> fourStayMicroservices.identityService "Аутентифицирует пользователя и проверяет права доступа" "JSON / HTTPS" {
     tags "Data Flow"
 }
@@ -44,6 +47,9 @@ fourStayMicroservices.hostApi -> fourStayMicroservices.conversationService "Об
     tags "Data Flow"
 }
 fourStayMicroservices.hostApi -> fourStayMicroservices.contentService "Управляет описаниями и медиафайлами объектов" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.hostApi -> fourStayMicroservices.documentService "Получает и подписывает договор хоста с платформой" "JSON / HTTPS" {
     tags "Data Flow"
 }
 fourStayMicroservices.hostApi -> fourStayMicroservices.dashboardService "Получает показатели объектов размещения и бронирований" "JSON / HTTPS" {
@@ -103,6 +109,9 @@ fourStayMicroservices.operationsApi -> fourStayMicroservices.dashboardService "�
     tags "Data Flow"
 }
 fourStayMicroservices.operationsApi -> fourStayMicroservices.dictionaryService "Управляет справочными данными организации" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.operationsApi -> fourStayMicroservices.documentService "Управляет договорами и юридическими документами" "JSON / HTTPS" {
     tags "Data Flow"
 }
 fourStayMicroservices.operationsApi -> fourStayMicroservices.identityService "Аутентифицирует пользователя и проверяет права доступа" "JSON / HTTPS" {
