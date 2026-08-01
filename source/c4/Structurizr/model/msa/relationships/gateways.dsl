@@ -132,7 +132,13 @@ fourStayMicroservices.operationsApi -> fourStayMicroservices.organisationService
 fourStayMicroservices.operationsApi -> fourStayMicroservices.personalDataService "Управляет согласиями и запросами на экспорт/удаление ПДн" "JSON / HTTPS" {
     tags "Data Flow"
 }
+fourStayMicroservices.operationsApi -> fourStayMicroservices.paymentHistoryService "Просматривает историю платежей и комиссий" "JSON / HTTPS" {
+    tags "Data Flow"
+}
 fourStayMicroservices.operationsApi -> fourStayMicroservices.paymentService "Управляет платежами и возвратами" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.operationsApi -> fourStayMicroservices.reconciliationService "Управляет реестрами, сверкой и расхождениями" "JSON / HTTPS" {
     tags "Data Flow"
 }
 fourStayMicroservices.operationsApi -> fourStayMicroservices.promotionService "Управляет промо-кампаниями" "JSON / HTTPS" {

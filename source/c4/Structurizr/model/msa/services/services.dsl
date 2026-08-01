@@ -16,10 +16,13 @@
 !include notification.dsl
 !include organisation.dsl
 !include personal_data.dsl
-!include payment_gateway.dsl
 !include payment.dsl
+!include payment_gateway.dsl
+!include payment_history.dsl
+!include post_payment.dsl
 !include property.dsl
 !include promotion.dsl
+!include reconciliation.dsl
 !include review.dsl
 !include search.dsl
 !include task.dsl

@@ -160,6 +160,33 @@ fourStayMicroservices.paymentGateway -> fourStayMicroservices.kafka "Публи�
 }
 
 /************************************************
+ * PAYMENT HISTORY SERVICE
+ ************************************************/
+fourStayMicroservices.kafka -> fourStayMicroservices.paymentHistoryService "Получает события подтвержденных платежей для сохранения истории" "Kafka Protocol" {
+    tags "Event"
+}
+
+/************************************************
+ * POST-PAYMENT SERVICE
+ ************************************************/
+fourStayMicroservices.kafka -> fourStayMicroservices.postPaymentService "Получает события подтверждения платежей для постплатёжной логики" "Kafka Protocol" {
+    tags "Event"
+}
+fourStayMicroservices.postPaymentService -> fourStayMicroservices.kafka "Публикует события для рассылки по топикам (нотификации, букинги, аналитика)" "Kafka Protocol" {
+    tags "Event"
+}
+
+/************************************************
+ * RECONCILIATION SERVICE
+ ************************************************/
+fourStayMicroservices.kafka -> fourStayMicroservices.reconciliationService "Получает события платежей для формирования реестров" "Kafka Protocol" {
+    tags "Event"
+}
+fourStayMicroservices.reconciliationService -> fourStayMicroservices.kafka "Публикует события сверки и расхождений" "Kafka Protocol" {
+    tags "Event"
+}
+
+/************************************************
  * PROMOTION SERVICE
  ************************************************/
 fourStayMicroservices.promotionService -> fourStayMicroservices.kafka "Публикует события изменения акций" "Kafka Protocol" {

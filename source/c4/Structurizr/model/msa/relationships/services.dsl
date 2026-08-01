@@ -24,7 +24,7 @@ fourStayMicroservices.billingService -> fourStayMicroservices.organisationServic
  * BOOKING SERVICE
  ************************************************/
 
-fourStayMicroservices.bookingService -> fourStayMicroservices.billingService "Рассчитывает стоимость проживания, сервисные сборы и налоги" "JSON / HTTPS" {
+fourStayMicroservices.bookingService -> fourStayMicroservices.billingService "Рассчитывает стоимость проживания, сервисные сборы и налоги, создаёт invoice" "JSON / HTTPS" {
     tags "Data Flow"
 }
 fourStayMicroservices.bookingService -> fourStayMicroservices.inventoryService "Проверяет доступность объекта и резервирует размещение на выбранный период" "JSON / HTTPS" {
@@ -215,7 +215,53 @@ fourStayMicroservices.paymentService -> fourStayMicroservices.billingService "О
 fourStayMicroservices.paymentService -> fourStayMicroservices.dictionaryService "Получает поддерживаемые валюты" "JSON / HTTPS" {
     tags "Data Flow"
 }
-fourStayMicroservices.paymentService -> fourStayMicroservices.feeService "Рассчитывает комиссии платежной системы и итоговую сумму списания" "JSON / HTTPS" {
+fourStayMicroservices.paymentService -> fourStayMicroservices.feeService "Рассчитывает комиссии (пользовательская, провайдерская, мерчантская) и итоговую сумму списания" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.paymentService -> fourStayMicroservices.paymentHistoryService "Передает платежи и рассчитанные комиссии на хранение" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+
+/************************************************
+ * FEE SERVICE (КАЛЬКУЛЯТОР КОМИССИЙ)
+ ************************************************/
+fourStayMicroservices.feeService -> fourStayMicroservices.paymentService "Возвращает рассчитанные комиссии и итоговую сумму по каналу оплаты" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+
+/************************************************
+ * PAYMENT HISTORY SERVICE
+ ************************************************/
+fourStayMicroservices.paymentHistoryService -> fourStayMicroservices.reconciliationService "Предоставляет платежи и комиссии для формирования реестров" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+
+/************************************************
+ * POST-PAYMENT SERVICE
+ ************************************************/
+fourStayMicroservices.postPaymentService -> fourStayMicroservices.notificationService "Отправляет события для нотификаций (push, email)" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.postPaymentService -> fourStayMicroservices.paymentHistoryService "Передает информацию о подтвержденных платежах" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+
+/************************************************
+ * RECONCILIATION SERVICE
+ ************************************************/
+fourStayMicroservices.reconciliationService -> fourStayMicroservices.paymentHistoryService "Забирает операции для сверки с внешними реестрами" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.reconciliationService -> fourStayMicroservices.paymentService "Проводит платежи хостам по сформированным реестрам" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.reconciliationService -> fourStayMicroservices.propertyService "Получает данные хостов для реестра мерчантских комиссий" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.reconciliationService -> fourStayMicroservices.billingService "Выставляет счета хостам на основании сверенных реестров" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.reconciliationService -> fourStayMicroservices.taskService "Создает задачи по расхождениям в реестрах" "JSON / HTTPS" {
     tags "Data Flow"
 }
 
