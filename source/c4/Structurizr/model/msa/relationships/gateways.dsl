@@ -2,7 +2,7 @@
  * GUEST API
  ************************************************/
 
-fourStayMicroservices.guestApi -> fourStayMicroservices.bookingService "Создает и управляет бронированиями" "JSON / HTTPS" {
+fourStayMicroservices.guestApi -> fourStayMicroservices.bookingOrchestrator "Инициирует создание бронирования, просматривает и управляет существующими бронированиями (Saga)" "JSON / HTTPS" {
     tags "Data Flow"
 }
 fourStayMicroservices.guestApi -> fourStayMicroservices.conversationService "Создаёт и получает сообщения с владельцем или поддержкой" "JSON / HTTPS" {
@@ -15,6 +15,9 @@ fourStayMicroservices.guestApi -> fourStayMicroservices.identityService "Аут�
     tags "Data Flow"
 }
 fourStayMicroservices.guestApi -> fourStayMicroservices.landingService "Получает данные главной страницы и публичных лендингов" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.guestApi -> fourStayMicroservices.paymentService "Оплачивает invoice, просматривает статус платежа" "JSON / HTTPS" {
     tags "Data Flow"
 }
 fourStayMicroservices.guestApi -> fourStayMicroservices.reviewService "Создает и управляет отзывами" "JSON / HTTPS" {
@@ -37,7 +40,7 @@ fourStayMicroservices.hostApi -> fourStayMicroservices.analyticsService "Пол�
 fourStayMicroservices.hostApi -> fourStayMicroservices.billingService "Получает финансовую информацию по объектам" "JSON / HTTPS" {
     tags "Data Flow"
 }
-fourStayMicroservices.hostApi -> fourStayMicroservices.bookingService "Просматривает и управляет бронированиями объектов" "JSON / HTTPS" {
+fourStayMicroservices.hostApi -> fourStayMicroservices.bookingOrchestrator "Просматривает и управляет бронированиями объектов" "JSON / HTTPS" {
     tags "Data Flow"
 }
 fourStayMicroservices.hostApi -> fourStayMicroservices.calendarService "Управляет доступностью и синхронизацией календарей" "JSON / HTTPS" {
@@ -73,6 +76,9 @@ fourStayMicroservices.hostApi -> fourStayMicroservices.promotionService "Упр�
 fourStayMicroservices.hostApi -> fourStayMicroservices.propertyService "Управляет объектами размещения" "JSON / HTTPS" {
     tags "Data Flow"
 }
+fourStayMicroservices.hostApi -> fourStayMicroservices.taskService "Подтверждает одобрение бронирования на указанные даты" "JSON / HTTPS" {
+    tags "Data Flow"
+}
 fourStayMicroservices.hostApi -> fourStayMicroservices.reviewService "Просматривает и отвечает на отзывы" "JSON / HTTPS" {
     tags "Data Flow"
 }
@@ -93,7 +99,7 @@ fourStayMicroservices.operationsApi -> fourStayMicroservices.auditService "По�
 fourStayMicroservices.operationsApi -> fourStayMicroservices.billingService "Управляет счетами и начислениями" "JSON / HTTPS" {
     tags "Data Flow"
 }
-fourStayMicroservices.operationsApi -> fourStayMicroservices.bookingService "Обрабатывает операционные запросы по бронированиям" "JSON / HTTPS" {
+fourStayMicroservices.operationsApi -> fourStayMicroservices.bookingOrchestrator "Обрабатывает операционные запросы по бронированиям" "JSON / HTTPS" {
     tags "Data Flow"
 }
 fourStayMicroservices.operationsApi -> fourStayMicroservices.calendarService "Контролирует календари объектов размещения" "JSON / HTTPS" {

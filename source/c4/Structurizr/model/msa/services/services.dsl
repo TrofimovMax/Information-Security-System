@@ -2,6 +2,7 @@
 !include audit.dsl
 !include billing.dsl
 !include booking.dsl
+!include booking_orchestrator.dsl
 !include calendar.dsl
 !include conversation.dsl
 !include content.dsl
