@@ -13,6 +13,7 @@
  * - получение данных объекта (property)
  * - создание invoice (billing)
  * - инициализация платежа (payment)
+ * - создание записи бронирования (booking)
  * Пост-логика (нотификации, аналитика) — асинхронно через Kafka.
  ************************************************/
 fourStayMicroservices.bookingOrchestrator -> fourStayMicroservices.inventoryService "Проверяет доступность объекта и резервирует размещение на выбранный период" "JSON / HTTPS" {
@@ -31,6 +32,9 @@ fourStayMicroservices.bookingOrchestrator -> fourStayMicroservices.paymentServic
     tags "Data Flow"
 }
 fourStayMicroservices.bookingOrchestrator -> fourStayMicroservices.userProfileService "Получает данные гостя для оформления бронирования" "JSON / HTTPS" {
+    tags "Data Flow"
+}
+fourStayMicroservices.bookingOrchestrator -> fourStayMicroservices.bookingService "Создает запись о бронировании и управляет его статусом" "JSON / HTTPS" {
     tags "Data Flow"
 }
 
